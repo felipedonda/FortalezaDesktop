@@ -1,0 +1,61 @@
+﻿<Window x:Class="FortalezaDesktop.Views.RelatoriosProdutosVendidos"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FortalezaDesktop.Views"
+        mc:Ignorable="d"
+        Title="RelatoriosProdutosVendidos" Height="350" Width="450">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <TextBlock Text="Relatório de Produtos Vendidos" FontSize="14" Margin="10" HorizontalAlignment="Left" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" />
+        <TextBlock Text="Período:" FontSize="12" Margin="10,0,5,5" HorizontalAlignment="Right" Grid.Column="0" Grid.Row="1" />
+        <TextBlock Text="Cliente:" FontSize="12" Margin="10,0,5,5"  HorizontalAlignment="Right" Grid.Column="0" Grid.Row="2" />
+        <TextBlock Text="Forma Pgto:" FontSize="12" Margin="10,0,5,5" HorizontalAlignment="Right" Grid.Column="0" Grid.Row="3" />
+        <TextBlock Text="Vendedor:" FontSize="12" Margin="10,0,5,5" HorizontalAlignment="Right" Grid.Column="0" Grid.Row="4" />
+        <TextBlock Text="Produto:" FontSize="12" Margin="10,0,5,5" HorizontalAlignment="Right" Grid.Column="0" Grid.Row="5" />
+        <TextBlock Text="Grupos:" FontSize="12" Margin="10,0,5,5" HorizontalAlignment="Right" Grid.Column="0" Grid.Row="6" />
+        <TextBlock Text="Origem:" FontSize="12" Margin="10,0,5,5" HorizontalAlignment="Right" Grid.Column="0" Grid.Row="7" />
+        <TextBlock Text="Opções:" FontSize="12" Margin="10,0,5,5" HorizontalAlignment="Right" Grid.Column="0" Grid.Row="8" />
+
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,5" Grid.Column="1" Grid.Row="1">
+            <DatePicker x:Name="datePickerFrom" Margin="0,0,10,5" />
+            <TextBlock Text="Até:" FontSize="12" Margin="0,0,5,5" />
+            <DatePicker x:Name="datePicker" Margin="0,0,5,5" />
+        </StackPanel>
+        <ComboBox x:Name="comboboxCliente" Margin="0,0,5,5"  Grid.Column="1" Grid.Row="2" />
+        <ComboBox x:Name="comboboxFormaPagamento" Margin="0,0,5,5" Grid.Column="1" Grid.Row="3" />
+        <ComboBox x:Name="comboboxVendedor" Margin="0,0,5,5" Grid.Column="1" Grid.Row="4" />
+        <ComboBox x:Name="comboboxProduto" Margin="0,0,5,5" Grid.Column="1" Grid.Row="5" />
+        <ListBox x:Name="comboboxGrupos" Margin="0,0,5,5" Grid.Column="1" Grid.Row="6">
+            <ListBox.ItemTemplate>
+                <HierarchicalDataTemplate>
+                    <CheckBox Content="{Binding Grupo.Descricao}" IsChecked="{Binding Selecionado}"/>
+                </HierarchicalDataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <ComboBox x:Name="comboboxOrigem" Margin="0,0,5,5" Grid.Column="1" Grid.Row="7" />
+        <StackPanel Orientation="Vertical" VerticalAlignment="Center" Grid.Column="1" Grid.Row="8" >
+            <CheckBox x:Name="checkboxCustoUnidade" Margin="0,2,5,5">Mostrar custo por unidade.</CheckBox>
+        </StackPanel>
+        <StackPanel Margin="0,5,0,0" Orientation="Horizontal" FlowDirection="RightToLeft" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="9">
+            <Button HorizontalAlignment="Right" Content="Ok" Width="80" VerticalAlignment="Center" Margin="10,10,0,10" Padding="5" Click="ButtonOk" />
+            <Button HorizontalAlignment="Left" Content="Cancelar" Width="80" VerticalAlignment="Center" Margin="10,10,0,10" Padding="5" Click="ButtonCancelar"/>
+        </StackPanel>
+    </Grid>
+</Window>

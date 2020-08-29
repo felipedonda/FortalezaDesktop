@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <_LastSelectedProfileId>C:\Users\felip\source\repos\FortalezaDesktop\Properties\PublishProfiles\FolderProfile.pubxml</_LastSelectedProfileId>
+  </PropertyGroup>
+  <ItemGroup>
+    <ApplicationDefinition Update="App.xaml">
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Views\CaixaAdicionarMovimento.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Caixas.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\ClienteDetails.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Clientes.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Configuracoes.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\EstoqueEntradaProdutoQuantidade.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\EstoqueEntradaProdutos.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\EstoqueEntrada.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Estoque.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\MenuGerencial.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\RelatoriosProdutosVendidos.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\RelatoriosVizualizador.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Relatorios\TemplateRelatorioProdutosVendidos.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\VendaPagamentosValor.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\VendaPagamentos.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\ProdutoDetailsGrupos.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\ProdutoDetailsPacoteAdd.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\ProdutoDetails.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Produtos.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Venda.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="MainWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\CaixaAdicionarMovimento.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Caixas.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\ClienteDetails.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Clientes.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Configuracoes.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\EstoqueEntradaProdutoQuantidade.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\EstoqueEntradaProdutos.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\EstoqueEntrada.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Estoque.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\MenuGerencial.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\RelatoriosProdutosVendidos.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\RelatoriosVizualizador.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Relatorios\TemplateRelatorioProdutosVendidos.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\VendaPagamentosValor.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\VendaPagamentos.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\ProdutoDetailsGrupos.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\ProdutoDetailsPacoteAdd.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\ProdutoDetails.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Produtos.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Venda.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+</Project>

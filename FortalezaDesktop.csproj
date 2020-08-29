@@ -1,0 +1,65 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Resources\**" />
+    <EmbeddedResource Remove="Resources\**" />
+    <None Remove="Resources\**" />
+    <Page Remove="Resources\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="cart.png" />
+    <None Remove="document-edit.png" />
+    <None Remove="gear.png" />
+    <None Remove="graph-line.png" />
+    <None Remove="images\logotipo.jpg" />
+    <None Remove="rocket.png" />
+    <None Remove="store.png" />
+    <None Remove="Views\coffee.jpg" />
+    <None Remove="Views\pencil.png" />
+    <None Remove="Views\trash.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="document-edit.png" />
+    <Resource Include="gear.png" />
+    <Resource Include="graph-line.png" />
+    <Resource Include="images\cart.png" />
+    <Resource Include="images\logotipo.jpg" />
+    <Resource Include="rocket.png" />
+    <Resource Include="store.png" />
+    <Resource Include="images\pencil.png" />
+    <Resource Include="images\trash.png" />
+    <Resource Include="images\coffee.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "/SjoHNgA+45/Dy54qPTK73IYAgcAx73DwYCHH9Km1dxJQrCZFflf7YWbd4WQdleop8sRaqxn67ik3sWxVneHYg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\felip\\source\\repos\\FortalezaDesktop\\FortalezaDesktop.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\felip\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

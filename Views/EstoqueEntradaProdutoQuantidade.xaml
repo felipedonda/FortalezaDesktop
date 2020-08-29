@@ -1,0 +1,39 @@
+﻿<Window x:Class="FortalezaDesktop.Views.EstoqueEntradaProdutoQuantidade"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FortalezaDesktop.Views"
+        mc:Ignorable="d"
+        Title="EstoqueEntradaProdutoQuantidade" Height="240" Width="250">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" x:Name="gridTituloCaixaAberto" >
+            <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock x:Name="textboxDescricao" Text="Descricao" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,5" FontSize="14"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="Quantidade" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,5,0,5" FontSize="12"/>
+                    <TextBox x:Name="textboxQuantidade" MinWidth="200" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,10,10" FontSize="12"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="Custo" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,5,0,5" FontSize="12"/>
+                    <TextBox x:Name="textboxCusto" MinWidth="200" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,10,10" FontSize="12"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid>
+                <Button HorizontalAlignment="Left" Content="Cancelar" Width="80" VerticalAlignment="Center" Margin="10" Padding="5" Click="ButtonCancelar"/>
+                <Button HorizontalAlignment="Right" Content="Adicionar" Width="80" VerticalAlignment="Center" Margin="10" Padding="5" Click="ButtonAdicionar" />
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

@@ -1,0 +1,91 @@
+﻿<Window x:Class="FortalezaDesktop.Views.Produtos"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FortalezaDesktop.Views"
+        xmlns:utils="clr-namespace:FortalezaDesktop.Wpf.Utils"
+        mc:Ignorable="d"
+        Title="Produtos" Height="450" Width="810"
+        Loaded="OnLoad">
+
+    <Window.Resources>
+        <Style x:Key="DataGridStyle" TargetType="{x:Type DataGrid}">
+            <Setter Property="ColumnHeaderStyle" Value="{DynamicResource ColumnHeaderStyle}" />
+            <Setter Property="CellStyle" Value="{DynamicResource DataGridCellStyle}" />
+        </Style>
+        <Style x:Key="ColumnHeaderStyle" TargetType="{x:Type DataGridColumnHeader}">
+            <Setter Property="Background" Value="LightGray" />
+            <Setter Property="Padding" Value="5" />
+            <Setter Property="BorderThickness" Value="0,0,0,1" />
+            <Setter Property="BorderBrush" Value="DarkGray" />
+        </Style>
+
+
+        <Style x:Key="DataGridCellStyle" TargetType="{x:Type DataGridCell}">
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+                        <Border BorderBrush="Gray" BorderThickness="0,0,0,1">
+                            <Grid Background="{TemplateBinding Background}" Width="auto">
+                                <ContentPresenter VerticalAlignment="Center" Margin="5,2,5,2"/>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="CheckBoxStyle" TargetType="{x:Type CheckBox}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Border Grid.Row="0" BorderBrush="DarkGray" BorderThickness="0,0,0,1">
+            <Grid x:Name="gridTitulo" >
+                <Label Content="Produtos" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" FontSize="20"/>
+                <Button Content="Adicionar" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10" Padding="5" Click="buttonAdicionar_Click" />
+            </Grid>
+        </Border>
+        <Grid Grid.Row="1">
+            <DataGrid Margin="10" x:Name="datagridProdutos" AutoGenerateColumns="False" GridLinesVisibility="None" HeadersVisibility="Column" Style="{DynamicResource DataGridStyle}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Codigo" Width="65"  Binding="{Binding Iditem, StringFormat={}{0:00000}}" />
+                    <DataGridTextColumn Header="Descrição" Width="*" Binding="{Binding Descricao}" />
+                    <DataGridTextColumn Header="Valor" Width="65" Binding="{utils:CultureAwareBinding Valor, StringFormat=C2}" />
+                    <DataGridTextColumn Header="Tipo" Width="75" Binding="{Binding Tipo}" />
+                    <DataGridCheckBoxColumn Header="Visível" Width="55" Binding="{Binding Visivel}" />
+                    <DataGridCheckBoxColumn Header="Disponível" Width="72" Binding="{Binding Disponivel}" />
+                    <DataGridTemplateColumn Width="30">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Click="buttonRemoverProduto_Click" BorderThickness="0" Background="Transparent" Tag="{Binding Iditem}">
+                                    <Image Width="25" Height="25" Source="../images/trash.png" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Width="30">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Click="buttonEditProduto_Click" BorderThickness="0" Background="Transparent" Tag="{Binding Iditem}">
+                                    <Image Width="25" Height="25" Source="../images/pencil.png" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </Grid>
+</Window>

@@ -1,0 +1,123 @@
+﻿<Window x:Class="FortalezaDesktop.Views.VendaPagamentosValor"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FortalezaDesktop.Views"
+        mc:Ignorable="d"
+        Title="VendaPagamentosValor" Height="450" Width="342">
+    <Grid>
+        <DockPanel>
+            <TextBlock x:Name="textblockTipoPagamento" Text="Tipo de pagamento" TextWrapping="Wrap" TextAlignment="Center" Margin="10" FontSize="20" DockPanel.Dock="Top" />
+            <TextBox x:Name="textblockValorPagamento" DockPanel.Dock="Top" Height="40" FontSize="20" TextAlignment="Center" VerticalContentAlignment="Center" Margin="20,0,20,0" />
+            <Grid DockPanel.Dock="Top"  Margin="20,20,20,5" Height="250">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Border Grid.Row="0" Grid.Column="3" Grid.RowSpan="4" BorderThickness="1,0,0,0" BorderBrush="DarkGray" Margin="6,0,6,0" />
+                <Grid Grid.Row="0" Grid.Column="0" >
+                    <Button Margin="1" Click="ButtonNumero_Click">
+                        <TextBlock Text="7" TextWrapping="Wrap" FontSize="14" TextAlignment="Center" />
+                    </Button>
+                </Grid>
+                <Grid Grid.Row="0" Grid.Column="1" >
+                    <Button Margin="1" Click="ButtonNumero_Click">
+                        <TextBlock Text="8" TextWrapping="Wrap" FontSize="14" TextAlignment="Center" />
+                    </Button>
+                </Grid>
+                <Grid Grid.Row="0" Grid.Column="2" >
+                    <Button Margin="1" Click="ButtonNumero_Click">
+                        <TextBlock Text="9" TextWrapping="Wrap" FontSize="14" TextAlignment="Center" />
+                    </Button>
+                </Grid>
+                <Grid Grid.Row="0" Grid.Column="4" >
+                    <Button Margin="1" Click="ButtonNumero_Click">
+                        <TextBlock Text="10" TextWrapping="Wrap" FontSize="14" TextAlignment="Center" />
+                    </Button>
+                </Grid>
+                <Grid Grid.Row="1" Grid.Column="0" >
+                    <Button Margin="1" Click="ButtonNumero_Click">
+                        <TextBlock Text="4" TextWrapping="Wrap" FontSize="14" TextAlignment="Center" />
+                    </Button>
+                </Grid>
+                <Grid Grid.Row="1" Grid.Column="1" >
+                    <Button Margin="1" Click="ButtonNumero_Click">
+                        <TextBlock Text="5" TextWrapping="Wrap" FontSize="14" TextAlignment="Center" />
+                    </Button>
+                </Grid>
+                <Grid Grid.Row="1" Grid.Column="2" >
+                    <Button Margin="1" Click="ButtonNumero_Click">
+                        <TextBlock Text="6" TextWrapping="Wrap" FontSize="14" TextAlignment="Center" />
+                    </Button>
+                </Grid>
+                <Grid Grid.Row="1" Grid.Column="4" >
+                    <Button Margin="1" Click="ButtonNumero_Click">
+                        <TextBlock Text="20" TextWrapping="Wrap" FontSize="14" TextAlignment="Center" />
+                    </Button>
+                </Grid>
+                <Grid Grid.Row="2" Grid.Column="0" >
+                    <Button Margin="1" Click="ButtonNumero_Click">
+                        <TextBlock Text="1" TextWrapping="Wrap" FontSize="14" TextAlignment="Center" />
+                    </Button>
+                </Grid>
+                <Grid Grid.Row="2" Grid.Column="1" >
+                    <Button Margin="1" Click="ButtonNumero_Click">
+                        <TextBlock Text="2" TextWrapping="Wrap" FontSize="14" TextAlignment="Center" />
+                    </Button>
+                </Grid>
+                <Grid Grid.Row="2" Grid.Column="2" >
+                    <Button Margin="1" Click="ButtonNumero_Click">
+                        <TextBlock Text="3" TextWrapping="Wrap" FontSize="14" TextAlignment="Center" />
+                    </Button>
+                </Grid>
+                <Grid Grid.Row="2" Grid.Column="4" >
+                    <Button Margin="1" Click="ButtonNumero_Click">
+                        <TextBlock Text="50" TextWrapping="Wrap" FontSize="14" TextAlignment="Center" />
+                    </Button>
+                </Grid>
+                <Grid Grid.Row="3" Grid.Column="0" >
+                    <Button Margin="1" Click="ButtonNumero_Click">
+                        <TextBlock Text="0" TextWrapping="Wrap" FontSize="14" TextAlignment="Center" />
+                    </Button>
+                </Grid>
+                <Grid Grid.Row="3" Grid.Column="1" >
+                    <Button Margin="1" Click="ButtonSeparator_Click">
+                        <TextBlock Text="," TextWrapping="Wrap" FontSize="14" TextAlignment="Center" />
+                    </Button>
+                </Grid>
+                <Grid Grid.Row="3" Grid.Column="2" >
+                    <Button Margin="1" Click="ButtonDel_Click">
+                        <TextBlock Text="del" TextWrapping="Wrap" FontSize="14" TextAlignment="Center" />
+                    </Button>
+                </Grid>
+                <Grid Grid.Row="3" Grid.Column="4" >
+                    <Button Margin="1" Click="ButtonNumero_Click">
+                        <TextBlock Text="100" TextWrapping="Wrap" FontSize="14" TextAlignment="Center" />
+                    </Button>
+                </Grid>
+            </Grid>
+
+            <UniformGrid Columns="3"  Height="auto" Margin="20,0,20,0"  DockPanel.Dock="Top">
+                <Button Width="90" VerticalAlignment="Center" Padding="5" Click="ButtonCancelar_Click">
+                    <TextBlock Text="Cancelar" TextWrapping="Wrap" FontSize="14" TextAlignment="Center" />
+                </Button>
+                <Button Width="90" VerticalAlignment="Center" Padding="5" Click="ButtonLimpar_Click">
+                    <TextBlock Text="Limpar" TextWrapping="Wrap" FontSize="14" TextAlignment="Center" />
+                </Button>
+                <Button Width="90" VerticalAlignment="Center" Padding="5" Click="ButtonOk_Click" >
+                    <TextBlock Text="Ok" TextWrapping="Wrap" FontSize="14" TextAlignment="Center" />
+                </Button>
+            </UniformGrid>
+        </DockPanel>
+    </Grid>
+</Window>
