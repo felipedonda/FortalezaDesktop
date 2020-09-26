@@ -70,7 +70,7 @@
                             </StackPanel>
 
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Horizontal" x:Name="panelInfosEntradas">
                             <StackPanel Orientation="Vertical">
                                 <TextBlock Text="Nota fiscal" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,5" FontSize="12"/>
                                 <TextBox x:Name="textboxNotaFiscal" MinWidth="120" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,10,10" FontSize="12"/>

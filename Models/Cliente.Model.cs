@@ -1,79 +1,25 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace FortalezaDesktop.Models
 {
-    public class Cliente
+    public partial class Cliente : Model<Cliente>
     {
-        public int? Idcliente { get; set; }
-        public string Nome { get; set; }
-        public string Cpf { get; set; }
-        public string Telefone { get; set; }
-        public string Celular { get; set; }
-        public string Email { get; set; }
+        public override string Path { get { return "/clientes"; } }
 
-        [JsonIgnore]
-        public Endereco Endereco { get; set; }
-        
-        public async Task SaveInstance()
+        public override int? Id
         {
-            Idcliente = (await CreateCliente(this)).Idcliente;
-            if(Endereco != null)
-            {
-                Endereco.Idendereco = (await CreateEndereco(Idcliente, Endereco)).Idendereco;
-            }
+            get { return Idcliente; }
+            set { Idcliente = value ?? default; }
         }
 
-        public async Task LoadEndereco()
+        public async Task<Cliente> FindByCPF(string CPF)
         {
-            Endereco = await GetEndereco(Idcliente);
-        }
-
-        public async Task UpdateInstance()
-        {
-            await UpdateCliente(Idcliente, this);
-            if(Endereco != null)
-            {
-                await UpdateEndereco(Idcliente, Endereco);
-            }
-        }
-
-        public async static Task<List<Cliente>> GetClientes()
-        {
-            return await Model<List<Cliente>>.Get("/cliente");
-        }
-
-        public async static Task<Cliente> GetCliente(int Idcliente)
-        {
-            return await Model<Cliente>.Get("/cliente", Idcliente);
-        }
-
-        private async static Task<Cliente> CreateCliente(Cliente cliente)
-        {
-            return await Model<Cliente>.Post("/cliente", cliente);
-        }
-
-        private async static Task<bool> UpdateCliente(int? Idcliente, Cliente cliente)
-        {
-            return await Model<Cliente>.Put("/cliente", Idcliente ?? default, cliente);
-        }
-
-        private async static Task<Endereco> CreateEndereco(int? Idcliente, Endereco endereco)
-        {
-            return await Model<Endereco>.Post("/cliente/" + Idcliente + "/endereco", endereco);
-        }
-
-        private async static Task<Endereco> GetEndereco(int? Idcliente)
-        {
-            return await Model<Endereco>.Get("/cliente/" + Idcliente + "/endereco");
-        }
-
-        private async static Task<bool> UpdateEndereco(int? Idcliente, Endereco endereco)
-        {
-            return await Model<Endereco>.Put("/cliente/" + (Idcliente ?? default) + "/endereco", endereco);
+            return await ServerEntry<Cliente>.Get(Path + "/" + CPF, new Dictionary<string, string> { {"cpf","true"} });
         }
     }
 }

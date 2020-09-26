@@ -1,4 +1,4 @@
-﻿<Window x:Class="FortalezaDesktop.Views.Estoque"
+﻿<Window x:Class="FortalezaDesktop.Views.EstoqueView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -136,8 +136,8 @@
                                         <DataGridTextColumn Header="Nº Entrada" Width="Auto"  Binding="{Binding Idestoque, StringFormat={}{0:00000}}" />
                                         <DataGridTextColumn Header="Data" Width="80" Binding="{Binding HoraEntrada, StringFormat=dd/MM/yyyy}" />
                                         <DataGridTextColumn Header="Fornecedor" Width="*" Binding="{Binding Fornecedor.Nome}" />
-                                        <DataGridTextColumn Header="Nota Fiscal" Width="80" />
                                         <DataGridTextColumn Header="Quantidade" Width="80" Binding="{Binding Quantidade}" />
+                                        <DataGridTextColumn Header="Disponível" Width="80" Binding="{Binding QuantidadeDisponivel}" />
                                         <DataGridTextColumn Header="Custo" Width="65" Binding="{Binding Custo, StringFormat={}{0:C2}}" />
                                     </DataGrid.Columns>
                                 </DataGrid>

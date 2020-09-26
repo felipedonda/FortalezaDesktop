@@ -24,9 +24,10 @@
             <TextBlock Text="Nome" FontSize="12" Margin="0,0,5,5" />
             <TextBox Text="{Binding Nome}"  FontSize="12"  Margin="0,0,5,5" />
         </StackPanel>
-        <StackPanel Orientation="Vertical" Grid.Column="2" Grid.Row="0" Margin="10,10,0,0">
+        <StackPanel Orientation="Vertical" Grid.Column="2" Grid.Row="0" Margin="10,10,0,5">
             <TextBlock Text="CPF/CNPJ" FontSize="12" Margin="0,0,5,5" />
-            <TextBox Text="{Binding Cpf}"  FontSize="12"  Margin="0,0,5,5" />
+            <TextBox Text="{Binding Cpf}"  FontSize="12"  Margin="0,0,5,0" />
+            <TextBlock x:Name="textblockErroCpf" Text="Erro CPF" Foreground="Red" FontSize="10" Margin="0,0,5,0" />
         </StackPanel>
         <StackPanel Orientation="Vertical" Grid.Column="3" Grid.Row="0" Margin="10,10,0,0">
             <TextBlock Text="RG" FontSize="12" Margin="0,0,5,5" />
@@ -50,23 +51,23 @@
             <TextBlock Text="CEP" FontSize="12" Margin="0,0,5,5" />
             <DockPanel>
                 <Button Content="Consultar" DockPanel.Dock="Right" Click="buttonConsultarCEP" Margin="0,0,5,5" />
-                <TextBox x:Name="textboxCep" Text="{Binding Endereco.Cep}"  FontSize="12"  Margin="0,0,5,5" DockPanel.Dock="Right" />
+                <TextBox x:Name="textboxCep" Text="{Binding IdenderecoNavigation.Cep}"  FontSize="12"  Margin="0,0,5,5" DockPanel.Dock="Right" />
             </DockPanel>
         </StackPanel>
         
         <StackPanel Orientation="Vertical" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="2" Margin="10,10,0,0">
             <TextBlock Text="Logradouro" FontSize="12" Margin="0,0,5,5" />
-            <TextBox Text="{Binding Endereco.Logradouro}"  FontSize="12"  Margin="0,0,5,5" />
+            <TextBox Text="{Binding IdenderecoNavigation.Logradouro}"  FontSize="12"  Margin="0,0,5,5" />
         </StackPanel>
 
         <DockPanel Grid.Column="3" Grid.Row="2" Margin="10,10,0,0">
             <StackPanel Orientation="Vertical"  DockPanel.Dock="Left">
                 <TextBlock Text="Número" FontSize="12" Margin="0,0,5,5" />
-                <TextBox Text="{Binding Endereco.Numero}"  FontSize="12"  Margin="0,0,5,5" />
+                <TextBox Text="{Binding IdenderecoNavigation.Numero}"  FontSize="12"  Margin="0,0,5,5" />
             </StackPanel>
             <StackPanel Orientation="Vertical"  Margin="10,0,0,0" DockPanel.Dock="Left">
                 <TextBlock Text="Complemento" FontSize="12" Margin="0,0,5,5" />
-                <TextBox Text="{Binding Endereco.Complemento}"  FontSize="12"  Margin="0,0,5,5" />
+                <TextBox Text="{Binding IdenderecoNavigation.Complemento}"  FontSize="12"  Margin="0,0,5,5" />
             </StackPanel>
         </DockPanel>
 
@@ -74,15 +75,15 @@
 
         <StackPanel Orientation="Vertical" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3" Margin="10,10,0,0">
             <TextBlock Text="Bairro" FontSize="12" Margin="0,0,5,5" />
-            <TextBox Text="{Binding Endereco.Bairro}"  FontSize="12"  Margin="0,0,5,5" />
+            <TextBox Text="{Binding IdenderecoNavigation.Bairro}"  FontSize="12"  Margin="0,0,5,5" />
         </StackPanel>
         <StackPanel Orientation="Vertical" Grid.Column="2" Grid.Row="3" Margin="10,10,0,0" >
             <TextBlock Text="Município" FontSize="12" Margin="0,0,5,5" />
-            <TextBox Text="{Binding Endereco.Municipio}"  FontSize="12"  Margin="0,0,5,5" />
+            <TextBox Text="{Binding IdenderecoNavigation.Municipio}"  FontSize="12"  Margin="0,0,5,5" />
         </StackPanel>
         <StackPanel Orientation="Vertical" Grid.Column="3" Grid.Row="3" Margin="10,10,0,0">
             <TextBlock Text="UF" FontSize="12" Margin="0,0,5,5" />
-            <TextBox Text="{Binding Endereco.Uf}"  FontSize="12"  Margin="0,0,5,5" />
+            <TextBox Text="{Binding IdenderecoNavigation.Uf}"  FontSize="12"  Margin="0,0,5,5" />
         </StackPanel>
 
         <Border BorderBrush="DarkGray" BorderThickness="0,0,0,0" Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="5"  VerticalAlignment="Bottom" Margin="0,5,0,5" >

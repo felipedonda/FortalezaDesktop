@@ -18,15 +18,15 @@ namespace FortalezaDesktop.Views
     /// <summary>
     /// Interaction logic for EstoqueView.xaml
     /// </summary>
-    public partial class Estoque : Window
+    public partial class EstoqueView : Window
     {
         public List<Item> Items { get; set; }
         public Item ItemSelecionado { get; set; }
-        public List<Models.Estoque> Entradas { get; set; }
-        public List<Models.Estoque> Vendas { get; set; }
-        public List<Models.Estoque> Saidas { get; set; }
+        public List<Estoque> Entradas { get; set; }
+        public List<Estoque> Vendas { get; set; }
+        public List<Estoque> Saidas { get; set; }
 
-        public Estoque()
+        public EstoqueView()
         {
             InitializeComponent();
         }
@@ -35,7 +35,7 @@ namespace FortalezaDesktop.Views
         {
             DataGrid dataGrid = (DataGrid)sender;
             ItemSelecionado = (Item)dataGrid.SelectedItem;
-            await ItemSelecionado.LoadEstoques();
+            ItemSelecionado = await ItemSelecionado.ReloadInstance(new Dictionary<string, string> { { "estoque", "true" } });
 
             gridItemSelecionado.DataContext = null;
             gridItemSelecionado.DataContext = ItemSelecionado;
@@ -54,34 +54,33 @@ namespace FortalezaDesktop.Views
 
         public async Task LoadItems()
         {
-            Items = (await Item.GetItems()).Where(e => e.Estoque).ToList();
-            foreach(var Item in Items)
-            {
-                await Item.LoadEstoqueAtual();
-            }
+            Items = await (new Item()).FindAll(new Dictionary<string, string> {
+                { "estoqueatual","true" },
+                { "estoqueonly","true"} }
+            );
             datagridItems.ItemsSource = null;
             datagridItems.ItemsSource = Items;
         }
 
         public async Task LoadEntradas(Item item)
         {
-            Entradas = item.Estoques.Where(e => e.Saida == false).ToList();
+            Entradas = item.ItemHasEstoque.Select(e => e.IdestoqueNavigation).Where(e => e.Saida == 0).ToList();
             datagridEntradas.ItemsSource = null;
             datagridEntradas.ItemsSource = Entradas;
         }
 
         public async Task LoadVendas(Item item)
         {
-            Vendas = item.Estoques.Where(e => e.OrigemVenda == true).ToList();
+            Vendas = item.ItemHasEstoque.Select(e => e.IdestoqueNavigation).Where(e => e.OrigemVenda == 1).ToList();
             datagridVendas.ItemsSource = null;
             datagridVendas.ItemsSource = Vendas;
         }
 
         public async Task LoadSaidas(Item item)
         {
-            Saidas = item.Estoques.Where(e => e.Saida == true & e.OrigemVenda == false).ToList();
-            datagridVendas.ItemsSource = null;
-            datagridVendas.ItemsSource = Saidas;
+            Saidas = item.ItemHasEstoque.Select(e => e.IdestoqueNavigation).Where(e => e.Saida == 1 & e.OrigemVenda == 0).ToList();
+            datagridSaidas.ItemsSource = null;
+            datagridSaidas.ItemsSource = Saidas;
         }
 
         private void ButtonEntrada(object sender, RoutedEventArgs e)

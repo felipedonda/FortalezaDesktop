@@ -10,7 +10,6 @@ using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Net.Sockets;
 using Newtonsoft.Json.Linq;
-using FortalezaDesktop.Models;
 using System.Diagnostics;
 
 namespace FortalezaDesktop
@@ -35,19 +34,32 @@ namespace FortalezaDesktop
 
         static public void LoadServerConfig()
         {
-            string configurationFilePath = Directory.GetCurrentDirectory() + "\\Server.Config.json";
+            string configurationFolderPath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                "Fortaleza Desktop");
+
+            string configurationFilePath = Path.Combine(
+                configurationFolderPath,
+                "Server.Config.json");
+
             if (File.Exists(configurationFilePath))
             {
                 string jsonString = File.ReadAllText(configurationFilePath);
                 ServerConfigurationFile configuration = JsonConvert.DeserializeObject<ServerConfigurationFile>(jsonString);
                 if (configuration.Https)
                 {
-                    URI = "https://" + configuration.Hostname + ":" + configuration.Port;
+                    URI = "https://" + configuration.Hostname;
                 }
                 else
                 {
-                    URI = "http://" + configuration.Hostname + ":" + configuration.Port;
+                    URI = "http://" + configuration.Hostname;
                 }
+                if (!string.IsNullOrEmpty(configuration.Port))
+                {
+                    URI += ":" + configuration.Port;
+                }
+
+                URI += "/api";
             }
             else
             {
@@ -57,8 +69,15 @@ namespace FortalezaDesktop
                     Https = false,
                     Port = "8000"
                 };
+
+                if(!Directory.Exists(configurationFolderPath))
+                {
+                    Directory.CreateDirectory(configurationFolderPath);
+                }
+
                 File.WriteAllText(configurationFilePath, JsonConvert.SerializeObject(newConfiguration));
-                URI = "http://" + newConfiguration.Hostname + ":" + newConfiguration.Port;
+                URI = "http://" + newConfiguration.Hostname + ":" + newConfiguration.Port + "/api";
+
             }
         }
 
@@ -72,137 +91,11 @@ namespace FortalezaDesktop
             }
             catch(Exception ex)
             {
-                if (ex.InnerException is SocketException) return false;
-                throw ex;
+                //if (ex.InnerException is SocketException) return false;
+                //throw ex;
+                return false;
             }
         }
-    }
-
-    public class Model<T> where T : new()
-    {
-        public static async Task<T> Get(string path)
-        {
-            HttpClient httpClient = new HttpClient();
-            HttpResponseMessage httpResponse = await httpClient.GetAsync(Server.URI + path);
-            if (httpResponse.IsSuccessStatusCode)
-            {
-                string jsonString = await httpResponse.Content.ReadAsStringAsync();
-                T result = JsonConvert.DeserializeObject<T>(jsonString, new JsonSerializerSettings
-                {
-                    NullValueHandling = NullValueHandling.Ignore
-                });
-                return result;
-            }
-            else
-            {
-                throw new BadResponseStatusCodeException("Bad status code: " + httpResponse.StatusCode + " " + httpResponse.ReasonPhrase);
-            }
-        }
-
-        public static async Task<T> Get(string path, int id)
-        {
-            return await Get(path + "/" + id);
-        }
-
-        public static async Task<T> Post(string path, T item)
-        {
-            string itemJson = JsonConvert.SerializeObject(item, new JsonSerializerSettings
-            {
-                ContractResolver = new DefaultContractResolver
-                {
-                    NamingStrategy = new CamelCaseNamingStrategy()
-                }
-            });
-
-            HttpClient httpClient = new HttpClient();
-            StringContent httpContent = new StringContent(itemJson, Encoding.UTF8, "application/json");
-            HttpResponseMessage httpResponse = await httpClient.PostAsync(Server.URI + path, httpContent);
-
-            if (httpResponse.IsSuccessStatusCode)
-            {
-                string jsonString = await httpResponse.Content.ReadAsStringAsync();
-                try
-                {
-                    T result = JsonConvert.DeserializeObject<T>(jsonString, new JsonSerializerSettings
-                    {
-                        NullValueHandling = NullValueHandling.Ignore
-                    });
-                    return result;
-                }
-                catch
-                {
-                    return default;
-                }
-
-            }
-            else
-            {
-                throw new BadResponseStatusCodeException("Bad status code: " + httpResponse.StatusCode + " " + httpResponse.ReasonPhrase);
-            }
-        }
-
-        public static async Task<bool> Put(string path, T item)
-        {
-            string itemJson = JsonConvert.SerializeObject(item, new JsonSerializerSettings
-            {
-                ContractResolver = new DefaultContractResolver
-                {
-                    NamingStrategy = new CamelCaseNamingStrategy()
-                }
-            });
-
-            HttpClient httpClient = new HttpClient();
-            StringContent httpContent = new StringContent(itemJson, Encoding.UTF8, "application/json");
-            HttpResponseMessage httpResponse = await httpClient.PutAsync(Server.URI + path, httpContent);
-
-            if (httpResponse.IsSuccessStatusCode)
-            {
-                string jsonString = await httpResponse.Content.ReadAsStringAsync();
-                /*
-                JToken result = JsonConvert.DeserializeObject<JToken>(jsonString);
-
-                if ((bool)result["success"])
-                {
-                    return true;
-                }
-                else
-                {
-                    throw new GenericServerException("Error: " + (bool)result["error"]);
-                }
-                */
-                return true;
-            }
-            else
-            {
-                throw new BadResponseStatusCodeException("Bad status code: " + httpResponse.StatusCode + " " + httpResponse.ReasonPhrase);
-            }
-        }
-
-        public static async Task<bool> Put(string path, int id, T item)
-        {
-            return await Put(path + "/" + id, item);
-        }
-
-        public static async Task<bool> Delete(string path)
-        {
-            HttpClient httpClient = new HttpClient();
-            HttpResponseMessage httpResponse = await httpClient.DeleteAsync(Server.URI + path);
-
-            if (httpResponse.IsSuccessStatusCode)
-            {
-                return true;
-            }
-            else
-            {
-                throw new BadResponseStatusCodeException("Bad status code: " + httpResponse.StatusCode + " " + httpResponse.ReasonPhrase);
-            }
-        }
-
-        public static async Task<bool> Delete(string path, int id)
-        {
-            return await Delete(path + "/" + id);
-        }
-
     }
 
 

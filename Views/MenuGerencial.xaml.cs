@@ -52,7 +52,7 @@ namespace FortalezaDesktop.Views
 
         private void buttonEstoque_Click(object sender, RoutedEventArgs e)
         {
-            Estoque estoqueView = new Estoque();
+            EstoqueView estoqueView = new EstoqueView();
             estoqueView.Show();
             Close();
         }

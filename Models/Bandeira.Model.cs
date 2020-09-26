@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace FortalezaDesktop.Models
 {
-    public class Bandeira
+    public partial class Bandeira : Model<Bandeira>
     {
-        public int Idbandeira { get; set; }
-        public int Ordem { get; set; }
-        public string Nome { get; set; }
-        public decimal TaxaCredito { get; set; }
-        public decimal TaxaDebito { get; set; }
-        public int PrazoCredito { get; set; }
-        public int PrazoDebito { get; set; }
+
+        public override string Path { get { return "/bandeiras"; } }
+
+        public override int? Id
+        {
+            get { return Idbandeira; }
+            set { Idbandeira = value ?? default; }
+        }
     }
 }

@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="VendaPagamentos" Height="450" Width="800"
         Loaded="OnLoad">
-    <Grid x:Name="gridAdicionarMovimento">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
@@ -26,7 +26,7 @@
                     </StackPanel>
                     <StackPanel Orientation="Vertical">
                         <TextBlock Text="CPF/CNPJ" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,5" FontSize="12"/>
-                        <TextBox Text="{Binding CPF}" MinWidth="116" Padding="3,0,3,0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,10,0" FontSize="12" />
+                        <TextBox x:Name="textboxCPF" Text="{Binding Cpf}" MinWidth="116" Padding="3,0,3,0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,10,0" FontSize="12" KeyDown="textboxCPF_KeyDown" />
                     </StackPanel>
 
                 </StackPanel>
@@ -80,20 +80,11 @@
                 </Grid.RowDefinitions>
                 <StackPanel Grid.Row="0" VerticalAlignment="Top" Orientation="Vertical" DockPanel.Dock="Top">
                     <TextBlock Text="Desconto" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,10,10,5" FontSize="18"/>
-                    <UniformGrid Columns="2">
-                        <StackPanel Orientation="Vertical" >
-                            <TextBlock Text="Porcentagem" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,5,10,5" FontSize="16"/>
-                            <TextBox x:Name="textboxPorcentagemDesconto" Text="" MinWidth="100" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="10,0,10,5" FontSize="16" />
-                        </StackPanel>
-                        <StackPanel Orientation="Vertical" >
-                            <TextBlock Text="Valor" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,5,10,5" FontSize="16"/>
-                            <TextBox x:Name="textboxValorDesconto" Text="" MinWidth="100" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="10,0,10,5" FontSize="16" />
-                        </StackPanel>
-                    </UniformGrid>
+                    <TextBox x:Name="textboxValorDesconto" Text="" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="10,0,10,5" FontSize="18" TextChanged="textboxValorDesconto_TextChanged" />
                 </StackPanel>
                 <StackPanel Grid.Row="1" VerticalAlignment="Top" Orientation="Vertical" DockPanel.Dock="Top">
                     <TextBlock Text="Valor Total" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,5,10,0" FontSize="18"/>
-                    <TextBox x:Name="textboxValorTotal" Text="" Margin="10,5,10,5" FontSize="18" />
+                    <TextBox x:Name="textboxValorTotal" Text="" Margin="10,5,10,5" FontSize="18"/>
                 </StackPanel>
                 <StackPanel Grid.Row="2" VerticalAlignment="Top" Orientation="Vertical" DockPanel.Dock="Top">
                     <UniformGrid Columns="2">
@@ -110,8 +101,8 @@
                 <DataGrid Grid.Row="3" VerticalAlignment="Stretch" x:Name="datagridPagamentos" Margin="10,10,10,10" AutoGenerateColumns="False"  CanUserAddRows="False" GridLinesVisibility="None" HeadersVisibility="Column">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="" Width="20" />
-                        <DataGridTextColumn Header="Pagamento" Width="*" Binding="{Binding Movimento.MeioPagamento.Nome}" />
-                        <DataGridTextColumn Header="Valor" Width="60" Binding="{Binding Movimento.Valor, StringFormat={}{0:C2}}" />
+                        <DataGridTextColumn Header="Pagamento" Width="*" Binding="{Binding IdmovimentoNavigation.IdformaPagamentoNavigation.Nome}" />
+                        <DataGridTextColumn Header="Valor" Width="60" Binding="{Binding IdmovimentoNavigation.Valor, StringFormat={}{0:C2}}" />
                     </DataGrid.Columns>
                 </DataGrid>
                 <UniformGrid Grid.Row="4" VerticalAlignment="Bottom" Columns="2"  Height="auto" Margin="20,10,20,10"  DockPanel.Dock="Top">
@@ -119,7 +110,7 @@
                         <TextBlock Text="Cancelar" TextWrapping="Wrap" FontSize="14" TextAlignment="Center" />
                     </Button>
                     <Button Width="90" VerticalAlignment="Center" Padding="5" Click="ButtonOk_Click" >
-                        <TextBlock Text="Finalizar" TextWrapping="Wrap" FontSize="14" TextAlignment="Center" />
+                        <TextBlock x:Name="textButtonFinalizar" Text="Finalizar" TextWrapping="Wrap" FontSize="14" TextAlignment="Center" />
                     </Button>
                 </UniformGrid>
             </Grid>

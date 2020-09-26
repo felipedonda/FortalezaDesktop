@@ -1,11 +1,11 @@
-﻿using FortalezaDesktop.Models;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Animation;
+using FortalezaDesktop.Models;
 
 namespace FortalezaDesktop.Utils
 {
@@ -23,7 +23,7 @@ namespace FortalezaDesktop.Utils
 
         private static string BaseURL = "https://viacep.com.br/ws/";
         
-        public async static Task<Endereco> ConsultarCEP(string CEP)
+        public async static Task<Endereco> ConsultarCEP(string CEP, Endereco endereco)
         {
             if(CEP.Length != 8)
             {
@@ -39,15 +39,13 @@ namespace FortalezaDesktop.Utils
                 {
                     NullValueHandling = NullValueHandling.Ignore
                 });
-                return new Endereco
-                {
-                    Cep = CEP,
-                    Bairro = result.bairro,
-                    Municipio = result.localidade,
-                    Logradouro = result.logradouro,
-                    Uf = result.uf
 
-                };
+                endereco.Cep = CEP;
+                endereco.Bairro = result.bairro;
+                endereco.Municipio = result.localidade;
+                endereco.Logradouro = result.logradouro;
+                endereco.Uf = result.uf;
+                return endereco;
             }
             else
             {

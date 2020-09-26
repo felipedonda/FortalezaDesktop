@@ -17,11 +17,11 @@ namespace FortalezaDesktop.Views
     /// <summary>
     /// Interaction logic for CaixasView.xaml
     /// </summary>
-    public partial class Caixas : Window
+    public partial class CaixasView : Window
     {
         public Caixa CaixaAberto { get; set; }
 
-        public Caixas()
+        public CaixasView()
         {
             InitializeComponent();
         }
@@ -33,7 +33,10 @@ namespace FortalezaDesktop.Views
 
         public async Task LoadCaixaAberto()
         {
-            CaixaAberto = await Caixa.GetCaixaAberto();
+            Caixa caixa = new Caixa();
+            CaixaAberto = await caixa.GetCaixaAberto(new Dictionary<string, string> {
+                { "movimentos","true"}
+            });
             if(CaixaAberto != null)
             {
                 gridTituloCaixaAberto.DataContext = CaixaAberto;
@@ -50,13 +53,8 @@ namespace FortalezaDesktop.Views
         {
             if (CaixaAberto != null)
             {
-                List<Movimento> movimentos = await Caixa.GetMovimentos(CaixaAberto.Idcaixa);
-                foreach(Movimento movimento in movimentos)
-                {
-                    await movimento.LoadFormaPagamento();
-                }
                 datagridMovimentacoes.ItemsSource = null;
-                datagridMovimentacoes.ItemsSource = movimentos;
+                datagridMovimentacoes.ItemsSource = CaixaAberto.Movimento;
             }
         }
 
@@ -90,6 +88,13 @@ namespace FortalezaDesktop.Views
         private void ButtonSangria_Click(object sender, RoutedEventArgs e)
         {
             AdicionarMovimento adicionarMovimentoView = new AdicionarMovimento(CaixaAberto, OperacaoCaixa.Sangria);
+            adicionarMovimentoView.Closing += AdicionarMovimentoView_Closing;
+            adicionarMovimentoView.Show();
+        }
+
+        private void ButtonFecharCaixa_Click(object sender, RoutedEventArgs e)
+        {
+            AdicionarMovimento adicionarMovimentoView = new AdicionarMovimento(CaixaAberto, OperacaoCaixa.Fechamento);
             adicionarMovimentoView.Closing += AdicionarMovimentoView_Closing;
             adicionarMovimentoView.Show();
         }

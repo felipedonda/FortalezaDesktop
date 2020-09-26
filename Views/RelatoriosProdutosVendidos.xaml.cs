@@ -34,12 +34,7 @@ namespace FortalezaDesktop.Views
         {
             TemplateRelatorioProdutosVendidos relatorio = new TemplateRelatorioProdutosVendidos();
             relatorio.textSubtitulo.Text = "Período de: 00/00/00 até: 00/00/00.";
-            List<ItemVenda> itemsVendidos = await ItemVenda.GetItemVendas();
-            itemsVendidos.ForEach(async e => {
-                await e.LoadItem();
-                await e.CalculateLucro();
-                await e.CalculateTotais();
-            });
+            List<ItemVenda> itemsVendidos = await (new ItemVenda()).FindAll();
             relatorio.mainGrid.ItemsSource = itemsVendidos;
 
             RelatoriosVizualizador vizualizador = new RelatoriosVizualizador();

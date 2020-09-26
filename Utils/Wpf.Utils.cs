@@ -18,4 +18,25 @@ namespace FortalezaDesktop.Wpf.Utils
             ConverterCulture = CultureInfo.CurrentCulture;
         }
     }
+
+    [ValueConversion(typeof(byte), typeof(bool))]
+    public class TinyIntBoolConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return (byte)value == 1;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if((bool)value)
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+    }
 }

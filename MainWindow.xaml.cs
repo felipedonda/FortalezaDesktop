@@ -84,8 +84,23 @@ namespace FortalezaDesktop
 
         public void ButtonCaixa_Click(object sender, RoutedEventArgs e)
         {
-            Caixas caixasView = new Caixas();
+            CaixasView caixasView = new CaixasView();
             caixasView.Show();
+        }
+
+        private void ButtonPedido_Click(object sender, RoutedEventArgs e)
+        {
+            LoadChildPage(new PedidosView());
+        }
+
+        private void ButtonVenda_Click(object sender, RoutedEventArgs e)
+        {
+            LoadChildPage(new VendaView());
+        }
+
+        private void ButtonDelivery_Click(object sender, RoutedEventArgs e)
+        {
+            LoadChildPage(new DeliveryView());
         }
     }
 }

@@ -14,6 +14,7 @@
                     <StackPanel Orientation="Vertical" Margin="10">
                         <CheckBox Content="Mostrar botão &quot;Todos&quot;" Margin="0,0,0,3" FontSize="12" x:Name="checkboxGrupoTodos"  Click="checkboxGrupoTodos_Checked" />
                         <CheckBox Content="Não exibir produtos na tela de venda (modo caixa)." Margin="0,0,0,3" FontSize="12" x:Name="checkboxModoCaixa" Click="checkboxModoCaixa_Checked" />
+                        <CheckBox Content="Concluir venda automaticamente após o pagamento." Margin="0,0,0,3" FontSize="12" x:Name="checkboxVendaPagamento" Click="checkboxVendaPagamento_Checked" />
                     </StackPanel>
                 </Grid>
             </TabItem>

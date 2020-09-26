@@ -23,10 +23,16 @@ namespace FortalezaDesktop.Views
         public Item ItemSelecionado { get; set; }
         public List<Item> Items { get; set; }
         public event EventHandler Selecionado;
+        public bool Saida;
 
-        public EstoqueEntradaProdutos()
+        public EstoqueEntradaProdutos(bool saida)
         {
+            Saida = saida;
             InitializeComponent();
+            if(saida)
+            {
+                datagridItems.Columns[2].Visibility = Visibility.Collapsed;
+            }
         }
 
         private async void OnLoad(object sender, RoutedEventArgs e)
@@ -36,8 +42,10 @@ namespace FortalezaDesktop.Views
 
         public async Task LoadItems()
         {
-            Items = (await Item.GetItems()).Where(e => e.Estoque).ToList();
-            Items.ForEach(async e => await e.LoadEstoqueAtual());
+            Item _item = new Item();
+            Items = (await _item.FindAll( new Dictionary<string, string> { { "estoqueatual", "true" } }))
+                .Where(e => e.Estoque == 1)
+                .ToList();
             datagridItems.ItemsSource = null;
             datagridItems.ItemsSource = Items;
         }
@@ -45,9 +53,12 @@ namespace FortalezaDesktop.Views
         public async Task SelecionarItem()
         {
             ItemSelecionado = (Item)datagridItems.SelectedItem;
-            EstoqueEntradaProdutoQuantidade produtoQuantidade = new EstoqueEntradaProdutoQuantidade(ItemSelecionado);
-            produtoQuantidade.Closed += ProdutoQuantidade_Closed;
-            produtoQuantidade.Show();
+            if(ItemSelecionado != null)
+            {
+                EstoqueEntradaProdutoQuantidade produtoQuantidade = new EstoqueEntradaProdutoQuantidade(ItemSelecionado, Saida);
+                produtoQuantidade.Closed += ProdutoQuantidade_Closed;
+                produtoQuantidade.Show();
+            }
         }
 
         private void ProdutoQuantidade_Closed(object sender, EventArgs e)

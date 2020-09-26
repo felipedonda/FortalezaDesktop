@@ -111,7 +111,7 @@
                 <DataGrid x:Name="gridProdutoVendas" Grid.Row="1" Margin="10,5,10,10" AutoGenerateColumns="False" CanUserAddRows="False" GridLinesVisibility="None" HeadersVisibility="Column" Style="{DynamicResource DataGridStyle}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="" Width="20" />
-                        <DataGridTextColumn Header="Descricao" Width="*" Binding="{Binding Item.Descricao}" />
+                        <DataGridTextColumn Header="Descricao" Width="*" Binding="{Binding IditemNavigation.Descricao}" />
                         <DataGridTextColumn Header="Valor" Width="60" Binding="{utils:CultureAwareBinding Valor, StringFormat=C2}" />
                         <DataGridTextColumn Header="Quan." Width="42" Binding="{utils:CultureAwareBinding Quantidade}" />
                         <DataGridTextColumn Header="Total" Width="60" Binding="{utils:CultureAwareBinding ValorTotal, StringFormat=C2}" />

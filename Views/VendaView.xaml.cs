@@ -32,7 +32,7 @@ namespace FortalezaDesktop.Views
 
         public async void VendaViewLoad(object sender, RoutedEventArgs e)
         {
-            if(!UserPreferences.ModoCaixa)
+            if(!UserPreferences.Preferences.ModoCaixa)
             {
                 await LoadGrupos();
             }
@@ -45,18 +45,19 @@ namespace FortalezaDesktop.Views
 
         public async Task LoadGrupos()
         {
-            List<Grupo> grupos = await Grupo.GetGrupos();
-            if(UserPreferences.GrupoTodos)
+            Grupo _grupo = new Grupo();
+            List<Grupo> grupos = await _grupo.FindAll();
+            if(UserPreferences.Preferences.GrupoTodos)
             {
                 Grupo grupoTodos = new Grupo
                 {
-                    Visivel = true,
+                    Visivel = 1,
                     Nome = "Todos",
                     Idgrupo = -1
                 };
                 grupos.Insert(0, grupoTodos);
             }
-            itemsControlGrupos.ItemsSource = grupos.Where(e => e.Visivel == true);
+            itemsControlGrupos.ItemsSource = grupos.Where(e => e.Visivel == 1);
             await SelectGrupo(grupos[0].Idgrupo);
         }
 
@@ -65,11 +66,13 @@ namespace FortalezaDesktop.Views
             List<Item> items = new List<Item>();
             if (idgrupo == -1)
             {
-                items = await Item.GetItems();
+                items = await (new Item()).FindAll();
             }
             else
             {
-                items = await Grupo.GetItems(idgrupo);
+                Grupo _grupo = new Grupo();
+                _grupo = await _grupo.FindById(idgrupo, new Dictionary<string, string>() { {"items","true" } });
+                items = _grupo.ItemHasGrupo.Select(e => e.IditemNavigation).ToList();
             }
             itemsControlProdutos.ItemsSource = items;
         }
@@ -87,7 +90,7 @@ namespace FortalezaDesktop.Views
         public async void ButtonReceber_Click(object sender, RoutedEventArgs e)
         {
             VendaPagamentos pagamentosVendaView = new VendaPagamentos(Venda);
-            pagamentosVendaView.Closed += PagamentosVendaView_Closed;
+            pagamentosVendaView.PagamentoRealizado += PagamentosVendaView_Closed;
             pagamentosVendaView.Show();
         }
 
@@ -105,13 +108,18 @@ namespace FortalezaDesktop.Views
         {
             if (Venda == null)
             {
-                Caixa caixaAberta = await Caixa.GetCaixaAberto();
-                if(caixaAberta != null)
+                Caixa caixaAberto = await (new Caixa()).GetCaixaAberto();
+                if(caixaAberto != null)
                 {
-                    Venda = new Venda(caixaAberta);
-                    Venda.Idresponsavel = UserControl.UsuarioLogado.Idusuario;
+                    Venda = new Venda { 
+                        Tipo = 0,
+                        Aberta = 1,
+                        Idresponsavel = UserControl.UsuarioLogado.Idusuario,
+                        Paga = 0,
+                        HoraEntrada = DateTime.UtcNow
+                    };
                     textboxValorTotal.Text = Venda.ValorTotal.ToString("C2");
-                    gridProdutoVendas.ItemsSource = Venda.Items;
+                    await Venda.SaveInstance();
                 }
                 else
                 {
@@ -119,19 +127,29 @@ namespace FortalezaDesktop.Views
                     return;
                 }
             }
-            if(item.Estoque)
+            if(item.Estoque == 1)
             {
+                /*
                 if(!(await item.ValidarEstoqueDisponivel(quantidade)))
                 {
-                    MessageBox.Show("Estoque disponível de " + item.Descricao + " é insuficiente.", "Aviso", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show("EstoqueView disponível de " + item.Descricao + " é insuficiente.", "Aviso", MessageBoxButton.OK, MessageBoxImage.Information);
                     return;
                 }
+                */
             }
-            
-            await Venda.AddItemVenda(item, quantidade);
+
+            ItemVenda itemVenda = new ItemVenda
+            {
+                Iditem = item.Iditem,
+                Quantidade = quantidade,
+                Valor = item.Valor ?? default,
+            };
+
+            await Venda.SaveItemVenda(itemVenda);
+
             textboxValorTotal.Text = Venda.ValorTotal.ToString("C2");
             gridProdutoVendas.ItemsSource = null;
-            gridProdutoVendas.ItemsSource = Venda.Items;
+            gridProdutoVendas.ItemsSource = Venda.ItemVenda;
 
         }
 
@@ -177,7 +195,8 @@ namespace FortalezaDesktop.Views
                 return;
             }
 
-            Item item = await Item.GetItem(Iditem);
+            Item item = new Item();
+            item = await item.FindById(Iditem);
             if(item != null & quantidade > -1)
             {
                 await AddProdutoVenda(item, quantidade);

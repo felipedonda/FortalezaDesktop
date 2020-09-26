@@ -16,43 +16,52 @@ namespace FortalezaDesktop
 
     public class UserPreferences
     {
-        public static bool GrupoTodos { get; set; }
-        public static bool ModoCaixa { get; set; }
-        public static bool ConcluirVendaPagamentoCompleto { get; set; }
-        public static string NomeCaixa { get; set; }
+        public static UserPreferencesFile Preferences { get; set; }
 
         public static void Load()
         {
-            string configurationFilePath = Directory.GetCurrentDirectory() + "\\UserPreferences.Config.json";
+            string configurationFolderPath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                "Fortaleza Desktop");
+
+            string configurationFilePath = Path.Combine(
+                configurationFolderPath,
+                "UserPreferences.Config.json");
+
             if (File.Exists(configurationFilePath))
             {
                 string jsonString = File.ReadAllText(configurationFilePath);
-                UserPreferencesFile configuration = JsonConvert.DeserializeObject<UserPreferencesFile>(jsonString);
-                GrupoTodos = configuration.GrupoTodos;
-                ModoCaixa = configuration.ModoCaixa;
-                ConcluirVendaPagamentoCompleto = configuration.ConcluirVendaPagamentoCompleto;
-                NomeCaixa = configuration.NomeCaixa;
+                Preferences = JsonConvert.DeserializeObject<UserPreferencesFile>(jsonString);
             }
             else
             {
-                GrupoTodos = true;
-                ModoCaixa = false;
-                ConcluirVendaPagamentoCompleto = false;
-                NomeCaixa = "Caixa 1";
+                Preferences = new UserPreferencesFile
+                {
+                    GrupoTodos = true,
+                    ModoCaixa = false,
+                    ConcluirVendaPagamentoCompleto = false,
+                    NomeCaixa = "Caixa 1"
+                };
                 Save();
             }
         }
 
         public static void Save()
         {
-            string configurationFilePath = Directory.GetCurrentDirectory() + "\\UserPreferences.Config.json";
-            UserPreferencesFile configuration = new UserPreferencesFile {
-                GrupoTodos = GrupoTodos,
-                ModoCaixa = ModoCaixa,
-                ConcluirVendaPagamentoCompleto = ConcluirVendaPagamentoCompleto,
-                NomeCaixa = NomeCaixa
-            };
-            File.WriteAllText(configurationFilePath, JsonConvert.SerializeObject(configuration));
+            string configurationFolderPath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                "Fortaleza Desktop");
+
+            string configurationFilePath = Path.Combine(
+                configurationFolderPath,
+                "UserPreferences.Config.json");
+
+            if (!Directory.Exists(configurationFolderPath))
+            {
+                Directory.CreateDirectory(configurationFolderPath);
+            }
+
+            File.WriteAllText(configurationFilePath, JsonConvert.SerializeObject(Preferences));
         }
     }
 }

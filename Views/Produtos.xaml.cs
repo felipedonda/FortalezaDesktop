@@ -31,15 +31,17 @@ namespace FortalezaDesktop.Views
 
         public async Task LoadProdutos()
         {
-            List<Item> items = await Item.GetItems();
+            Item _item = new Item();
+            List<Item> items = await _item.FindAll();
             datagridProdutos.ItemsSource = null;
             datagridProdutos.ItemsSource = items;
         }
 
         public async void buttonRemoverProduto_Click(object sender, RoutedEventArgs e)
         {
+            Item item = new Item();
             Button senderAsButton = (Button)sender;
-            Item item = await Item.GetItem((int)senderAsButton.Tag);
+            item = await item.FindById((int)senderAsButton.Tag);
             MessageBoxResult result = MessageBox.Show(
                 "Deseja realmente remover o " + item.Tipo.ToLower() + ": " + item.Descricao + "?",
                 "Remover " + item.Tipo.ToLower(),
@@ -49,7 +51,7 @@ namespace FortalezaDesktop.Views
             {
                 try
                 {
-                    await Item.DeleteItem(item.Iditem ?? default);
+                    await item.DeleteInstance();
                     await LoadProdutos();
                 }
                 catch (BadResponseStatusCodeException ex)
@@ -63,7 +65,7 @@ namespace FortalezaDesktop.Views
         public async void buttonEditProduto_Click(object sender, RoutedEventArgs e)
         {
             Button senderAsButton = (Button)sender;
-            ProdutoDetails produtoDetailsView = new ProdutoDetails(await Item.GetItem((int)senderAsButton.Tag));
+            ProdutoDetails produtoDetailsView = new ProdutoDetails((int)senderAsButton.Tag);
             produtoDetailsView.Closing += ProdutoDetailsView_Closing;
             produtoDetailsView.Show();
         }

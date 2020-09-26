@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FortalezaDesktop.Views"
         mc:Ignorable="d"
-        Title="EstoqueEntradaProdutoQuantidade" Height="240" Width="250">
+        Title="EstoqueEntradaProdutoQuantidade" Height="230" Width="250">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -23,7 +23,7 @@
                     <TextBlock Text="Quantidade" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,5,0,5" FontSize="12"/>
                     <TextBox x:Name="textboxQuantidade" MinWidth="200" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,10,10" FontSize="12"/>
                 </StackPanel>
-                <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Vertical" x:Name="panelCusto">
                     <TextBlock Text="Custo" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,5,0,5" FontSize="12"/>
                     <TextBox x:Name="textboxCusto" MinWidth="200" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,10,10" FontSize="12"/>
                 </StackPanel>

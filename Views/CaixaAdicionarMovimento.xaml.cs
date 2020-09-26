@@ -43,8 +43,8 @@ namespace FortalezaDesktop.Views
             Operacao = OperacaoCaixa.Abertura;
             Caixa = new Caixa
             {
-                Nome = UserPreferences.NomeCaixa,
-                Aberto = true,
+                Nome = UserPreferences.Preferences.NomeCaixa,
+                Aberto = 1,
                 Idresponsavel = UserControl.UsuarioLogado.Idusuario
             };
             InitializeComponent();
@@ -77,8 +77,6 @@ namespace FortalezaDesktop.Views
                 Valor = 0,
                 HoraEntrada = DateTime.UtcNow,
                 Tipo = Tipo,
-                Responsavel = 1
-                
             };
             gridAdicionarMovimento.DataContext = movimento;
             textboxCaixaNome.Text = Caixa.Nome;
@@ -100,15 +98,15 @@ namespace FortalezaDesktop.Views
                 case OperacaoCaixa.Abertura:
                     Caixa.HoraAbertura = movimento.HoraEntrada;
                     Caixa.Nome = textboxCaixaNome.Text;
-                    if (textboxCaixaNome.Text != UserPreferences.NomeCaixa)
+                    if (textboxCaixaNome.Text != UserPreferences.Preferences.NomeCaixa)
                     {
-                        UserPreferences.NomeCaixa = textboxCaixaNome.Text;
+                        UserPreferences.Preferences.NomeCaixa = textboxCaixaNome.Text;
                         UserPreferences.Save();
                     }
-                    Caixa.Aberto = true;
+                    Caixa.Aberto = 1;
                     try
                     {
-                        Caixa = await Caixa.CreateCaixa(Caixa);
+                        await Caixa.SaveInstance() ;
                     }
                     catch(BadResponseStatusCodeException ex)
                     {
@@ -118,10 +116,10 @@ namespace FortalezaDesktop.Views
                     break;
                 case OperacaoCaixa.Fechamento:
                     Caixa.HoraFechamento = movimento.HoraEntrada;
-                    Caixa.Aberto = false;
+                    Caixa.Aberto = 0;
                     try
                     {
-                        await Caixa.UpdateCaixa(Caixa.Idcaixa, Caixa);
+                        await Caixa.UpdateInstance();
                     }
                     catch (BadResponseStatusCodeException ex)
                     {
@@ -133,11 +131,11 @@ namespace FortalezaDesktop.Views
 
             if(Operacao != OperacaoCaixa.Fechamento)
             {
-                movimento.CaixaIdcaixa = Caixa.Idcaixa;
-                movimento.FormaPagamentoIdformaPagamento = MeioPagamento.IdformaPagamento;
+                movimento.Idcaixa = Caixa.Idcaixa;
+                movimento.IdformaPagamento = MeioPagamento.IdformaPagamento;
                 try
                 {
-                    await Caixa.CreateMovimento(movimento);
+                    await movimento.SaveInstance();
                 }
                 catch (BadResponseStatusCodeException ex)
                 {
@@ -150,7 +148,8 @@ namespace FortalezaDesktop.Views
 
         public async Task LoadFormaPagamentos()
         {
-            List<FormaPagamento> formaPagamentos = await FormaPagamento.GetFormaPagamentos();
+            FormaPagamento FormaPagamento = new FormaPagamento();
+            List<FormaPagamento> formaPagamentos = await FormaPagamento.FindAll();
             itemsFormasPagamentos.ItemsSource = null;
             itemsFormasPagamentos.ItemsSource = formaPagamentos.OrderBy((e) => e.Ordem);
             await SetFormaPagamento(formaPagamentos[0]);

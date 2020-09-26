@@ -1,44 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Net.Http;
-using Newtonsoft.Json;
-using FortalezaDesktop.Models;
-using FortalezaDesktop.Utils;
-using FortalezaDesktop;
 
 namespace FortalezaDesktop.Models
 {
-    public class Movimento
+    public partial class Movimento : Model<Movimento>
     {
-        public int? Idmovimento { get; set; }
-        public string Descricao { get; set; }
-        public string Tipo { get; set; }
-        public decimal Valor { get; set; }
-        public DateTime HoraEntrada { get; set; }
-        public int CaixaIdcaixa { get; set; }
-        public int Responsavel { get; set; }
-        public int FormaPagamentoIdformaPagamento { get; set; }
+        public override string Path { get { return "/movimentos"; } }
 
-        [JsonConverter(typeof(BoolConverter))]
-        public bool Debito { get; set; }
-
-
-        [JsonIgnore]
-        public FormaPagamento FormaPagamento { get; set; }
-
-        [JsonIgnore]
-        public Bandeira Bandeira { get; set; }
-
-        [JsonIgnore]
-        public int BandeiraIdbandeira { get; set; }
-
-        public async Task LoadFormaPagamento()
+        public override int? Id
         {
-            FormaPagamento = await FormaPagamento.GetFormaPagamento(FormaPagamentoIdformaPagamento);
+            get { return Idmovimento; }
+            set { Idmovimento = value ?? default; }
         }
-
     }
 }

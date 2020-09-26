@@ -31,7 +31,8 @@ namespace FortalezaDesktop.Views
 
         public async Task LoadClientes()
         {
-            List<Cliente> clientes = await Cliente.GetClientes();
+            Cliente cliente = new Cliente();
+            List<Cliente> clientes = await cliente.FindAll();
             datagridClientes.ItemsSource = null;
             datagridClientes.ItemsSource = clientes;
         }
@@ -39,19 +40,31 @@ namespace FortalezaDesktop.Views
         private async void buttonEditCliente_Click(object sender, RoutedEventArgs e)
         {
             Button senderAsButton = (Button)sender;
-            Cliente cliente = await Cliente.GetCliente((int)senderAsButton.Tag);
-            ClienteDetails clienteDetails = new ClienteDetails(cliente);
+            ClienteDetails clienteDetails = new ClienteDetails((int)senderAsButton.Tag);
+            clienteDetails.Closed += ClienteDetails_Closed;
             clienteDetails.Show();
         }
 
-        private void buttonRemoverCliente_Click(object sender, RoutedEventArgs e)
+        private async void ClienteDetails_Closed(object sender, EventArgs e)
         {
+            await LoadClientes();
+        }
 
+        private async void buttonRemoverCliente_Click(object sender, RoutedEventArgs e)
+        {
+            Button senderAsButton = (Button)sender;
+            Cliente _cliente = new Cliente
+            {
+                Id = (int)senderAsButton.Tag
+            };
+            //await _cliente.DeleteInstance();
+            //await LoadClientes();
         }
 
         private void buttonAdicionar_Click(object sender, RoutedEventArgs e)
         {
             ClienteDetails clienteDetails = new ClienteDetails();
+            clienteDetails.Closed += ClienteDetails_Closed;
             clienteDetails.Show();
         }
     }

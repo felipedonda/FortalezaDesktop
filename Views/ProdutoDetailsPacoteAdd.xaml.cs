@@ -36,7 +36,8 @@ namespace FortalezaDesktop.Views
 
         public async Task LoadItems()
         {
-            Items = (await Item.GetItems()).Where(e => e.Tipo == "Produto").ToList();
+            Item _item = new Item();
+            Items = (await _item.FindAll()).Where(e => e.Tipo == "Produto").ToList();
             datagridItems.ItemsSource = null;
             datagridItems.ItemsSource = Items;
         }

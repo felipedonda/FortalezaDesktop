@@ -44,7 +44,8 @@ namespace FortalezaDesktop.Views
         }
         public async void OnLoad(object sender, RoutedEventArgs e)
         {
-            List<Grupo> grupos = await Grupo.GetGrupos();
+            Grupo _grupo = new Grupo();
+            List<Grupo> grupos = await _grupo.FindAll();
             List<GrupoGridItem> grupoGridItems = grupos.Select(g => new GrupoGridItem { Grupo = g, Selected = false}).ToList();
             foreach(Grupo grupo in SelectedGrupos)
             {

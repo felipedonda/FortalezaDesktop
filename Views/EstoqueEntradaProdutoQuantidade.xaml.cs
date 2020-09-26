@@ -21,7 +21,7 @@ namespace FortalezaDesktop.Views
         public decimal Quantidade { get; set; }
         public decimal Custo { get; set; }
 
-        public EstoqueEntradaProdutoQuantidade(Item item)
+        public EstoqueEntradaProdutoQuantidade(Item item, bool saida)
         {
             Quantidade = 1;
             Custo = 0;
@@ -29,6 +29,10 @@ namespace FortalezaDesktop.Views
             textboxQuantidade.Text = Quantidade.ToString();
             textboxCusto.Text = Custo.ToString("C2");
             textboxDescricao.Text = item.Descricao;
+            if(saida)
+            {
+                panelCusto.Visibility = Visibility.Collapsed;
+            }
         }
 
         private void ButtonAdicionar(object sender, RoutedEventArgs e)

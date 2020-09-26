@@ -65,10 +65,10 @@
                       GridLinesVisibility="None"
                       VerticalAlignment="Top">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="CÓDIGO" Width="65"  Binding="{Binding Item.Iditem, StringFormat={}{0:00000}}" />
-                    <DataGridTextColumn Header="DESCRIÇÃO" Width="*" Binding="{Binding Item.Descricao}" />
+                    <DataGridTextColumn Header="CÓDIGO" Width="65"  Binding="{Binding ItemNavigation.Iditem, StringFormat={}{0:00000}}" />
+                    <DataGridTextColumn Header="DESCRIÇÃO" Width="*" Binding="{Binding ItemNavigation.Descricao}" />
                     <DataGridTextColumn Header="QTDE" Width="60" Binding="{Binding Quantidade}" />
-                    <DataGridTextColumn Header="UN" Width="40" Binding="{Binding Item.Unidade}" />
+                    <DataGridTextColumn Header="UN" Width="40" Binding="{Binding ItemNavigation.Unidade}" />
                     <DataGridTextColumn Header="CUSTO" Width="70" Binding="{Binding Custo, StringFormat={}{0:C2}}" />
                     <DataGridTextColumn Header="LUCRO" Width="70" Binding="{Binding Lucro, StringFormat={}{0:C2}}" />
                 </DataGrid.Columns>

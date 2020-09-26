@@ -1,197 +1,74 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Diagnostics.Eventing.Reader;
 using System.Text;
 using System.Threading.Tasks;
-using System.Net.Http;
-using Newtonsoft.Json;
-using FortalezaDesktop.Models;
-using FortalezaDesktop.Utils;
-using FortalezaDesktop;
+using System.Windows;
 
 namespace FortalezaDesktop.Models
 {
-    public class Venda
+    public partial class Venda : Model<Venda>
     {
-        public int? Idvenda { get; set; }
-        public string Nome { get; set; }
-        public DateTime HoraEntrada { get; set; }
-        public decimal ValorTotal { get; set; }
-        public decimal? CustoTotal { get; set; }
-        public decimal? Alteracao { get; set; }
-        public string Observacao { get; set; }
-        public int Idresponsavel { get; set; }
+        public override string Path { get { return "/vendas"; } }
 
-        [JsonIgnore]
-        public Usuario Responsavel {get;set;}
-
-        [JsonConverter(typeof(BoolConverter))]
-        public bool Aberta { get; set; }
-
-        [JsonConverter(typeof(BoolConverter))]
-        public bool Paga { get; set; }
-
-        [JsonIgnore]
-        public List<ItemVenda> Items { get; set; }
-
-        [JsonIgnore]
-        public List<Pagamento> Pagamentos { get; set; }
-
-        [JsonIgnore]
-        public int? Idcaixa { get; set; }
-
-        public Venda()
+        public override int? Id
         {
+            get { return Idvenda; }
+            set { Idvenda = value ?? default; }
         }
 
-        public Venda(Caixa caixa)
+        public async Task<bool> FecharVenda()
         {
-            Pagamentos = new List<Pagamento>();
-            Items = new List<ItemVenda>();
-            HoraEntrada = DateTime.UtcNow;
-            if (!caixa.Aberto)
-                throw new Exception("Caixa fechado.");
-            Idcaixa = caixa.Idcaixa;
-            ValorTotal = new decimal();
-        }
-
-        public async Task<Pagamento> GerarPagamento(decimal valor, FormaPagamento formaPagamento, int? BandeiraIdbandeira)
-        {
-            Pagamento pagamento = new Pagamento
+            try
             {
-                Movimento = new Movimento
+                await ServerEntry<Venda>.Get(Path + "/" + Id + "/actions/fechar");
+                return true;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message + "\n\nStack:\n" + e.StackTrace, "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return default;
+            }
+        }
+
+        public async Task<bool> SaveItemVenda(ItemVenda itemVenda)
+        {
+            try
+            {
+                await ServerEntry<Venda>.Post(Path + "/" + Id + "/itemvendas", itemVenda);
+                var result = await ReloadInstance(new Dictionary<string, string>
                 {
-                    CaixaIdcaixa = Idcaixa ?? default,
-                    FormaPagamento = formaPagamento,
-                    FormaPagamentoIdformaPagamento = formaPagamento.IdformaPagamento,
-                    HoraEntrada = DateTime.UtcNow,
-                    Responsavel = Idresponsavel,
-                    Tipo = "C",
-                    Valor = valor,
-                    Descricao = "VENDA - CONSUMIDOR NÃO IDENTIFICADO",
-                }
-            };
-
-            if(BandeiraIdbandeira != null)
-            {
-                pagamento.Movimento.BandeiraIdbandeira = BandeiraIdbandeira ?? default;
+                    {"itemvendas","true"}
+                });
+                ItemVenda = result.ItemVenda;
+                ValorTotal = result.ValorTotal;
             }
-
-            return pagamento;
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message + "\n\nStack:\n" + e.StackTrace, "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+            return true;
         }
 
-        public async Task AddItemVenda(Item item, decimal quantidade)
+        public async Task<bool> SavePagamento(Pagamento pagamento)
         {
-            if (Idcaixa == null)
+            try
             {
-                throw new Exception("Venda sem caixa atribuida.");
-            }
-            else
-            {
-                ItemVenda itemVenda = new ItemVenda
+                await ServerEntry<Venda>.Post(Path + "/" + Id + "/pagamentos", pagamento);
+                var result = await ReloadInstance(new Dictionary<string, string>
                 {
-                    ItemIditem = item.Iditem ?? default,
-                    Item = item,
-                    Valor = item.Valor,
-                    Quantidade = quantidade,
-                    ValorTotal = item.Valor * quantidade
-                };
-                ValorTotal += itemVenda.ValorTotal;
-                Items.Add(itemVenda);
+                    {"pagamentos","true"}
+                });
+                Pagamento = result.Pagamento;
+                ValorPago = result.ValorPago;
             }
-        }
-
-        public async Task SaveInstance()
-        {
-            Idvenda = null;
-            Idvenda = (await CreateVenda(this)).Idvenda;
-
-            if (Items.Count < 0)
-                throw new Exception("Venda vazia.");
-
-            if (Pagamentos.Count < 0)
-                throw new Exception("Venda sem pagamentos.");
-
-            foreach (ItemVenda itemVenda in Items)
+            catch (Exception e)
             {
-                itemVenda.VendaIdvenda = Idvenda ?? default;
-                if(itemVenda.Item.Estoque)
-                {
-
-                    List<Estoque> custos = await itemVenda.Item.CreateEstoque(itemVenda.Quantidade, Idvenda ?? default);
-                    foreach(var c in custos)
-                    {
-                        ItemVenda iv = itemVenda;
-                        iv.Quantidade = c.QuantidadeDisponivel;
-                        iv.Custo = c.Custo;
-                        if (itemVenda.Item.Tipo == "Pacote")
-                        {
-                            iv.Quantidade /= itemVenda.Item.Pacote.Quantidade;
-                            iv.Custo *= itemVenda.Item.Pacote.Quantidade;
-                        }
-                        await CreateItemVenda(Idvenda ?? default, iv);
-                    }
-                }
-                else
-                {
-                    itemVenda.IditemVenda = (await CreateItemVenda(Idvenda ?? default, itemVenda)).IditemVenda;
-                }
+                MessageBox.Show(e.Message + "\n\nStack:\n" + e.StackTrace, "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
             }
-
-            foreach (Pagamento pagamento in Pagamentos)
-            {
-                pagamento.VendaIdvenda = Idvenda ?? default;
-                pagamento.Movimento.Idmovimento = null;
-                pagamento.Movimento = await Caixa.CreateMovimento(Idcaixa ?? default, pagamento.Movimento);
-                pagamento.MovimentoIdmovimento = pagamento.Movimento.Idmovimento;
-                pagamento.IdPagamento = (await CreatePagamento(Idvenda ?? default, pagamento)).IdPagamento;
-            }
+            return true;
         }
-
-        public static async Task<List<Venda>> GetVendas()
-        {
-            return await Model<List<Venda>>.Get("/venda");
-        }
-
-        public static async Task<Venda> GetVenda(int id)
-        {
-            return await Model<Venda>.Get("/venda", id);
-        }
-
-        public static async Task<Venda> CreateVenda(Venda venda)
-        {
-            return await Model<Venda>.Post("/venda", venda);
-        }
-
-        public static async Task<bool> UpdateVenda(int id, Venda venda)
-        {
-            return await Model<Venda>.Put("/venda", id, venda);
-        }
-
-        public static async Task<bool> DeleteVenda(int id)
-        {
-            return await Model<Venda>.Delete("/venda", id);
-        }
-
-        public static async Task<List<ItemVenda>> GetItemVendas(int idvenda)
-        {
-            return await Model<List<ItemVenda>>.Get("/venda/" + idvenda + "/itemvenda");
-        }
-
-        public static async Task<ItemVenda> GetItemVenda(int idvenda, int iditemVenda)
-        {
-            return await Model<ItemVenda>.Get("/venda/" + idvenda + "/itemvenda", iditemVenda);
-        }
-
-        public static async Task<ItemVenda> CreateItemVenda(int idvenda, ItemVenda itemVenda)
-        {
-            return await Model<ItemVenda>.Post("/venda/" + idvenda + "/itemvenda", itemVenda);
-        }
-
-        public static async Task<Pagamento> CreatePagamento(int idvenda, Pagamento pagamento)
-        {
-            return await Model<Pagamento>.Post("/venda/" + idvenda + "/pagamento", pagamento);
-        }
-
     }
 }

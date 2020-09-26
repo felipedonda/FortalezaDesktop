@@ -58,7 +58,7 @@
             </Grid>
         </Border>
         <Grid Grid.Row="1">
-            <DataGrid Margin="10" x:Name="datagridClientes" AutoGenerateColumns="False" GridLinesVisibility="None" HeadersVisibility="Column" Style="{DynamicResource DataGridStyle}">
+            <DataGrid Margin="10" x:Name="datagridClientes" AutoGenerateColumns="False" GridLinesVisibility="None" CanUserAddRows="False" HeadersVisibility="Column" Style="{DynamicResource DataGridStyle}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Nome" Width="3*"  Binding="{Binding Nome}" />
                     <DataGridTextColumn Header="Cpf" Width="95" Binding="{Binding Cpf}" />

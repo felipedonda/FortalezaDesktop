@@ -25,12 +25,17 @@ namespace FortalezaDesktop.Views
         public EstoqueEntrada(bool saida)
         {
             Items = new List<Item>();
+            Saida = saida;
             InitializeComponent();
+            if(Saida)
+            {
+                panelInfosEntradas.Visibility = Visibility.Collapsed;
+            }
         }
 
         private void buttonAdicionar_Click(object sender, RoutedEventArgs e)
         {
-            EstoqueEntradaProdutos entradaEstoqueProdutos = new EstoqueEntradaProdutos();
+            EstoqueEntradaProdutos entradaEstoqueProdutos = new EstoqueEntradaProdutos(Saida);
             entradaEstoqueProdutos.Selecionado += EntradaEstoqueProdutos_Selecionado;
             entradaEstoqueProdutos.Show();
 
@@ -52,14 +57,32 @@ namespace FortalezaDesktop.Views
         {
             foreach(Item item in Items)
             {
+                Estoque estoque;
                 if(Saida)
                 {
-                    await item.CreateEstoque(- item.EstoqueAtual.QuantidadeDisponivel);
+                    estoque = new Estoque {
+                        Disponivel = 0,
+                        Quantidade = item.EstoqueAtual.QuantidadeDisponivel,
+                        OrigemVenda = 0,
+                        Saida = 1,
+                        QuantidadeDisponivel = 0
+                    };
                 }
                 else
                 {
-                    await item.CreateEstoque(item.EstoqueAtual.QuantidadeDisponivel, item.EstoqueAtual.Custo);
+                    estoque = new Estoque {
+                        Disponivel = 1,
+                        Quantidade = item.EstoqueAtual.QuantidadeDisponivel,
+                        Custo = item.EstoqueAtual.Custo,
+                        OrigemVenda = 0,
+                        Saida = 0,
+                        QuantidadeDisponivel = item.EstoqueAtual.QuantidadeDisponivel
+                    };
+
                 }
+                estoque.HoraEntrada = DateTime.UtcNow;
+
+                await item.SaveEstoque(estoque);
             }
             Close();
         }

@@ -32,20 +32,28 @@ namespace FortalezaDesktop.Views
 
         public void LoadConfiguracoes()
         {
-            checkboxGrupoTodos.IsChecked = UserPreferences.GrupoTodos;
-            checkboxModoCaixa.IsChecked = UserPreferences.ModoCaixa;
+            checkboxGrupoTodos.IsChecked = UserPreferences.Preferences.GrupoTodos;
+            checkboxModoCaixa.IsChecked = UserPreferences.Preferences.ModoCaixa;
+            checkboxVendaPagamento.IsChecked = UserPreferences.Preferences.ConcluirVendaPagamentoCompleto;
         }
 
         private void checkboxGrupoTodos_Checked(object sender, RoutedEventArgs e)
         {
-            UserPreferences.GrupoTodos = checkboxGrupoTodos.IsChecked ?? false;
+            UserPreferences.Preferences.GrupoTodos = checkboxGrupoTodos.IsChecked ?? false;
             UserPreferences.Save();
             UpdateParent?.Invoke(this, new EventArgs());
         }
 
         private void checkboxModoCaixa_Checked(object sender, RoutedEventArgs e)
         {
-            UserPreferences.ModoCaixa = checkboxModoCaixa.IsChecked ?? false;
+            UserPreferences.Preferences.ModoCaixa = checkboxModoCaixa.IsChecked ?? false;
+            UserPreferences.Save();
+            UpdateParent?.Invoke(this, new EventArgs());
+        }
+
+        private void checkboxVendaPagamento_Checked(object sender, RoutedEventArgs e)
+        {
+            UserPreferences.Preferences.ConcluirVendaPagamentoCompleto = checkboxVendaPagamento.IsChecked ?? false;
             UserPreferences.Save();
             UpdateParent?.Invoke(this, new EventArgs());
         }

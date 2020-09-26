@@ -33,15 +33,15 @@ namespace FortalezaDesktop.Views
             Item item = new Item
             {
                 Tipo = "Produto",
-                Visivel = true,
-                Estoque = true,
-                Disponivel = true,
+                Visivel = 1,
+                Estoque = 1,
+                Disponivel = 1,
                 Unidade = "UN"
             };
             LoadItem(item);
         }
 
-        public ProdutoDetails(Item item)
+        public ProdutoDetails(int id)
         {
             InitializeComponent();
             buttonCriar.Visibility = Visibility.Collapsed;
@@ -50,7 +50,7 @@ namespace FortalezaDesktop.Views
             textboxCusto.IsReadOnly = true;
             comboboxTipo.IsReadOnly = true;
             FillCombobox();
-            LoadItem(item);
+            LoadItem(id);
         }
 
         public async void FillCombobox()
@@ -81,18 +81,20 @@ namespace FortalezaDesktop.Views
             }
         }
 
+        public async void LoadItem(int id)
+        {
+            Item _item = new Item();
+            _item = await _item.FindById(id, new Dictionary<string, string> {
+                {"grupos","true" },
+                {"tipo","true" },
+                {"estoqueatual","true" }
+            });
+            LoadItem(_item);
+        }
+
         public async void LoadItem(Item item)
         {
             Item = item;
-            await Item.LoadGrupos();
-            await Item.LoadEstoqueAtual();
-
-            switch(Item.Tipo)
-            {
-                case "Pacote":
-                    await Item.LoadPacote();
-                    break;
-            }
 
             gridProdutoDetails.DataContext = Item;
 
@@ -103,6 +105,19 @@ namespace FortalezaDesktop.Views
                     comboboxTipo.SelectedIndex = i;
                 }
             }
+
+            try
+            {
+                if (Item.Estoque == 1)
+                {
+                    textboxMargem.Text = ((1 - (Item.Valor / (Item.EstoqueAtual.Custo ?? default))) * 100).ToString();
+                }
+            }
+            catch
+            {
+
+            }
+            
 
             await TrocaTipo();
         }
@@ -123,71 +138,71 @@ namespace FortalezaDesktop.Views
             
             if(Item.Tipo == "Pacote")
             {
-                if(Item.Pacote != null)
+                if(Item.PacoteIditemNavigation != null)
                 {
-                    Item.Pacote.Quantidade = decimal.Parse(textboxQuantidade.Text);
+                    Item.PacoteIditemNavigation.Quantidade = decimal.Parse(textboxQuantidade.Text);
                 }
             }
         }
 
-        public async void CreateProduto()
+        public async Task<bool> CreateProduto()
         {
             await GetItemFromForm();
-            try
+
+            if (Item.Estoque == 1 & Item.EstoqueAtual != null & Item.Tipo == "Produto")
             {
-                await Item.SaveInstance();
-            }
-            catch(BadResponseStatusCodeException ex)
-            {
-                MessageBox.Show(ex.Message, "Erro", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                return;
-            }
-            if (Item.Estoque & Item.EstoqueAtual != null & Item.Tipo == "Produto")
-            {
-                try
+                Estoque estoque = new Estoque
                 {
-                    await Item.CreateEstoque(Item.EstoqueAtual.QuantidadeDisponivel, Item.EstoqueAtual.Custo);
-                }
-                catch (BadResponseStatusCodeException ex)
+                    Custo = Item.EstoqueAtual.Custo,
+                    Quantidade = Item.EstoqueAtual.QuantidadeDisponivel,
+                    QuantidadeDisponivel = Item.EstoqueAtual.QuantidadeDisponivel,
+                    OrigemVenda = 0,
+                    Saida = 0,
+                    Disponivel = 1
+                };
+
+                Item.ItemHasEstoque.Add(new ItemHasEstoque
                 {
-                    MessageBox.Show(ex.Message, "Erro", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                    return;
-                }
+                    IdestoqueNavigation = estoque
+                });
             }
-            Close();
+
+            return await Item.SaveInstance();
+
         }
 
-        public async void UpdateProduto()
+        public async Task<bool> UpdateProduto()
         {
             await GetItemFromForm();
-            try
-            {
-                await Item.UpdateInstance();
-            }
-            catch (BadResponseStatusCodeException ex)
-            {
-                MessageBox.Show(ex.Message, "Erro", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                return;
-            }
-            Close();
+            return await Item.UpdateInstance();
         }
 
         private void ButtonGrupos_Click(object sender, RoutedEventArgs e)
         {
-            ProdutoDetailsGrupos produtoDetailsGruposView = new ProdutoDetailsGrupos(Item.Grupos);
+            ProdutoDetailsGrupos produtoDetailsGruposView = new ProdutoDetailsGrupos(Item.ItemHasGrupo.Select(e => e.IdgrupoNavigation).ToList());
             produtoDetailsGruposView.Closed += ProdutoDetailsGruposView_Closed;
             produtoDetailsGruposView.Show();
         }
 
         private void ProdutoDetailsGruposView_Closed(object sender, EventArgs e)
         {
-
-            Item.Grupos = ((ProdutoDetailsGrupos)sender).SelectedGrupos;
+            Item.ItemHasGrupo = new List<ItemHasGrupo>();
+            foreach (var grupo in ((ProdutoDetailsGrupos)sender).SelectedGrupos)
+            {
+                Item.ItemHasGrupo.Add( new ItemHasGrupo {
+                    Idgrupo = grupo.Idgrupo,
+                    IdgrupoNavigation = grupo
+                });
+            }
+            
         }
 
-        private void buttonCriar_Click(object sender, RoutedEventArgs e)
+        private async void buttonCriar_Click(object sender, RoutedEventArgs e)
         {
-            CreateProduto();
+            if(await CreateProduto())
+            {
+                Close();
+            }
         }
 
         private void buttonCancelar_Click(object sender, RoutedEventArgs e)
@@ -197,10 +212,9 @@ namespace FortalezaDesktop.Views
 
         private async void buttonRemover_Click(object sender, RoutedEventArgs e)
         {
-            Item item = (Item)gridProdutoDetails.DataContext;
             try
             {
-                await Item.DeleteItem(item.Iditem ?? default);
+                await Item.DeleteInstance();
             }
             catch (BadResponseStatusCodeException ex)
             {
@@ -210,9 +224,12 @@ namespace FortalezaDesktop.Views
             Close();
         }
 
-        private void buttonAlterar_Click(object sender, RoutedEventArgs e)
+        private async void buttonAlterar_Click(object sender, RoutedEventArgs e)
         {
-            UpdateProduto();
+            if( await UpdateProduto())
+            {
+                Close();
+            }
         }
 
         private void updateValorMargem(object sender, TextChangedEventArgs e)
@@ -242,11 +259,11 @@ namespace FortalezaDesktop.Views
 
         private void ProdutoDetailsPacoteAdd_Closed(object sender, EventArgs e)
         {
-            Item.Pacote = new Pacote
+            Item.PacoteIditemNavigation = new Pacote
             {
-                ItemPacote = ((ProdutoDetailsPacoteAdd)sender).ItemSelecionado
+                IditemProdutoNavigation = ((ProdutoDetailsPacoteAdd)sender).ItemSelecionado
             };
-            textboxPacoteProduto.Text = Item.Pacote.ItemPacote.Descricao;
+            textboxPacoteProduto.Text = Item.PacoteIditemNavigation.IditemProdutoNavigation.Descricao;
 
         }
 
