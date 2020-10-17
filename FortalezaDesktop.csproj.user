@@ -24,7 +24,19 @@
     <Compile Update="Views\Configuracoes.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\DeliveryEntregador.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\DeliveryImprimir.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\DeliveryPedidos.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\DeliveryView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\DeliveryVoltaEntregar.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\EstoqueEntradaProdutoQuantidade.xaml.cs">
@@ -63,7 +75,7 @@
     <Compile Update="Views\PedidosView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\ProdutoDetailsEntregador.xaml.cs">
+    <Compile Update="Views\PedidoDetailsEntregador.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\RelatoriosProdutosVendidos.xaml.cs">
@@ -72,7 +84,19 @@
     <Compile Update="Views\RelatoriosVizualizador.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\Relatorios\TemplateCupomFiscal.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\Relatorios\TemplateRelatorioProdutosVendidos.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\VendaCancelarItem.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\VendaCancelarItemInput.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\VendaItemsSelecionados.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\VendaPagamentoBandeira.xaml.cs">
@@ -94,6 +118,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Produtos.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\VendaSelecaoProdutos.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\VendaView.xaml.cs">
@@ -119,7 +146,19 @@
     <Page Update="Views\Configuracoes.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\DeliveryEntregador.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\DeliveryImprimir.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\DeliveryPedidos.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\DeliveryView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\DeliveryVoltaEntregar.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\EstoqueEntradaProdutoQuantidade.xaml">
@@ -158,7 +197,7 @@
     <Page Update="Views\PedidosView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\ProdutoDetailsEntregador.xaml">
+    <Page Update="Views\PedidoDetailsEntregador.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\RelatoriosProdutosVendidos.xaml">
@@ -167,7 +206,19 @@
     <Page Update="Views\RelatoriosVizualizador.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\Relatorios\TemplateCupomFiscal.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\Relatorios\TemplateRelatorioProdutosVendidos.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\VendaCancelarItem.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\VendaCancelarItemInput.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\VendaItemsSelecionados.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\VendaPagamentoBandeira.xaml">
@@ -189,6 +240,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\Produtos.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\VendaSelecaoProdutos.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\VendaView.xaml">

@@ -109,11 +109,11 @@ namespace FortalezaDesktop.Views
         private void ButtonSelecionarCliente_Click(object sender, RoutedEventArgs e)
         {
             PedidoDetailsCliente pedidoDetailsCliente = new PedidoDetailsCliente();
-            pedidoDetailsCliente.Selecionado += PedidoDetailsCliente_Selecionado; ;
+            pedidoDetailsCliente.Selecionado += PedidoDetailsCliente_Selecionado;
             pedidoDetailsCliente.Show();
         }
 
-        private async void PedidoDetailsCliente_Selecionado(object sender, EventArgs e)
+        private async void PedidoDetailsCliente_Selecionado(object sender, PedidoDetailsCliente.ClienteSelecionadoEventArgs e)
         {
             Cliente cliente = ((PedidoDetailsCliente)sender).ClienteSelecionado;
             Pedido.IdvendaNavigation.Idcliente = cliente.Idcliente;
@@ -123,14 +123,14 @@ namespace FortalezaDesktop.Views
 
         private void ButtonSelecionarEntregador_Click(object sender, RoutedEventArgs e)
         {
-            ProdutoDetailsEntregador produtoDetailsEntregador = new ProdutoDetailsEntregador();
+            PedidoDetailsEntregador produtoDetailsEntregador = new PedidoDetailsEntregador();
             produtoDetailsEntregador.Selecionado += ProdutoDetailsEntregador_Selecionado;
             produtoDetailsEntregador.Show();
         }
 
         private async void ProdutoDetailsEntregador_Selecionado(object sender, EventArgs e)
         {
-            int identregador = ((ProdutoDetailsEntregador)sender).EntregadorSelecionado;
+            int identregador = ((PedidoDetailsEntregador)sender).EntregadorSelecionado;
             Pedido.Identregador = identregador;
             await Pedido.UpdateInstance();
             LoadPedido(Pedido.Idvenda);

@@ -83,11 +83,14 @@ namespace FortalezaDesktop.Views
 
             textblockErroCpf.Visibility = Visibility.Hidden;
             
-            if(Cliente.Cpf.Length != 11 & Cliente.Cpf.Length != 14)
+            if(Cliente.Cpf != null)
             {
-                validated = false;
-                textblockErroCpf.Text = "CPF ou CNPJ inválido.";
-                textblockErroCpf.Visibility = Visibility.Visible;
+                if (Cliente.Cpf.Length != 11 & Cliente.Cpf.Length != 14)
+                {
+                    validated = false;
+                    textblockErroCpf.Text = "CPF ou CNPJ inválido.";
+                    textblockErroCpf.Visibility = Visibility.Visible;
+                }
             }
 
             if(validated)

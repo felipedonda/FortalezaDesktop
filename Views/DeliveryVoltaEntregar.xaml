@@ -1,0 +1,81 @@
+﻿<Window x:Class="FortalezaDesktop.Views.DeliveryVoltaEntregar"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FortalezaDesktop.Views"
+        mc:Ignorable="d"
+        Title="DeliveryVoltaEntregar" Height="auto" MaxWidth="360" Width="360"
+        ResizeMode="NoResize"
+        SizeToContent="WidthAndHeight">
+    <Grid x:Name="GridPrincipal">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Margin="10,10,10,0">
+            <StackPanel Orientation="Vertical">
+                <TextBlock FontSize="16" Margin="0,0,0,10">Retorno da Entrega</TextBlock>
+                <TextBlock FontSize="12" TextWrapping="Wrap">Caso o cliente tenha alterada a forma de pagamento, clique em Aletrar Pagamento.</TextBlock>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="1" Margin="10,15,10,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto "/>
+                <RowDefinition Height="auto "/>
+                <RowDefinition Height="auto "/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto "/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0" Orientation="Vertical">
+                <TextBlock Text="Valor Total" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,5,0,5" FontSize="14"/>
+                <TextBox Text="{local:CultureAwareBinding Path=ValorTotal, StringFormat=C2, Mode=OneWay}" FontSize="14"/>
+            </StackPanel>
+            <StackPanel Grid.Row="1" Margin="0,10,0,0" Orientation="Vertical">
+                <UniformGrid Columns="2">
+                    <StackPanel Orientation="Vertical" Margin="0,0,5,0" >
+                        <TextBlock Text="Troco" TextAlignment="Right" Margin="0,5,0,5" FontSize="14"/>
+                        <TextBox Text="{local:CultureAwareBinding Path=Troco, StringFormat=C2, Mode=OneWay}" FontSize="14" />
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="5,0,0,0" >
+                        <TextBlock Text="Recebido" TextAlignment="Right" Margin="0,5,0,5" FontSize="14"/>
+                        <TextBox Text="{local:CultureAwareBinding Path=ValorPago, StringFormat=C2, Mode=OneWay}" FontSize="14" />
+                    </StackPanel>
+                </UniformGrid>
+            </StackPanel>
+            <DataGrid Grid.Row="2"
+                        VerticalAlignment="Stretch"
+                        x:Name="datagridPagamentos"
+                        Margin="0,20,0,10"
+                        AutoGenerateColumns="False"
+                        CanUserAddRows="False"
+                        GridLinesVisibility="None"
+                        HeadersVisibility="Column"
+                        IsReadOnly="True"
+                      ItemsSource="{Binding Pagamento}"
+                      MinHeight="80">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Pagamento" Width="*" Binding="{Binding IdmovimentoNavigation.IdformaPagamentoNavigation.Nome}" />
+                    <DataGridTextColumn Header="Valor" Width="60" Binding="{local:CultureAwareBinding IdmovimentoNavigation.Valor, StringFormat=C2}" />
+                </DataGrid.Columns>
+            </DataGrid>
+            <Button Grid.Row="3" Margin="0,5,5,0" Width="160" HorizontalAlignment="Right" Padding="5" Click="ButtonAlterarPagamentos_Click">
+                <TextBlock Text="Alterar Pagamentos" TextWrapping="Wrap" FontSize="14" TextAlignment="Center" />
+            </Button>
+            <Border BorderBrush="LightGray" BorderThickness="0,1,0,0" Margin="0,15,0,0" Grid.Row="4">
+                <Grid>
+                    <UniformGrid Columns="2" Width="auto" HorizontalAlignment="Right" Margin="20,15,5,15" >
+                        <Button x:Name="ButtonConfirmar"  Width="80" Padding="5" Click="ButtonConfirmar_Click">
+                            <TextBlock Text="Confirmar" TextWrapping="Wrap" FontSize="14" TextAlignment="Center" />
+                        </Button>
+                        <Button Width="80" Padding="5" Margin="10,0,0,0" Click="ButtonCancelar_Click" >
+                            <TextBlock Text="Cancelar" TextWrapping="Wrap" FontSize="14" TextAlignment="Center" />
+                        </Button>
+                    </UniformGrid>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>

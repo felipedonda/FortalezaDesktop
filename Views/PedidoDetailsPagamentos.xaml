@@ -64,7 +64,7 @@
                     <DataGridTextColumn Header="Hora" Width="Auto" Binding="{Binding HoraEntrada, StringFormat=hh:mm:ss}" />
                     <DataGridTextColumn Header="Forma de Pagamento" Width="2*" Binding="{Binding IdformaPagamentoNavigation.Nome}" />
                     <DataGridTextColumn Header="Obs" Width="3*" Binding="{Binding Observacao}" />
-                    <DataGridTextColumn Header="Valor" Width="80" Binding="{utils:CultureAwareBinding Valor}" />
+                    <DataGridTextColumn Header="Valor" Width="80" Binding="{local:CultureAwareBinding Valor}" />
                     <DataGridTemplateColumn Width="30">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>

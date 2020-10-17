@@ -21,7 +21,16 @@ namespace FortalezaDesktop.Views
     public partial class PedidoDetailsCliente : Window
     {
         public Cliente ClienteSelecionado { get; set; }
-        public event EventHandler Selecionado;
+        public event EventHandler<ClienteSelecionadoEventArgs> Selecionado;
+
+        public class ClienteSelecionadoEventArgs : EventArgs
+        {
+            public Cliente Cliente {get;set;}
+            public ClienteSelecionadoEventArgs(Cliente cliente)
+            {
+                Cliente = cliente;
+            }
+        }
 
         public PedidoDetailsCliente()
         {
@@ -45,7 +54,7 @@ namespace FortalezaDesktop.Views
             ClienteSelecionado = (Cliente)datagridClientes.SelectedItem;
             if (ClienteSelecionado != null)
             {
-                Selecionado?.Invoke(this, new EventArgs());
+                Selecionado?.Invoke(this, new ClienteSelecionadoEventArgs(ClienteSelecionado));
                 Close();
             }
         }

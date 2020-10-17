@@ -12,8 +12,9 @@ namespace FortalezaDesktop.Models
 
         public int IditemVenda { get; set; }
         public decimal Quantidade { get; set; }
-        public decimal Valor { get; set; }
+        public decimal? Valor { get; set; }
         public decimal? Custo { get; set; }
+        public int Indice { get; set; }
         public int Idvenda { get; set; }
         public int Iditem { get; set; }
 

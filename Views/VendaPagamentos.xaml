@@ -35,7 +35,7 @@
                         <TextBlock Text="E-mail" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,5" FontSize="12"/>
                         <TextBox Text="" MinWidth="286" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,10,15" FontSize="12" IsReadOnly="True"/>
                     </StackPanel>
-                    <Button Width="90" Height="auto" VerticalAlignment="Bottom" Margin="10,10,10,15" Padding="5" >
+                    <Button Width="90" Height="auto" VerticalAlignment="Bottom" Margin="10,10,10,15" Padding="5" Click="BuscarCliente_Click" >
                         <TextBlock Text="Buscar cliente" TextWrapping="Wrap" TextAlignment="Center" FontSize="12" />
                     </Button>
                 </StackPanel>
@@ -98,21 +98,37 @@
                         </StackPanel>
                     </UniformGrid>
                 </StackPanel>
-                <DataGrid Grid.Row="3" VerticalAlignment="Stretch" x:Name="datagridPagamentos" Margin="10,10,10,10" AutoGenerateColumns="False"  CanUserAddRows="False" GridLinesVisibility="None" HeadersVisibility="Column">
+                <DataGrid Grid.Row="3"
+                          VerticalAlignment="Stretch"
+                          x:Name="datagridPagamentos"
+                          Margin="10,10,10,10"
+                          AutoGenerateColumns="False"
+                          CanUserAddRows="False"
+                          GridLinesVisibility="None"
+                          HeadersVisibility="Column"
+                          IsReadOnly="True">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="" Width="20" />
                         <DataGridTextColumn Header="Pagamento" Width="*" Binding="{Binding IdmovimentoNavigation.IdformaPagamentoNavigation.Nome}" />
-                        <DataGridTextColumn Header="Valor" Width="60" Binding="{Binding IdmovimentoNavigation.Valor, StringFormat={}{0:C2}}" />
+                        <DataGridTextColumn Header="Valor" Width="60" Binding="{local:CultureAwareBinding IdmovimentoNavigation.Valor, StringFormat=C2}" />
                     </DataGrid.Columns>
                 </DataGrid>
-                <UniformGrid Grid.Row="4" VerticalAlignment="Bottom" Columns="2"  Height="auto" Margin="20,10,20,10"  DockPanel.Dock="Top">
-                    <Button Width="90" VerticalAlignment="Center" Padding="5" Click="ButtonCancelar_Click">
+                <Grid Grid.Row="4" VerticalAlignment="Bottom" Height="auto" Margin="20,10,20,10" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0" Width="80" VerticalAlignment="Center" Padding="5" Click="ButtonCancelar_Click">
                         <TextBlock Text="Cancelar" TextWrapping="Wrap" FontSize="14" TextAlignment="Center" />
                     </Button>
-                    <Button Width="90" VerticalAlignment="Center" Padding="5" Click="ButtonOk_Click" >
+                    <Button x:Name="ButtonAlterar" Grid.Column="1" Width="80" VerticalAlignment="Center" Padding="5" Click="ButtonAlterar_Click">
+                        <TextBlock Text="Alterar" TextWrapping="Wrap" FontSize="14" TextAlignment="Center" />
+                    </Button>
+                    <Button Grid.Column="2" Width="80" VerticalAlignment="Center" Padding="5" Click="ButtonOk_Click" >
                         <TextBlock x:Name="textButtonFinalizar" Text="Finalizar" TextWrapping="Wrap" FontSize="14" TextAlignment="Center" />
                     </Button>
-                </UniformGrid>
+                </Grid>
             </Grid>
         </Border>
     </Grid>

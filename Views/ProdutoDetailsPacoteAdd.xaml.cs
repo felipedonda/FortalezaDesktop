@@ -20,9 +20,19 @@ namespace FortalezaDesktop.Views
     /// </summary>
     public partial class ProdutoDetailsPacoteAdd : Window
     {
+        public class ItemPacoteSelecionadoEventArgs : EventArgs
+        {
+            public Item Item {get; set;}
+
+            public ItemPacoteSelecionadoEventArgs(Item item)
+            {
+                Item = item;
+            }
+        }
+
         public Item ItemSelecionado { get; set; }
         public List<Item> Items { get; set; }
-        public event EventHandler Selecionado;
+        public event EventHandler<ItemPacoteSelecionadoEventArgs> ItemPacoteSelecionado;
 
         public ProdutoDetailsPacoteAdd()
         {
@@ -45,6 +55,7 @@ namespace FortalezaDesktop.Views
         public async Task SelecionarItem()
         {
             ItemSelecionado = (Item)datagridItems.SelectedItem;
+            ItemPacoteSelecionado?.Invoke(this, new ItemPacoteSelecionadoEventArgs(ItemSelecionado));
             Close();
         }
 

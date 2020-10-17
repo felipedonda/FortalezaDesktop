@@ -3,11 +3,12 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:utils="clr-namespace:FortalezaDesktop.Wpf.Utils"
       xmlns:local="clr-namespace:FortalezaDesktop.Views"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="855"
-      Title="DeliveryView">
+      d:DesignHeight="450" d:DesignWidth="1024"
+      Title="DeliveryView"
+      Loaded="Page_Loaded"
+      Unloaded="Page_Unloaded">
 
     <Page.Resources>
         <Style x:Key="DataGridStyle" TargetType="{x:Type DataGrid}">
@@ -46,103 +47,58 @@
 
     <Grid Background="White">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="5*" MinWidth="535" x:Name="gridColumn0"/>
-            <ColumnDefinition MinWidth="320" Width="2*"/>
+            <ColumnDefinition Width="4*" x:Name="gridColumn0"/>
+            <ColumnDefinition MinWidth="400" Width="1*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto" MinHeight="66"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="auto" MinHeight="66"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <Border Grid.Row="0" Grid.Column="0" BorderBrush="DarkGray" BorderThickness="0,0,0,1">
-            <Grid>
-                <StackPanel Orientation="Vertical">
-                    <StackPanel Orientation="Horizontal">
-                        <StackPanel Orientation="Vertical">
-                            <TextBlock Text="Filtrar por" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,5" FontSize="12"/>
-                            <ComboBox x:Name="comboboxFiltrarPor" MinWidth="100" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,10,10" FontSize="12"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Vertical">
-                            <TextBlock Text="Inicial" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,5" FontSize="12"/>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBox x:Name="textboxDataInicial" MinWidth="100" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,10" FontSize="12"/>
-                                <TextBox x:Name="textboxHoraInicial" MinWidth="80" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5,0,10,10" FontSize="12"/>
-                            </StackPanel>
-                        </StackPanel>
+        <Border Grid.Row="0" Grid.Column="1" Grid.RowSpan="3" BorderBrush="DarkGray" BorderThickness="1,0,0,0">
+            <Frame x:Name="frameDetails"  NavigationUIVisibility="Hidden">
+            </Frame>
+        </Border>
 
-                        <StackPanel Orientation="Vertical">
-                            <TextBlock Text="Final" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,5" FontSize="12"/>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBox x:Name="textboxDataFinal" MinWidth="100" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,10" FontSize="12"/>
-                                <TextBox x:Name="textboxHoraFinal" MinWidth="80" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5,0,10,10" FontSize="12"/>
-                            </StackPanel>
-                        </StackPanel>
-                    </StackPanel>
-                    
-                    <StackPanel Orientation="Horizontal" x:Name="panelInfosEntradas">
-                        <StackPanel Orientation="Vertical">
-                            <TextBlock Text="Situação" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,5" FontSize="12"/>
-                            <ComboBox x:Name="comboboxSituacao" MinWidth="100" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,10,10" FontSize="12"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Vertical">
-                            <TextBlock Text="Pedido" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,5" FontSize="12"/>
-                            <TextBox x:Name="textboxFiltroPedido" MinWidth="80" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,10,10" FontSize="12"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Vertical">
-                            <TextBlock Text="Pesquisa" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,5" FontSize="12"/>
-                            <TextBox x:Name="textboxFiltroCliente" MinWidth="290" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,10,10" FontSize="12"/>
-                        </StackPanel>
-                    </StackPanel>
+        <Border Grid.Row="1" Grid.Column="0" BorderBrush="DarkGray">
+            <Frame x:Name="frameListaDeliveries"  NavigationUIVisibility="Hidden">
+            </Frame>
+        </Border>
+
+        <Border x:Name="gridMenuCompra" Grid.Row="0" Grid.Column="0" BorderBrush="DarkGray" BorderThickness="0,0,0,1">
+            <Grid>
+                <StackPanel Orientation="Horizontal"  Margin="10">
+                    <Button Height="45" Content="Voltar" Width="80" VerticalAlignment="Center" Margin="10,0,0,0" Padding="5" Click="buttonVoltar_Click"/>
+                    <Button x:Name="buttonSelecionaCliente" Height="45" Width="100" VerticalAlignment="Center" Margin="10,0,0,0" Padding="5" Click="buttonSelecionaCliente_Click">
+                        <TextBlock x:Name="textButtonCliente" Text="Selecionar Cliente" TextWrapping="Wrap" TextAlignment="Center"/>
+                    </Button>
+                    <Button Height="45" Width="100" VerticalAlignment="Center" Margin="10,0,0,0" Padding="5" Click="buttonSelecionarEntregador">
+                        <TextBlock Text="Selecionar Entregador" TextWrapping="Wrap" TextAlignment="Center"/>
+                    </Button>
                 </StackPanel>
             </Grid>
         </Border>
-
-        <Border Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" BorderBrush="DarkGray" BorderThickness="1,0,0,0">
+        <Border x:Name="gridSubMenuCompra" Grid.Row="2" Grid.Column="0" BorderBrush="DarkGray" BorderThickness="0,1,0,0">
             <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="auto" />
-                </Grid.RowDefinitions>
-                <StackPanel Grid.Row="0">
+                <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft"  Margin="10">
+                    <Button Content="Desconto" Width="80" VerticalAlignment="Center" Margin="10,0,0,0" Padding="5"  />
+                    <Button Content="Observação" Width="80" VerticalAlignment="Center" Margin="10,0,0,0" Padding="5" />
                 </StackPanel>
             </Grid>
         </Border>
-
-        <DockPanel Grid.Row="1" Grid.Column="0" >
-            <DataGrid DockPanel.Dock="Top"
-                      Margin="10"
-                      x:Name="datagridPedidos"
-                      AutoGenerateColumns="False"
-                      GridLinesVisibility="None"
-                      HeadersVisibility="Column"
-                      CanUserAddRows="False"
-                      Style="{DynamicResource DataGridStyle}"
-                      MouseDoubleClick="datagridPedidos_MouseDoubleClick" >
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Venda" Width="Auto" Binding="{Binding Idvenda}" />
-                    <DataGridTextColumn Header="Data" Width="Auto" Binding="{Binding IdvendaNavigation.HoraEntrada, StringFormat=dd/MM/yy}" />
-                    <DataGridTextColumn Header="Hora" Width="Auto" Binding="{Binding IdvendaNavigation.HoraEntrada, StringFormat=hh:mm:ss}" />
-                    <DataGridTextColumn Header="Cliente" Width="Auto" Binding="{Binding IdvendaNavigation.IdclienteNavigation.Nome}" />
-                    <DataGridTextColumn Header="Situação" Width="Auto" Binding="{Binding Status}" />
-                    <DataGridTextColumn Header="ValorTotal" Width="Auto" Binding="{Binding IdvendaNavigation.ValorTotal}" />
-                    <DataGridTextColumn Header="Recebido" Width="Auto" Binding="{Binding IdvendaNavigation.ValorPago}" />
-                    <DataGridTextColumn Header="Troco" Width="Auto" Binding="{Binding IdvendaNavigation.Troco}" />
-                    <DataGridTextColumn Header="Observação" Width="Auto" Binding="{Binding Observacao}" />
-                </DataGrid.Columns>
-            </DataGrid>
-        </DockPanel>
-        <Border Grid.Row="2" Grid.ColumnSpan="2" BorderBrush="DarkGray" BorderThickness="0,1,0,0">
+        <Border x:Name="gridMenuListaPedidos" Grid.Row="3" Grid.ColumnSpan="2" BorderBrush="DarkGray" BorderThickness="0,1,0,0">
             <Grid>
-                <StackPanel Orientation="Horizontal">
-                    <Button Content="Novo" Width="80" VerticalAlignment="Center" Margin="10,0,0,0" Padding="5"  />
-                    <Button Content="Alterar" Width="80" VerticalAlignment="Center" Margin="10,0,0,0" Padding="5" />
-                    <Button Content="Cancelar" Width="80" VerticalAlignment="Center" Margin="10,0,0,0" Padding="5" />
-                    <Button Content="Enviar Cozinha" Width="90" VerticalAlignment="Center" Margin="10,0,0,0" Padding="5" />
-                    <Button Content="Gerar Cupom" Width="90" VerticalAlignment="Center" Margin="10,0,0,0" Padding="5"  />
-                    <Button Content="Enviar Entrega" Width="90" VerticalAlignment="Center" Margin="10,0,0,0" Padding="5" />
-                    <Button Content="Concluir Entrega" Width="100" VerticalAlignment="Center" Margin="10,0,0,0" Padding="5" />
+                <StackPanel Orientation="Horizontal" Margin="10,10,10,10">
+                    <Button Content="Novo" Width="80" VerticalAlignment="Center" Margin="10,0,0,0" Padding="5" Click="buttonNovoDelivery_Click" />
+                    <Button x:Name="buttonAlterar" Content="Alterar" Width="80" VerticalAlignment="Center" Margin="10,0,0,0" Padding="5" Click="buttonAlterarDelivery_Click"/>
+                    <Button x:Name="buttonCancelar" Content="Cancelar" Width="80" VerticalAlignment="Center" Margin="10,0,0,0" Padding="5" Click="buttonCancelarDelivery_Click"/>
+                    <Button x:Name="buttonEnviarCozinha" Content="Enviar Cozinha" Width="90" VerticalAlignment="Center" Margin="10,0,0,0" Padding="5" />
+                    <Button x:Name="buttonGerarCupom" Content="Gerar Cupom" Width="90" VerticalAlignment="Center" Margin="10,0,0,0" Padding="5" Click="buttonGerarCupom_Click" />
+                    <Button x:Name="buttonEnviarEntrega" Content="Enviar Entrega" Width="90" VerticalAlignment="Center" Margin="10,0,0,0" Padding="5" Click="buttonEnviarEntrega_Click"/>
+                    <Button x:Name="buttonConcluir" Content="Concluir Entrega" Width="100" VerticalAlignment="Center" Margin="10,0,0,0" Padding="5" Click="buttonConcluir_Click"/>
+                    <Button x:Name="buttonImprimir" Content="Imprimir" Width="100" VerticalAlignment="Center" Margin="10,0,0,0" Padding="5" Click="buttonImprimir_Click" />
                 </StackPanel>
             </Grid>
         </Border>

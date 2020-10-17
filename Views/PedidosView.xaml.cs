@@ -97,7 +97,8 @@ namespace FortalezaDesktop.Views
             if (caixaAberto != null)
             {
                 var venda = ((Pedido)datagridItems.SelectedItem).IdvendaNavigation;
-                VendaPagamentos pagamentosVendaView = new VendaPagamentos(venda);
+                VendaPagamentos pagamentosVendaView = new VendaPagamentos();
+                await pagamentosVendaView.LoadVenda(venda.Idvenda);
                 pagamentosVendaView.PagamentoRealizado += PagamentosVendaView_PagamentoRealizado;
                 pagamentosVendaView.Show();
             }

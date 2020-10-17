@@ -22,196 +22,74 @@ namespace FortalezaDesktop.Views
     /// </summary>
     public partial class VendaView : Page
     {
-        public Caixa Caixa { get; set; }
-        public Venda Venda { get; set; }
+        public VendaItemsSelecionados ItemsSelecionados { get; set; }
 
         public VendaView()
         {
             InitializeComponent();
         }
 
-        public async void VendaViewLoad(object sender, RoutedEventArgs e)
+        public async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            if(!UserPreferences.Preferences.ModoCaixa)
-            {
-                await LoadGrupos();
-            }
-            else
+            UserPreferences.Load();
+
+            if (UserPreferences.Preferences.ModoCaixa)
             {
                 gridColumn0.Width = new GridLength(0);
             }
-            await LimparVenda();
-        }
-
-        public async Task LoadGrupos()
-        {
-            Grupo _grupo = new Grupo();
-            List<Grupo> grupos = await _grupo.FindAll();
-            if(UserPreferences.Preferences.GrupoTodos)
-            {
-                Grupo grupoTodos = new Grupo
-                {
-                    Visivel = 1,
-                    Nome = "Todos",
-                    Idgrupo = -1
-                };
-                grupos.Insert(0, grupoTodos);
-            }
-            itemsControlGrupos.ItemsSource = grupos.Where(e => e.Visivel == 1);
-            await SelectGrupo(grupos[0].Idgrupo);
-        }
-
-        public async Task SelectGrupo(int idgrupo)
-        {
-            List<Item> items = new List<Item>();
-            if (idgrupo == -1)
-            {
-                items = await (new Item()).FindAll();
-            }
             else
             {
-                Grupo _grupo = new Grupo();
-                _grupo = await _grupo.FindById(idgrupo, new Dictionary<string, string>() { {"items","true" } });
-                items = _grupo.ItemHasGrupo.Select(e => e.IditemNavigation).ToList();
-            }
-            itemsControlProdutos.ItemsSource = items;
-        }
-
-        public async void Grupo_Click(object sender, RoutedEventArgs e)
-        {
-            await SelectGrupo((int)((Button)sender).Tag);
-        }
-
-        public async void Produto_Click(object sender, RoutedEventArgs e)
-        {
-            await AddProdutoVenda((Item)((Button)sender).Tag, 1);
-        }
-
-        public async void ButtonReceber_Click(object sender, RoutedEventArgs e)
-        {
-            VendaPagamentos pagamentosVendaView = new VendaPagamentos(Venda);
-            pagamentosVendaView.PagamentoRealizado += PagamentosVendaView_Closed;
-            pagamentosVendaView.Show();
-        }
-
-        public async void PagamentosVendaView_Closed(object sender, EventArgs e)
-        {
-            await LimparVenda();
-        }
-
-        public async void ButtonCancelar_Click(object sender, RoutedEventArgs e)
-        {
-            await LimparVenda();
-        }
-
-        public async Task AddProdutoVenda(Item item, decimal quantidade)
-        {
-            if (Venda == null)
-            {
-                Caixa caixaAberto = await (new Caixa()).GetCaixaAberto();
-                if(caixaAberto != null)
-                {
-                    Venda = new Venda { 
-                        Tipo = 0,
-                        Aberta = 1,
-                        Idresponsavel = UserControl.UsuarioLogado.Idusuario,
-                        Paga = 0,
-                        HoraEntrada = DateTime.UtcNow
-                    };
-                    textboxValorTotal.Text = Venda.ValorTotal.ToString("C2");
-                    await Venda.SaveInstance();
-                }
-                else
-                {
-                    MessageBox.Show("Nenhum caixa aberto.","Aviso",MessageBoxButton.OK,MessageBoxImage.Information);
-                    return;
-                }
-            }
-            if(item.Estoque == 1)
-            {
-                /*
-                if(!(await item.ValidarEstoqueDisponivel(quantidade)))
-                {
-                    MessageBox.Show("EstoqueView disponível de " + item.Descricao + " é insuficiente.", "Aviso", MessageBoxButton.OK, MessageBoxImage.Information);
-                    return;
-                }
-                */
+                LoadSelecaoProdutos();
             }
 
-            ItemVenda itemVenda = new ItemVenda
+            LoadItemsSelecionados();
+
+            int vendaAberta = await new Venda().GetVendaAberta();
+            if(vendaAberta > 0)
             {
-                Iditem = item.Iditem,
-                Quantidade = quantidade,
-                Valor = item.Valor ?? default,
-            };
-
-            await Venda.SaveItemVenda(itemVenda);
-
-            textboxValorTotal.Text = Venda.ValorTotal.ToString("C2");
-            gridProdutoVendas.ItemsSource = null;
-            gridProdutoVendas.ItemsSource = Venda.ItemVenda;
-
+                await ItemsSelecionados.LoadVenda(vendaAberta);
+            }
         }
 
-        public async Task FecharVenda()
+        public async void LoadSelecaoProdutos()
         {
-            LimparVenda();
+            VendaSelecaoProdutos selecaoProdutos = new VendaSelecaoProdutos();
+            selecaoProdutos.ProdutoSelected += SelecaoProdutos_ProdutoSelected;
+            gridSelecaoProdutos.NavigationService.RemoveBackEntry();
+            gridSelecaoProdutos.Navigate(selecaoProdutos);
         }
 
-        public async Task<bool> GetCaixaAberto()
+        private async void SelecaoProdutos_ProdutoSelected(object sender, VendaSelecaoProdutos.ProdutoSelectedEventArgs e)
         {
-            Caixa = await Caixa.GetCaixaAberto();
-            return (Caixa == null);
+            await ItemsSelecionados.AddProdutoVenda(e.Iditem, 1);
         }
 
-        public async Task LimparVenda()
+        public async void LoadItemsSelecionados()
         {
-            Venda = null;
-            textboxValorTotal.Text = 0.ToString("C2");
-            gridProdutoVendas.ItemsSource = null;
+            ItemsSelecionados = new VendaItemsSelecionados();
+            ItemsSelecionados.ItemVendaSelected += ItemsSelecionados_ItemVendaSelected;
+            ItemsSelecionados.ReceberClicked += ItemsSelecionados_ReceberClicked;
+            gridItemsSelecionados.NavigationService.RemoveBackEntry();
+            gridItemsSelecionados.Navigate(ItemsSelecionados);
         }
 
-        public async Task AddProdutoVenda()
+        private async void ItemsSelecionados_ReceberClicked(object sender, EventArgs e)
         {
-            int Iditem = -1;
-            decimal quantidade = -1;
-            try
-            {
-                Iditem = int.Parse(textboxCodigo.Text);
-            }
-            catch
-            {
-                MessageBox.Show("Codigo mal inserido.");
-                return;
-            }
-
-            try
-            {
-                quantidade = decimal.Parse(textboxQuantidade.Text);
-            }
-            catch
-            {
-                MessageBox.Show("Quantidade mal inserida.");
-                return;
-            }
-
-            Item item = new Item();
-            item = await item.FindById(Iditem);
-            if(item != null & quantidade > -1)
-            {
-                await AddProdutoVenda(item, quantidade);
-            }
-            else
-            {
-                MessageBox.Show("Produto não encontrado.");
-            }
-            
-            
+            VendaPagamentos vendaPagamentos = new VendaPagamentos();
+            await vendaPagamentos.LoadVenda(ItemsSelecionados.Venda.Idvenda);
+            vendaPagamentos.PagamentoRealizado += VendaPagamentos_PagamentoRealizado;
+            vendaPagamentos.Show();
         }
 
-        private async void buttonQuantidadeOk_Click(object sender, RoutedEventArgs e)
+        private async void VendaPagamentos_PagamentoRealizado(object sender, EventArgs e)
         {
-            await AddProdutoVenda();
+            ItemsSelecionados.Venda = null;
+            await ItemsSelecionados.LoadVenda();
+        }
+
+        private async void ItemsSelecionados_ItemVendaSelected(object sender, VendaItemsSelecionados.ItemVendaSelectedEventArgs e)
+        {
+            await ItemsSelecionados.AddProdutoVenda(e.Iditem, e.Quantidade);
         }
     }
 }

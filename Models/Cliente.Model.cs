@@ -21,5 +21,45 @@ namespace FortalezaDesktop.Models
         {
             return await ServerEntry<Cliente>.Get(Path + "/" + CPF, new Dictionary<string, string> { {"cpf","true"} });
         }
+
+        [JsonIgnore]
+        public bool IsCpf
+        {
+            get
+            {
+                return Cpf.Length == 11;
+            }
+        }
+
+        [JsonIgnore]
+        public string CpfFormatted {
+            get
+            {
+                if(Cpf != null)
+                {
+                    string formatted = "";
+                    if (IsCpf)
+                    {
+                        formatted += Cpf.Substring(0,3) + ".";
+                        formatted += Cpf.Substring(3,3) + ".";
+                        formatted += Cpf.Substring(6,3) + "-";
+                        formatted += Cpf.Substring(9,2);
+                    }
+                    else
+                    {
+                        formatted += Cpf.Substring(0,2) + ".";
+                        formatted += Cpf.Substring(2, 3) + ".";
+                        formatted += Cpf.Substring(5, 3) + "/";
+                        formatted += Cpf.Substring(8, 4) + "-" ;
+                        formatted += Cpf.Substring(12, 2);
+                    }
+                    return formatted;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
     }
 }

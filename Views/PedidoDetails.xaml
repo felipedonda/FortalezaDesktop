@@ -3,51 +3,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:utils="clr-namespace:FortalezaDesktop.Wpf.Utils"
         xmlns:local="clr-namespace:FortalezaDesktop.Views"
         mc:Ignorable="d"
-        Title="PedidoDetails" Height="550" Width="800">
-    <Window.Resources>
-        <Style x:Key="DataGridStyle" TargetType="{x:Type DataGrid}">
-            <Setter Property="ColumnHeaderStyle" Value="{DynamicResource ColumnHeaderStyle}" />
-            <Setter Property="CellStyle" Value="{DynamicResource DataGridCellStyle}" />
-        </Style>
-        <Style x:Key="ColumnHeaderStyle" TargetType="{x:Type DataGridColumnHeader}">
-            <Setter Property="Background" Value="LightGray" />
-            <Setter Property="Padding" Value="5" />
-            <Setter Property="BorderThickness" Value="0,0,0,1" />
-            <Setter Property="BorderBrush" Value="DarkGray" />
-        </Style>
-
-
-        <Style x:Key="DataGridCellStyle" TargetType="{x:Type DataGridCell}">
-            <Setter Property="VerticalContentAlignment" Value="Center" />
-            <Setter Property="HorizontalContentAlignment" Value="Left" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type DataGridCell}">
-                        <Border BorderBrush="Gray" BorderThickness="0,0,0,1">
-                            <Grid Background="{TemplateBinding Background}"  Width="auto">
-                                <ContentPresenter VerticalAlignment="Center" Margin="5,2,5,2"/>
-                            </Grid>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <Style x:Key="CheckBoxStyle" TargetType="{x:Type CheckBox}">
-            <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="HorizontalAlignment" Value="Center" />
-        </Style>
-    </Window.Resources>
+        Title="PedidoDetails" Height="550" Width="800"
+        SizeToContent="Height">
 
     <Grid x:Name="gridPedidoDetails">
         <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="auto"/>
@@ -104,85 +68,91 @@
 
                 </Grid>
             </Border>
-            <DockPanel Grid.Row="1" >
-                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-                    <StackPanel Orientation="Horizontal">
-                        <StackPanel Orientation="Vertical">
-                            <TextBlock Text="Código"  VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,5" FontSize="12"/>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBox x:Name="textboxCodigo" MinWidth="65" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,3,10" FontSize="12"/>
-                                <Button VerticalAlignment="Center" Width="18" Height="18" Margin="0,0,10,10">
-                                    <TextBlock Text="..." />
-                                </Button>
-                            </StackPanel>
-                        </StackPanel>
-                        <StackPanel Orientation="Vertical">
-                            <TextBlock Text="Quantidade"   VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,5" FontSize="12"/>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBox Text="1" x:Name="textboxQuantidade"  MinWidth="60" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,3,10" FontSize="12"/>
-                                <Button  VerticalAlignment="Center" Width="18" Height="18" Margin="0,0,3,10">
-                                    <TextBlock Text="+" />
-                                </Button>
-                                <Button  VerticalAlignment="Center" Width="18" Height="18" Margin="0,0,3,10">
-                                    <TextBlock Text="-" />
-                                </Button>
-                                <Button x:Name="buttonQuantidadeOk"  VerticalAlignment="Center" Width="18" Height="18" Margin="0,0,10,10">
-                                    <TextBlock Text="Ok" FontSize="10" />
-                                </Button>
-                            </StackPanel>
+            <StackPanel  Grid.Row="1" Orientation="Horizontal">
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="Código"  VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,5" FontSize="12"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox x:Name="textboxCodigo" MinWidth="65" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,3,10" FontSize="12"/>
+                            <Button VerticalAlignment="Center" Width="18" Height="18" Margin="0,0,10,10">
+                                <TextBlock Text="..." />
+                            </Button>
                         </StackPanel>
                     </StackPanel>
-                    <Button Content="Adicionar Produto" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,10,0,0" Padding="5" Click="ButtonAdicionarClick" />
-                    <Button Content="Remover Produto" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,10,0,0" Padding="5" />
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="Quantidade"   VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,5" FontSize="12"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox Text="1" x:Name="textboxQuantidade"  MinWidth="60" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,3,10" FontSize="12"/>
+                            <Button  VerticalAlignment="Center" Width="18" Height="18" Margin="0,0,3,10">
+                                <TextBlock Text="+" />
+                            </Button>
+                            <Button  VerticalAlignment="Center" Width="18" Height="18" Margin="0,0,3,10">
+                                <TextBlock Text="-" />
+                            </Button>
+                            <Button x:Name="buttonQuantidadeOk"  VerticalAlignment="Center" Width="18" Height="18" Margin="0,0,10,10">
+                                <TextBlock Text="Ok" FontSize="10" />
+                            </Button>
+                        </StackPanel>
+                    </StackPanel>
                 </StackPanel>
-                <DataGrid DockPanel.Dock="Top" Margin="10" x:Name="datagridItems" AutoGenerateColumns="False" GridLinesVisibility="None" HeadersVisibility="Column" CanUserAddRows="False" Style="{DynamicResource DataGridStyle}" >
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Codigo" Width="Auto"  Binding="{Binding Iditem, StringFormat={}{0:00000}}" />
-                        <DataGridTextColumn Header="Descricao" Width="*" Binding="{Binding IditemNavigation.Descricao}" />
-                        <DataGridTextColumn Header="Valor" Width="60" Binding="{utils:CultureAwareBinding Valor, StringFormat=C2}" />
-                        <DataGridTextColumn Header="Quan." Width="42" Binding="{utils:CultureAwareBinding Quantidade}" />
-                        <DataGridTextColumn Header="Total" Width="60" Binding="{utils:CultureAwareBinding ValorTotal, StringFormat=C2}" />
-                    </DataGrid.Columns>
-                </DataGrid>
-            </DockPanel>
-            <Border Grid.Row="2" BorderBrush="DarkGray" BorderThickness="0,1,0,0">
-                <StackPanel Orientation="Vertical">
-                    <StackPanel Orientation="Horizontal">
+                <Button Content="Adicionar Produto" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,10,0,0" Padding="5" Click="ButtonAdicionarClick" />
+                <Button Content="Remover Produto" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,10,0,0" Padding="5" />
+            </StackPanel>
+            <DataGrid
+                Grid.Row="2"
+                    DockPanel.Dock="Top"
+                    Margin="10"
+                    x:Name="datagridItems"
+                    AutoGenerateColumns="False"
+                    GridLinesVisibility="None"
+                    HeadersVisibility="Column"
+                    CanUserAddRows="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Codigo" Width="Auto"  Binding="{Binding Iditem, StringFormat={}{0:00000}}" />
+                    <DataGridTextColumn Header="Descricao" Width="*" Binding="{Binding IditemNavigation.Descricao}" />
+                    <DataGridTextColumn Header="Valor" Width="60" Binding="{local:CultureAwareBinding Valor, StringFormat=C2}" />
+                    <DataGridTextColumn Header="Quan." Width="42" Binding="{local:CultureAwareBinding Quantidade}" />
+                    <DataGridTextColumn Header="Total" Width="60" Binding="{local:CultureAwareBinding ValorTotal, StringFormat=C2}" />
+                </DataGrid.Columns>
+            </DataGrid>
+            <Border Grid.Row="3" BorderBrush="DarkGray" BorderThickness="0,1,0,0">
+                <StackPanel Orientation="Vertical" Margin="10,0,10,5">
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,10">
                         <StackPanel Orientation="Vertical">
-                            <TextBlock Text="Adiantamento" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,5" FontSize="12"/>
+                            <TextBlock Text="Adiantamento" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,0,5" FontSize="12"/>
                             <StackPanel Orientation="Horizontal">
-                                <TextBox x:Name="textboxAdiantamento" Text="{utils:CultureAwareBinding IdvendaNavigation.ValorPago, StringFormat=C2}" MinWidth="100" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,2,10" FontSize="12"/>
-                                <Button Content="^" Width="18" Height="18" VerticalAlignment="Top" Margin="0" Click="ButtonAdiantamento_Click" />
+                                <TextBox x:Name="textboxAdiantamento" Text="{local:CultureAwareBinding IdvendaNavigation.ValorPago, StringFormat=C2}" Width="100" Margin="0,0,2,0" FontSize="12"/>
+                                <Button Content="^" Width="18" Height="18" Margin="0" Click="ButtonAdiantamento_Click" />
                             </StackPanel>
                         </StackPanel>
-                        <StackPanel Orientation="Vertical">
-                            <TextBlock Text="Acréscimo" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,5" FontSize="12"/>
+                        <StackPanel Orientation="Vertical" Margin="10,0,0,0">
+                            <TextBlock Text="Acréscimo" Margin="0,0,0,5" FontSize="12"/>
                             <StackPanel Orientation="Horizontal">
-                                <TextBox x:Name="textboxAcrescimo" MinWidth="100" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,2,10" FontSize="12"/>
-                                <Button Content="^" Width="18" Height="18" VerticalAlignment="Top" Margin="0" />
+                                <TextBox x:Name="textboxAcrescimo" Width="100" Margin="0,0,2,0" FontSize="12"/>
+                                <Button Content="^" Width="18" Height="18" />
                             </StackPanel>
                         </StackPanel>
-                        <StackPanel Orientation="Vertical">
-                            <TextBlock Text="Desconto" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,5" FontSize="12"/>
+                        <StackPanel Orientation="Vertical" Margin="10,0,0,0">
+                            <TextBlock Text="Desconto" Margin="0,0,0,5" FontSize="12"/>
                             <StackPanel Orientation="Horizontal">
-                                <TextBox x:Name="textboxDesconto" MinWidth="100" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,2,10" FontSize="12"/>
-                                <Button Content="^" Width="18" Height="18" VerticalAlignment="Top" Margin="0" />
+                                <TextBox x:Name="textboxDesconto" Width="100" Margin="0,0,2,0" FontSize="12"/>
+                                <Button Content="^" Width="18" Height="18" />
                             </StackPanel>
                         </StackPanel>
-                        <StackPanel Orientation="Vertical">
-                            <TextBlock Text="Valor Total" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,5" FontSize="12"/>
+                        <StackPanel Orientation="Vertical" Margin="10,0,0,0">
+                            <TextBlock Text="Valor Total" Margin="0,0,0,5" FontSize="12"/>
                             <StackPanel Orientation="Horizontal">
-                                <TextBox x:Name="textboxValorTotal" Text="{Binding IdvendaNavigation.ValorTotal, StringFormat=C2}" MinWidth="120" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,2,10" FontSize="12"/>
+                                <TextBox x:Name="textboxValorTotal" Text="{Binding IdvendaNavigation.ValorTotal, StringFormat=C2}" Width="120" Margin="0,0,2,0" FontSize="12"/>
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>
                     <StackPanel Orientation="Vertical">
-                        <TextBlock Text="Observação" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,5" FontSize="12"/>
-                        <TextBox Text="{Binding Observacao}" x:Name="textboxObservacao" MinWidth="510" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,2,10" FontSize="12"/>
+                        <TextBlock Text="Observação" Margin="0,0,0,5" FontSize="12"/>
+                        <TextBox Text="{Binding Observacao}" x:Name="textboxObservacao" Margin="0,0,0,10" TextWrapping="Wrap" FontSize="12"/>
                     </StackPanel>
                 </StackPanel>
             </Border>
-            <Border Grid.Row="3" BorderBrush="DarkGray" BorderThickness="0,1,0,0">
+            <Border Grid.Row="4" BorderBrush="DarkGray" BorderThickness="0,1,0,0">
                 <Grid>
                     <StackPanel Orientation="Horizontal">
                         <Button Content="Confirmar" Width="80" VerticalAlignment="Center" Margin="10" Padding="5" Click="ButtonConfirmar_Click" />

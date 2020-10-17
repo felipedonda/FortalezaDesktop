@@ -83,8 +83,8 @@
                                 <DataGridTextColumn Header="Data" Width="65"  Binding="{Binding HoraEntrada, StringFormat=dd/MM/yy}" />
                                 <DataGridTextColumn Header="Hora" Width="60" Binding="{Binding HoraEntrada, StringFormat=hh:mm:ss}" />
                                 <DataGridTextColumn Header="Descricao" Width="*" Binding="{Binding Descricao}" />
-                                <DataGridTextColumn Header="Forma de Pagamento" Width="160" Binding="{Binding MeioPagamento.Nome}" />
-                                <DataGridTextColumn Header="Valor" Width="60" Binding="{Binding Valor, StringFormat={}{0:C2}}" />
+                                <DataGridTextColumn Header="Forma de Pagamento" Width="160" Binding="{Binding IdformaPagamentoNavigation.Nome}" />
+                                <DataGridTextColumn Header="Valor" Width="60" Binding="{local:CultureAwareBinding Valor, StringFormat=C2}" />
                                 <DataGridTextColumn Header="Tipo" Width="50" Binding="{Binding Tipo}" />
                             </DataGrid.Columns>
                         </DataGrid>

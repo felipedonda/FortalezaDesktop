@@ -1,0 +1,93 @@
+﻿<Page x:Class="FortalezaDesktop.Views.DeliveryDetails"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:FortalezaDesktop.Views"
+      xmlns:utils="clr-namespace:FortalezaDesktop.Wpf.Utils"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="400"
+      Title="DeliveryDetails"
+      Loaded="Page_Loaded">
+
+    <Grid Background="White" x:Name="gridPrincipal">
+        <Grid Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Orientation="Vertical" Grid.Column="0" Margin="5">
+                    <TextBlock Text="Pedido" Margin="0,0,0,5" FontSize="12"/>
+                    <TextBox Text="{Binding NumeroPedido}" FontSize="12"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical" Grid.Column="1" Margin="5">
+                    <TextBlock Text="Cliente" Margin="0,0,0,5" FontSize="12"/>
+                    <TextBox Text="{Binding IdvendaNavigation.IdclienteNavigation.Nome}" FontSize="12"/>
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Vertical" Margin="5">
+                    <TextBlock Text="Endereço" Margin="0,0,0,5" FontSize="12"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0">
+                            <TextBox Text="{Binding IdvendaNavigation.IdclienteNavigation.IdenderecoNavigation.Logradouro}" FontSize="12"/>
+                        </Grid>
+                        <Grid Grid.Column="1">
+                            <Button Content="M" Width="20" Height="20" Margin="5,0,0,0" Click="ButtonMap_Click" />
+                        </Grid>
+                    </Grid>
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="5*" />
+                    <ColumnDefinition Width="4*" />
+                    <ColumnDefinition Width="4*" />
+                    <ColumnDefinition Width="4*" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Vertical" Grid.Column="0" Margin="5">
+                    <TextBlock Text="Metodo de Entrega" Margin="0,0,0,5" FontSize="12"/>
+                    <TextBox Text="{Binding IddeliveryNagivation.IdmetodoNavigation.Nome}" FontSize="12"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical" Grid.Column="1" Margin="5">
+                    <TextBlock Text="Tipo Entregador" Margin="0,0,0,5" FontSize="12"/>
+                    <TextBox Text="{Binding IddeliveryNagivation.IdtipoEntregadorNavigation.Nome}" FontSize="12"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical" Grid.Column="2" Margin="5">
+                    <TextBlock Text="Tempo Cozinha" Margin="0,0,0,5" FontSize="12"/>
+                    <TextBox Text="{Binding IddeliveryNagivation.IdmetodoNavigation.Nome}" FontSize="12"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical" Grid.Column="3" Margin="5">
+                    <TextBlock Text="Tempo Entrega" Margin="0,0,0,5" FontSize="12"/>
+                    <TextBox Text="{Binding IddeliveryNagivation.IdtipoEntregadorNavigation.Nome}" FontSize="12"/>
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Row="3" Margin="5">
+                <Border BorderBrush="DarkGray" BorderThickness="1">
+                    <Frame x:Name="frameCupomFiscal"  NavigationUIVisibility="Hidden">
+                    </Frame>
+                </Border>
+            </Grid>
+        </Grid>
+    </Grid>
+</Page>

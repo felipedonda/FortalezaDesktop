@@ -1,0 +1,79 @@
+﻿<Window x:Class="FortalezaDesktop.Views.DeliveryEntregador"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FortalezaDesktop.Views"
+        mc:Ignorable="d"
+        Title="DeliveryEntregador" Height="270" Width="450"
+        Loaded="Window_Loaded">
+    <Grid Margin="5" x:Name="gridPrimario">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="4*" />
+                <ColumnDefinition Width="4*" />
+                <ColumnDefinition Width="3*" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Vertical" Grid.Column="0" Margin="5">
+                <TextBlock Text="Metodo de Entrega" Margin="0,0,0,5" FontSize="12"/>
+                <ComboBox x:Name="comboboxMetodoEntrega" SelectedValue="{Binding Idmetodo}" FontSize="12"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Vertical" Grid.Column="1" Margin="5">
+                <TextBlock Text="Tipo Entregador" Margin="0,0,0,5" FontSize="12"/>
+                <ComboBox x:Name="comboboxTipo" SelectedValue="{Binding IdtipoEntregador}" FontSize="12"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Vertical" Grid.Column="2" Margin="5">
+                <TextBlock Text="Taxa de Entrega" Margin="0,0,0,5" FontSize="12"/>
+                <TextBox Text="{Binding TaxaEntrega.Valor}" Height="22" FontSize="12"/>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="1">
+            <StackPanel Orientation="Vertical" Margin="5">
+                <TextBlock Text="Entregador" Margin="0,0,0,5" FontSize="12"/>
+                <ComboBox x:Name="comboboxEntregador" SelectedValue="{Binding Identregador}" FontSize="12"/>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Vertical" Grid.Column="0" Margin="5">
+                <TextBlock Text="Tempo de Preparo" Margin="0,0,0,5" FontSize="12"/>
+                <UniformGrid Columns="2">
+                    <TextBox x:Name="textboxDataInicial" Height="22" Margin="0,0,5,0" FontSize="12"/>
+                    <TextBox x:Name="textboxHoraInicial" Height="22" FontSize="12"/>
+                </UniformGrid>
+            </StackPanel>
+
+            <StackPanel Orientation="Vertical" Grid.Column="1" Margin="5">
+                <TextBlock Text="Previsão Entrega" Margin="0,0,0,5" FontSize="12"/>
+                <UniformGrid Columns="2">
+                    <TextBox x:Name="textboxDataFinal" Height="22" Margin="0,0,5,0" FontSize="12"/>
+                    <TextBox x:Name="textboxHoraFinal" Height="22" FontSize="12"/>
+                </UniformGrid>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="3" Margin="0,5,0,0">
+            <Border Grid.Row="3" VerticalAlignment="Stretch" BorderBrush="DarkGray" BorderThickness="0,1,0,0">
+                <Grid>
+                    <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal" FlowDirection="RightToLeft">
+                        <Button Content="Cancelar" Width="80" VerticalAlignment="Center" Margin="10" Padding="5" Click="ButtonCancelar_Click"/>
+                        <Button Content="Salvar" Width="80" VerticalAlignment="Center" Margin="10" Padding="5" Click="ButtonSalvar_Click" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+
+    </Grid>
+    
+</Window>

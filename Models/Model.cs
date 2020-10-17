@@ -23,12 +23,28 @@ namespace FortalezaDesktop.Models
         
         public async Task<T> FindById(int id, Dictionary<string, string> options = null)
         {
-            return await ServerEntry<T>.Get(Path, id, options);
+            try
+            {
+                return await ServerEntry<T>.Get(Path, id, options);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message + "\n\nStack:\n" + e.StackTrace, "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return default;
+            }
         }
         
         public async Task<List<T>> FindAll(Dictionary<string, string> options = null)
         {
-            return await ServerEntry<List<T>>.Get(Path, options);
+            try
+            {
+                return await ServerEntry<List<T>>.Get(Path, options);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message + "\n\nStack:\n" + e.StackTrace, "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return default;
+            }
         }
 
         public async Task<T> ReloadInstance(Dictionary<string, string> options = null)
@@ -174,7 +190,8 @@ namespace FortalezaDesktop.Models
                 ContractResolver = new DefaultContractResolver
                 {
                     NamingStrategy = new CamelCaseNamingStrategy()
-                }
+                },
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             });
 
             HttpClient httpClient = new HttpClient();

@@ -32,7 +32,9 @@ namespace FortalezaDesktop.Views
         public async Task LoadProdutos()
         {
             Item _item = new Item();
-            List<Item> items = await _item.FindAll();
+            List<Item> items = await _item.FindAll(new Dictionary<string, string> {
+                {"visibleOnly","false" }
+            });
             datagridProdutos.ItemsSource = null;
             datagridProdutos.ItemsSource = items;
         }

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FortalezaDesktop.Views"
         mc:Ignorable="d"
-        Title="ClienteDetails" Height="320" Width="650">
+        Title="ClienteDetails" Height="350" Width="650">
     <Grid x:Name="gridCliente">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

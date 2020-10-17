@@ -4,9 +4,8 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:FortalezaDesktop.Views"
-      xmlns:utils="clr-namespace:FortalezaDesktop.Wpf.Utils"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="450" d:DesignWidth="1020"
       Title="PedidosView"
       Loaded="Page_Loaded">
     
@@ -61,7 +60,7 @@
                         <StackPanel Orientation="Horizontal">
                             <StackPanel Orientation="Vertical">
                                 <TextBlock Text="Filtrar por" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,5" FontSize="12"/>
-                                <ComboBox x:Name="comboboxFiltrarPor" MinWidth="100" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,10,10" FontSize="12"/>
+                                <ComboBox x:Name="comboboxFiltrarPor" MinWidth="120" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,10,10" FontSize="12"/>
                             </StackPanel>
                             <StackPanel Orientation="Vertical">
                                 <TextBlock Text="Inicial" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,5" FontSize="12"/>
@@ -83,7 +82,7 @@
                         <StackPanel Orientation="Horizontal" x:Name="panelInfosEntradas">
                             <StackPanel Orientation="Vertical">
                                 <TextBlock Text="Situação" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,5" FontSize="12"/>
-                                <ComboBox x:Name="comboboxSituacao" MinWidth="100" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,10,10" FontSize="12"/>
+                                <ComboBox x:Name="comboboxSituacao" MinWidth="120" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,10,10" FontSize="12"/>
                             </StackPanel>
                             <StackPanel Orientation="Vertical">
                                 <TextBlock Text="Pedido" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,5" FontSize="12"/>
@@ -121,18 +120,17 @@
                         <DataGridTextColumn Header="Telefone" Width="Auto" Binding="{Binding IdvendaNavigation.IdclienteNavigation.Telefone}" />
                         <DataGridTextColumn Header="Usuário" Width="Auto" Binding="{Binding IdvendaNavigation.IdresponsavelNavigation.Nome}" />
                         <DataGridTextColumn Header="Entregador" Width="Auto" Binding="{Binding IdentregadorNavigation.Nome}" />
-                        <DataGridTextColumn Header="Situação" Width="Auto" Binding="{Binding IdvendaNavigation.Aberta}" />
-                        <DataGridTextColumn Header="Entrega" Width="Auto" Binding="{Binding Status}" />
+                        <DataGridTextColumn Header="Situação" Width="Auto" Binding="{Binding StatusView}" />
                         <DataGridTextColumn Header="Prazo" Width="Auto" Binding="{Binding DataPrazo, StringFormat=dd/MM/yy}" />
                         <DataGridTextColumn Header="Hora" Width="Auto" Binding="{Binding DataPrazo, StringFormat=hh:mm:ss}" />
                         <DataGridTextColumn Header="Saída" Width="Auto" Binding="{Binding DataSaida, StringFormat=dd/MM/yy}" />
                         <DataGridTextColumn Header="Hora" Width="Auto" Binding="{Binding DataSaida, StringFormat=hh:mm:ss}" />
-                        <DataGridTextColumn Header="ValorTotal" Width="Auto" Binding="{Binding IdvendaNavigation.ValorTotal}" />
-                        <DataGridTextColumn Header="Acrescimo" Width="Auto" Binding="{Binding IdvendaNavigation.Acrescimo}" />
-                        <DataGridTextColumn Header="Desconto" Width="Auto" Binding="{Binding IdvendaNavigation.Desconto}" />
-                        <DataGridTextColumn Header="Recebido" Width="Auto" Binding="{Binding IdvendaNavigation.ValorPago}" />
-                        <DataGridTextColumn Header="Troco" Width="Auto" Binding="{Binding IdvendaNavigation.Troco}" />
-                        <DataGridTextColumn Header="Observação" Width="Auto" Binding="{Binding Observacao}" />
+                        <DataGridTextColumn Header="ValorTotal" Width="Auto" Binding="{local:CultureAwareBinding IdvendaNavigation.ValorTotal, StringFormat=C2}" />
+                        <DataGridTextColumn Header="Acrescimo" Width="Auto" Binding="{local:CultureAwareBinding IdvendaNavigation.Acrescimo, StringFormat=C2}" />
+                        <DataGridTextColumn Header="Desconto" Width="Auto" Binding="{local:CultureAwareBinding IdvendaNavigation.Desconto, StringFormat=C2}" />
+                        <DataGridTextColumn Header="Recebido" Width="Auto" Binding="{local:CultureAwareBinding IdvendaNavigation.ValorPago, StringFormat=C2}" />
+                        <DataGridTextColumn Header="Troco" Width="Auto" Binding="{local:CultureAwareBinding IdvendaNavigation.Troco, StringFormat=C2}" />
+                        <DataGridTextColumn Header="Observação" Width="*" Binding="{Binding Observacao}" />
                     </DataGrid.Columns>
                 </DataGrid>
             </DockPanel>

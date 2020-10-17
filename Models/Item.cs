@@ -16,6 +16,7 @@ namespace FortalezaDesktop.Models
 
         public int Iditem { get; set; }
         public string Descricao { get; set; }
+        public int? CodigoBarras { get; set; }
         public decimal? Valor { get; set; }
         public string Imagem { get; set; }
         public string Unidade { get; set; }
@@ -26,6 +27,9 @@ namespace FortalezaDesktop.Models
         public string Tipo { get; set; }
         public byte PermiteCombo { get; set; }
         public byte UnidadeInteira { get; set; }
+        public byte Varejo { get; set; }
+        public decimal? ValorVarejo { get; set; }
+        public decimal? QuantidadeVarejo { get; set; }
 
         public virtual Fiscal Fiscal { get; set; }
         public virtual Pacote PacoteIditemNavigation { get; set; }

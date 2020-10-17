@@ -17,7 +17,7 @@ namespace FortalezaDesktop.Models
         public string Telefone { get; set; }
         public string Celular { get; set; }
         public string Email { get; set; }
-        public int Idendereco { get; set; }
+        public int? Idendereco { get; set; }
 
         public virtual Endereco IdenderecoNavigation { get; set; }
         public virtual ICollection<ClienteHasMovimento> ClienteHasMovimento { get; set; }

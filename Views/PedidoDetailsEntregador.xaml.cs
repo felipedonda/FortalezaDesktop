@@ -16,15 +16,15 @@ using System.Windows.Shapes;
 namespace FortalezaDesktop.Views
 {
     /// <summary>
-    /// Interaction logic for ProdutoDetailsEntregador.xaml
+    /// Interaction logic for PedidoDetailsEntregador.xaml
     /// </summary>
-    public partial class ProdutoDetailsEntregador : Window
+    public partial class PedidoDetailsEntregador : Window
     {
 
         public int EntregadorSelecionado { get; set; }
         public event EventHandler Selecionado;
 
-        public ProdutoDetailsEntregador()
+        public PedidoDetailsEntregador()
         {
             InitializeComponent();
         }

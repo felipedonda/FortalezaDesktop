@@ -110,7 +110,10 @@ namespace FortalezaDesktop.Views
             {
                 if (Item.Estoque == 1)
                 {
-                    textboxMargem.Text = ((1 - (Item.Valor / (Item.EstoqueAtual.Custo ?? default))) * 100).ToString();
+                    if(Item.EstoqueAtual != null)
+                    {
+                        textboxMargem.Text = ((1 - (Item.Valor / (Item.EstoqueAtual.Custo ?? default))) * 100).ToString();
+                    }
                 }
             }
             catch
@@ -232,7 +235,39 @@ namespace FortalezaDesktop.Views
             }
         }
 
-        private void updateValorMargem(object sender, TextChangedEventArgs e)
+        private void ButtonSelecionarProduto_Click(object sender, RoutedEventArgs e)
+        {
+            ProdutoDetailsPacoteAdd produtoDetailsPacoteAdd = new ProdutoDetailsPacoteAdd();
+            produtoDetailsPacoteAdd.ItemPacoteSelecionado += ProdutoDetailsPacoteAdd_ItemPacoteSelecionado;
+            produtoDetailsPacoteAdd.Show();
+        }
+
+        private void ProdutoDetailsPacoteAdd_ItemPacoteSelecionado(object sender, ProdutoDetailsPacoteAdd.ItemPacoteSelecionadoEventArgs e)
+        {
+            if(Item.PacoteIditemNavigation == null)
+            {
+                Item.PacoteIditemNavigation = new Pacote
+                {
+                    IditemProduto = e.Item.Iditem,
+                    IditemProdutoNavigation = e.Item
+                };
+            }
+            else
+            {
+                Item.PacoteIditemNavigation.IditemProduto = e.Item.Iditem;
+                Item.PacoteIditemNavigation.IditemProdutoNavigation = e.Item;
+            }
+
+            textboxPacoteProduto.Text = Item.PacoteIditemNavigation.IditemProdutoNavigation.Descricao;
+        }
+
+        private async void comboboxTipo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Item.Tipo = ((ComboBox)sender).SelectedItem.ToString();
+            await TrocaTipo();
+        }
+
+        private void textboxMargem_KeyUp(object sender, KeyEventArgs e)
         {
             if (!string.IsNullOrEmpty(textboxMargem.Text) & !string.IsNullOrEmpty(textboxCusto.Text))
             {
@@ -248,29 +283,6 @@ namespace FortalezaDesktop.Views
 
                 }
             }
-        }
-
-        private void ButtonSelecionarProduto_Click(object sender, RoutedEventArgs e)
-        {
-            ProdutoDetailsPacoteAdd produtoDetailsPacoteAdd = new ProdutoDetailsPacoteAdd();
-            produtoDetailsPacoteAdd.Closed += ProdutoDetailsPacoteAdd_Closed;
-            produtoDetailsPacoteAdd.Show();
-        }
-
-        private void ProdutoDetailsPacoteAdd_Closed(object sender, EventArgs e)
-        {
-            Item.PacoteIditemNavigation = new Pacote
-            {
-                IditemProdutoNavigation = ((ProdutoDetailsPacoteAdd)sender).ItemSelecionado
-            };
-            textboxPacoteProduto.Text = Item.PacoteIditemNavigation.IditemProdutoNavigation.Descricao;
-
-        }
-
-        private async void comboboxTipo_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            Item.Tipo = ((ComboBox)sender).SelectedItem.ToString();
-            await TrocaTipo();
         }
     }
 }
