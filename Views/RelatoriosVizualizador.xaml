@@ -19,12 +19,12 @@
                 </StackPanel>
             </Grid>
         </Border>
-        <Grid Grid.Row="1" Background="Gray"
-              ScrollViewer.VerticalScrollBarVisibility="Visible"
-              ScrollViewer.CanContentScroll="True">
-            <Grid Width="auto" Height="auto" VerticalAlignment="Top" HorizontalAlignment="Center">
-                <Frame x:Name="frameRelatorio"  NavigationUIVisibility="Hidden" />
-            </Grid>
+        <Grid Grid.Row="1" Background="Gray">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <Grid Width="auto" Height="auto" VerticalAlignment="Top" HorizontalAlignment="Center">
+                    <Frame x:Name="frameRelatorio" Width="auto" Height="auto"  NavigationUIVisibility="Hidden" />
+                </Grid>
+            </ScrollViewer>
         </Grid>
     </Grid>
 </Window>

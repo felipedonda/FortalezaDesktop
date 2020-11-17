@@ -50,10 +50,12 @@ namespace FortalezaDesktop.Models
             cupomFiscal.TextHoraRecibo.Text += " " + IdvendaNavigation.HoraEntrada.ToString("hh:mm");
             cupomFiscal.mainGrid.ItemsSource = IdvendaNavigation.ItemVenda;
 
+            InformacoesEmpresa informacoesEmpresa = await new InformacoesEmpresa().FindById(1);
+            cupomFiscal.gridHeader.DataContext = informacoesEmpresa;
+
             RelatoriosVizualizador vizualizador = new RelatoriosVizualizador();
             vizualizador.LoadChildPage(cupomFiscal);
             vizualizador.Show();
-            
         }
 
         [JsonIgnore]

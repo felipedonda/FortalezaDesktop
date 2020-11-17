@@ -19,7 +19,6 @@ namespace FortalezaDesktop.Models
         public string Descricao { get; set; }
         public decimal Acrescimo { get; set; }
         public decimal Desconto { get; set; }
-        public decimal CustoTotal { get; set; }
         public DateTime HoraEntrada { get; set; }
         public DateTime? HoraFechamento { get; set; }
         public byte Aberta { get; set; }

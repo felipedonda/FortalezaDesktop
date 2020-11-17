@@ -6,11 +6,12 @@ namespace FortalezaDesktop.Models
 {
     public partial class Endereco
     {
-        public string StringExtenso {
+        public string StringExtenso
+        {
             get
             {
                 string extenso = Logradouro + ", " + Numero;
-                if(Complemento != null)
+                if (Complemento != null)
                 {
                     extenso += " - " + Complemento;
                 }

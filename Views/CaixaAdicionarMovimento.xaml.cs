@@ -30,6 +30,7 @@ namespace FortalezaDesktop.Views
 
     public partial class AdicionarMovimento : Window
     {
+
         public Caixa Caixa { get; set; }
         public string Tipo { get; set; }
         public string Descricao { get; set; }

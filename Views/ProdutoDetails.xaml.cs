@@ -73,10 +73,12 @@ namespace FortalezaDesktop.Views
                 case "Produto":
                     tabPacote.Visibility = Visibility.Collapsed;
                     gridPacote.Visibility = Visibility.Collapsed;
+                    CheckboxControlarEstoque.IsEnabled = true;
                     break;
                 case "Pacote":
                     tabPacote.Visibility = Visibility.Visible;
                     gridPacote.Visibility = Visibility.Visible;
+                    CheckboxControlarEstoque.IsEnabled = false;
                     break;
             }
         }

@@ -15,6 +15,9 @@
     <Compile Update="Views\CaixasView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\CaixaVendasAbertas.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\ClienteDetails.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -51,6 +54,15 @@
     <Compile Update="Views\EstoqueView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\GrupoDetails.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\GruposView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\InformacoesEmpresaDetails.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\MenuGerencial.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -85,6 +97,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Relatorios\TemplateCupomFiscal.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Relatorios\TemplateDeliveryDetails.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Relatorios\TemplateRelatorioProdutosVendidos.xaml.cs">
@@ -137,6 +152,9 @@
     <Page Update="Views\CaixasView.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\CaixaVendasAbertas.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\ClienteDetails.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -173,6 +191,15 @@
     <Page Update="Views\EstoqueView.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\GrupoDetails.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\GruposView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\InformacoesEmpresaDetails.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\MenuGerencial.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -207,6 +234,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\Relatorios\TemplateCupomFiscal.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Relatorios\TemplateDeliveryDetails.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\Relatorios\TemplateRelatorioProdutosVendidos.xaml">

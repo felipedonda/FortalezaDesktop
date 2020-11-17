@@ -59,7 +59,7 @@
                         <TextBox x:Name="textboxBuscaDescricao" MinWidth="400" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,10,10" FontSize="12"/>
                     </StackPanel>
                     <Grid DockPanel.Dock="Right">
-                        <Button Content="Novo Cliente" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,10,10,10" Padding="5" />
+                        <Button Content="Novo Cliente" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,10,10,10" Padding="5" Click="ButtonNovoCliente_Click" />
                     </Grid>
 
                 </DockPanel>

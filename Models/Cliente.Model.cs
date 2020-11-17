@@ -17,6 +17,8 @@ namespace FortalezaDesktop.Models
             set { Idcliente = value ?? default; }
         }
 
+        public decimal CreditoEmConta { get; set; }
+
         public async Task<Cliente> FindByCPF(string CPF)
         {
             return await ServerEntry<Cliente>.Get(Path + "/" + CPF, new Dictionary<string, string> { {"cpf","true"} });

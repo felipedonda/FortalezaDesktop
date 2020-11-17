@@ -30,7 +30,9 @@ namespace FortalezaDesktop
 
     public class Server
     {
+        public static string APIURI { get; set; }
         public static string URI { get; set; }
+
 
         static public void LoadServerConfig()
         {
@@ -59,7 +61,7 @@ namespace FortalezaDesktop
                     URI += ":" + configuration.Port;
                 }
 
-                URI += "/api";
+                APIURI = URI + "/api";
             }
             else
             {
@@ -76,7 +78,8 @@ namespace FortalezaDesktop
                 }
 
                 File.WriteAllText(configurationFilePath, JsonConvert.SerializeObject(newConfiguration));
-                URI = "http://" + newConfiguration.Hostname + ":" + newConfiguration.Port + "/api";
+                URI = "http://" + newConfiguration.Hostname + ":" + newConfiguration.Port;
+                APIURI = URI + "/api";
 
             }
         }
@@ -86,7 +89,7 @@ namespace FortalezaDesktop
             HttpClient httpClient = new HttpClient();
             try
             {
-                HttpResponseMessage httpResponse = await httpClient.GetAsync(URI);
+                HttpResponseMessage httpResponse = await httpClient.GetAsync(APIURI);
                 return httpResponse.IsSuccessStatusCode;
             }
             catch(Exception ex)

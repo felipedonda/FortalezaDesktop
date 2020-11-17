@@ -16,6 +16,24 @@ namespace FortalezaDesktop.Models
             set { IditemVenda = value ?? default; }
         }
 
-        public decimal ValorTotal { get; set; }
+        public decimal ValorTotal {
+            get
+            {
+                return Quantidade * Valor ?? default;
+            }
+        }
+
+        public decimal CustoTotal {
+            get
+            {
+                return Quantidade * Custo ?? default;
+            }
+        }
+        public decimal LucroTotal {
+            get
+            {
+                return ValorTotal - CustoTotal;
+            }
+        }
     }
 }

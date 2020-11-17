@@ -200,10 +200,7 @@ namespace FortalezaDesktop.Views
 
         private void CancelarItem_CancelarVenda(object sender, EventArgs e)
         {
-            if(Venda != null)
-            {
-                CancelarSelected?.Invoke(this, new EventArgs());
-            }
+            CancelarSelected?.Invoke(this, new EventArgs());
         }
 
         private async void CancelarItem_CancelarItem(object sender, VendaCancelarItem.CancelarItemEventArgs e)

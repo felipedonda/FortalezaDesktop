@@ -78,7 +78,13 @@
                         </Grid>
                     </Border>
                     <Grid Grid.Row="1">
-                        <DataGrid Margin="10" x:Name="datagridMovimentacoes" AutoGenerateColumns="False" GridLinesVisibility="None" HeadersVisibility="Column" CanUserAddRows="False" Style="{DynamicResource DataGridStyle}">
+                        <DataGrid Margin="10"
+                                  x:Name="datagridMovimentacoes"
+                                  AutoGenerateColumns="False"
+                                  GridLinesVisibility="None"
+                                  HeadersVisibility="Column"
+                                  CanUserAddRows="False"
+                                  CanUserDeleteRows="False">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Data" Width="65"  Binding="{Binding HoraEntrada, StringFormat=dd/MM/yy}" />
                                 <DataGridTextColumn Header="Hora" Width="60" Binding="{Binding HoraEntrada, StringFormat=hh:mm:ss}" />
@@ -102,6 +108,79 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Fechamentos">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="2*"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="3*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Vertical" Margin="5" Grid.Column="0">
+                            <TextBlock Text="Filtrar por" Margin="0,0,0,5" FontSize="12"/>
+                            <ComboBox x:Name="comboboxFiltrarPor" FontSize="12"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="5" Grid.Column="1">
+                            <TextBlock Text="" Margin="0,0,0,5" FontSize="12"/>
+                            <TextBox x:Name="textboxFiltroFechamentos" Height="22" FontSize="12"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="5" Grid.Column="2">
+                            <TextBlock Text="Data Inicial" Margin="0,0,0,5" FontSize="12"/>
+                            <TextBox x:Name="TextboxDataInicial" Height="22" FontSize="12"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="5" Grid.Column="3">
+                            <TextBlock Text="Data Final" Margin="0,0,0,5" FontSize="12"/>
+                            <TextBox x:Name="TextboxDataFinal" Height="22" FontSize="12"/>
+                        </StackPanel>
+                    </Grid>
+                    <Grid Grid.Row="1">
+                        <DataGrid DockPanel.Dock="Top"
+                          Margin="10"
+                          x:Name="DatagridFechamentos"
+                          AutoGenerateColumns="False"
+                          GridLinesVisibility="None"
+                          HeadersVisibility="Column"
+                          CanUserAddRows="False"
+                          CanUserDeleteRows="False"
+                          IsReadOnly="True"
+                          SelectedCellsChanged="DatagridFechamentos_MouseDoubleClick">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Registro" Width="70" Binding="{Binding Idcaixa}" />
+                                <DataGridTextColumn Header="Abertura" Width="80" Binding="{Binding HoraAbertura, StringFormat=dd/MM/yy}" />
+                                <DataGridTextColumn Header="Hora" Width="60" Binding="{Binding HoraAbertura, StringFormat=hh:mm}" />
+                                <DataGridTextColumn Header="Caixa" Width="*" Binding="{Binding Nome}" />
+                                <DataGridTextColumn Header="Responsável" Width="*" Binding="{Binding IdresponsavelNavigation.Nome}" />
+                                <DataGridTextColumn Header="Fechamento" Width="80" Binding="{local:CultureAwareBinding HoraFechamento, StringFormat=dd/MM/yy}" />
+                                <DataGridTextColumn Header="Hora" Width="60" Binding="{local:CultureAwareBinding HoraFechamento, StringFormat=hh:mm}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                    <Grid Grid.Row="2" >
+                        <Border Margin="10,0,10,0" BorderBrush="Gray" BorderThickness="0,1,0,0" />
+                        <DataGrid Margin="10"
+                                  x:Name="DatagridMovimentacoesFechamento"
+                                  AutoGenerateColumns="False"
+                                  GridLinesVisibility="None"
+                                  HeadersVisibility="Column"
+                                  CanUserAddRows="False"
+                                  CanUserDeleteRows="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Data" Width="65"  Binding="{Binding HoraEntrada, StringFormat=dd/MM/yy}" />
+                                <DataGridTextColumn Header="Hora" Width="60" Binding="{Binding HoraEntrada, StringFormat=hh:mm:ss}" />
+                                <DataGridTextColumn Header="Descricao" Width="*" Binding="{Binding Descricao}" />
+                                <DataGridTextColumn Header="Forma de Pagamento" Width="160" Binding="{Binding IdformaPagamentoNavigation.Nome}" />
+                                <DataGridTextColumn Header="Valor" Width="60" Binding="{local:CultureAwareBinding Valor, StringFormat=C2}" />
+                                <DataGridTextColumn Header="Tipo" Width="50" Binding="{Binding Tipo}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </Grid>
             </TabItem>
         </TabControl>
     </Grid>

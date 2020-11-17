@@ -69,8 +69,15 @@ namespace FortalezaDesktop.Views
             ItemsSelecionados = new VendaItemsSelecionados();
             ItemsSelecionados.ItemVendaSelected += ItemsSelecionados_ItemVendaSelected;
             ItemsSelecionados.ReceberClicked += ItemsSelecionados_ReceberClicked;
+            ItemsSelecionados.CancelarSelected += ItemsSelecionados_CancelarSelected;
             gridItemsSelecionados.NavigationService.RemoveBackEntry();
             gridItemsSelecionados.Navigate(ItemsSelecionados);
+        }
+
+        private async void ItemsSelecionados_CancelarSelected(object sender, EventArgs e)
+        {
+            await ItemsSelecionados.Venda.DeleteInstance();
+            await ItemsSelecionados.LimparVenda();
         }
 
         private async void ItemsSelecionados_ReceberClicked(object sender, EventArgs e)
@@ -83,8 +90,16 @@ namespace FortalezaDesktop.Views
 
         private async void VendaPagamentos_PagamentoRealizado(object sender, EventArgs e)
         {
-            ItemsSelecionados.Venda = null;
-            await ItemsSelecionados.LoadVenda();
+            var result = MessageBox.Show(
+                "Deseja imprimir o cupom?",
+                "Concluir venda",
+                MessageBoxButton.YesNo
+                );
+            if(result == MessageBoxResult.Yes)
+            {
+                await ItemsSelecionados.Venda.GerarCupom();
+            }
+            await ItemsSelecionados.LimparVenda();
         }
 
         private async void ItemsSelecionados_ItemVendaSelected(object sender, VendaItemsSelecionados.ItemVendaSelectedEventArgs e)

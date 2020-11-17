@@ -52,13 +52,19 @@ namespace FortalezaDesktop.Views
 
         private async void buttonRemoverCliente_Click(object sender, RoutedEventArgs e)
         {
+            Cliente cliente = new Cliente();
             Button senderAsButton = (Button)sender;
-            Cliente _cliente = new Cliente
+            cliente = await cliente.FindById((int)senderAsButton.Tag);
+            var result = MessageBox.Show(
+                "Deseja realmente remover o cliente " + cliente.Nome + "?",
+                "Remover Cliente",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
             {
-                Id = (int)senderAsButton.Tag
-            };
-            //await _cliente.DeleteInstance();
-            //await LoadClientes();
+                await cliente.DeleteInstance();
+                await LoadClientes();
+            }
         }
 
         private void buttonAdicionar_Click(object sender, RoutedEventArgs e)

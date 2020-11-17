@@ -1,0 +1,61 @@
+﻿<Window x:Class="FortalezaDesktop.Views.GruposView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FortalezaDesktop.Views"
+        mc:Ignorable="d"
+        Title="GruposView" Height="450" Width="800"
+        Loaded="Window_Loaded">
+    <Window.Resources>
+        <local:TinyIntBoolConverter x:Key="tinyIntBoolConverter" />
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Border Grid.Row="0" BorderBrush="DarkGray" BorderThickness="0,0,0,1">
+            <Grid x:Name="gridTitulo" >
+                <Label Content="Grupos" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" FontSize="20"/>
+                <Button Content="Adicionar" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10" Padding="5" Click="buttonAdicionar_Click" />
+            </Grid>
+        </Border>
+        <Grid Grid.Row="1">
+            <DataGrid Margin="10"
+                      x:Name="datagridGrupos"
+                      AutoGenerateColumns="False"
+                      GridLinesVisibility="None"
+                      CanUserAddRows="False"
+                      HeadersVisibility="Column"
+                      CanUserDeleteRows="False"
+                      IsReadOnly="True">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Nome" Width="3*"  Binding="{Binding Nome}" />
+                    <DataGridTextColumn Header="Visível" Width="50" Binding="{Binding Visivel, Converter={StaticResource tinyIntBoolConverter}}" />
+                    <DataGridTemplateColumn Width="30">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Click="ButtonRemoverTabela_Click" BorderThickness="0" Background="Transparent" Tag="{Binding Idgrupo}">
+                                    <Image Width="25" Height="25" Source="../images/trash.png" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Width="30">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Click="ButtonEditTabela_Click" BorderThickness="0" Background="Transparent" Tag="{Binding Idgrupo}">
+                                    <Image Width="25" Height="25" Source="../images/pencil.png" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </Grid>
+</Window>

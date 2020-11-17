@@ -70,5 +70,19 @@ namespace FortalezaDesktop.Views
             clientes.Show();
             Close();
         }
+
+        private void buttonGrupos_Click(object sender, RoutedEventArgs e)
+        {
+            GruposView gruposView = new GruposView();
+            gruposView.Show();
+            Close();
+        }
+
+        private void buttonDadosLoja_Click(object sender, RoutedEventArgs e)
+        {
+            InformacoesEmpresaDetails informacoesEmpresaDetails = new InformacoesEmpresaDetails();
+            informacoesEmpresaDetails.Show();
+            Close();
+        }
     }
 }

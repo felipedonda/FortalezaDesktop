@@ -42,7 +42,7 @@
                 <CheckBox Content="Contabilizar estoque" FontSize="12" Margin="0,0,5,5" IsChecked="{Binding Estoque, Converter={StaticResource tinyIntBoolConverter}}" />
                 <CheckBox Content="Solicitar quantidade" FontSize="12" Margin="0,0,5,5" IsChecked="{Binding UnidadeInteira, Converter={StaticResource tinyIntBoolConverter}}" />
                 <CheckBox Content="Permitir combinações" FontSize="12" Margin="0,0,5,5" IsChecked="{Binding PermiteCombo, Converter={StaticResource tinyIntBoolConverter}}" />
-                <CheckBox Content="Controle fiscal" FontSize="12" Margin="0,0,5,5" />
+                <CheckBox x:Name="CheckboxControlarEstoque" Content="Controle fiscal" FontSize="12" Margin="0,0,5,5" />
             </StackPanel>
             <StackPanel Orientation="Vertical" Grid.Column="3" Grid.Row="0" Grid.RowSpan="2" Margin="10,10,0,0">
                 <TextBlock Text="Imagem" FontSize="12" Margin="0,0,5,5" />

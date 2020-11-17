@@ -7,43 +7,10 @@
       mc:Ignorable="d" 
       d:DesignHeight="480" d:DesignWidth="270"
       Height="auto" Width="270"
-      Title="TemplateCupomFiscal">
+      Title="TemplateCupomFiscal"
+      Background="White">
 
-    <Page.Resources>
-        <Style x:Key="DataGridStyle" TargetType="{x:Type DataGrid}">
-            <Setter Property="ColumnHeaderStyle" Value="{DynamicResource ColumnHeaderStyle}" />
-            <Setter Property="CellStyle" Value="{DynamicResource DataGridCellStyle}" />
-            <Setter Property="Background" Value="White" />
-            <Setter Property="BorderBrush" Value="Black" />
-        </Style>
-        <Style x:Key="ColumnHeaderStyle" TargetType="{x:Type DataGridColumnHeader}">
-            <Setter Property="Background" Value="White" />
-            <Setter Property="Padding" Value="5" />
-            <Setter Property="BorderThickness" Value="0,0,0,1" />
-            <Setter Property="BorderBrush" Value="Black" />
-        </Style>
-        <Style x:Key="DataGridCellStyle" TargetType="{x:Type DataGridCell}">
-            <Setter Property="VerticalContentAlignment" Value="Center" />
-            <Setter Property="HorizontalContentAlignment" Value="Left" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type DataGridCell}">
-                        <Border BorderBrush="Black" BorderThickness="0,0,0,1">
-                            <Grid Background="{TemplateBinding Background}"  Width="auto">
-                                <ContentPresenter VerticalAlignment="Center" Margin="5,2,5,2"/>
-                            </Grid>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <Style x:Key="CheckBoxStyle" TargetType="{x:Type CheckBox}">
-            <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="HorizontalAlignment" Value="Center" />
-        </Style>
-    </Page.Resources>
-
-    <Grid Background="White">
+    <Grid Margin="0,5,0,10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -63,24 +30,24 @@
                 <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
             <Grid Height="45" Grid.Column="0" Grid.Row="0">
-                <Image x:Name="imageLogo" Source="{Binding Logo}"/>
+                <Image x:Name="imageLogo" Source="{Binding LinkLogo}"/>
             </Grid>
             <StackPanel Margin="5,0,0,0" Grid.Column="1" Grid.Row="0" Orientation="Vertical">
                 <TextBlock x:Name="textTitulo" Text="{Binding NomeFantasia}" FontSize="12" Margin="0,0,0,2" />
                 <TextBlock x:Name="textSubtitulo" Text="{Binding RazaoSocial}" FontSize="10"/>
             </StackPanel>
-            <Grid Grid.Row="1" Grid.ColumnSpan="2">
+            <Grid Grid.Row="1" Margin="0,3,0,0" Grid.ColumnSpan="2">
                 <TextBlock x:Name="textInformacoesEmpresa" FontSize="10">
                     <Run Text="{Binding IdenderecoNavigation.StringExtenso, Mode=OneWay}" />
                     <LineBreak />
                     <Run Text="CNPJ: " />
-                    <Run Text="{Binding CNPJ}" />
+                    <Run Text="{Binding CpfFormatted, Mode=OneWay}" />
                     <LineBreak />
                     <Run Text="IE: " />
-                    <Run Text="{Binding IE}" />
+                    <Run Text="{Binding RgFormatted, Mode=OneWay}" />
                     <LineBreak />
                     <Run Text="FONE: " />
-                    <Run Text="{Binding Telefone}" />
+                    <Run Text="{Binding Telefone, Mode=OneWay}" />
                 </TextBlock>
             </Grid>
             <Border  Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" BorderThickness="0,0,0,1" Margin="0,3,0,0" BorderBrush="Black" />
@@ -114,45 +81,59 @@
         </Grid>
         <Grid Grid.Row="3">
             <DataGrid x:Name="mainGrid"
-                      Margin="5"
+                      Margin="5,5,5,15"
                       CanUserAddRows="False"
                       CanUserDeleteRows="False"
                       AutoGenerateColumns="False"
                       HeadersVisibility="Column"
-                      Style="{DynamicResource DataGridStyle}"
                       GridLinesVisibility="None"
                       VerticalAlignment="Top"
                       IsReadOnly="True">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Width="30"  Binding="{Binding IditemNavigation.Iditem, StringFormat={}{0:00000}}">
+                    <DataGridTextColumn Width="10" FontSize="8"  Binding="{Binding Indice , StringFormat={}{0:000}}">
                         <DataGridTextColumn.Header>
-                            <TextBlock FontSize="10">QTD</TextBlock>
+                            <TextBlock FontSize="8">#</TextBlock>
                         </DataGridTextColumn.Header>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Width="25"  Binding="{Binding IditemNavigation.Unidade}">
+                    <DataGridTextColumn Width="27" FontSize="8"  Binding="{Binding IditemNavigation.Iditem, StringFormat={}{0:00000}}">
                         <DataGridTextColumn.Header>
-                            <TextBlock FontSize="10">UN</TextBlock>
+                            <TextBlock FontSize="8">COD</TextBlock>
                         </DataGridTextColumn.Header>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Width="*"  Binding="{Binding IditemNavigation.Descricao}">
+
+
+                    <DataGridTextColumn Width="*" FontSize="8"  Binding="{Binding IditemNavigation.Descricao}">
                         <DataGridTextColumn.Header>
-                            <TextBlock FontSize="10">DESCRIÇÃO</TextBlock>
+                            <TextBlock FontSize="8">DESCRIÇÃO</TextBlock>
                         </DataGridTextColumn.Header>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Width="45"  Binding="{local:CultureAwareBinding Valor, StringFormat=C2}">
+
+                    <DataGridTextColumn Width="25" FontSize="8"  Binding="{local:CultureAwareBinding Quantidade, StringFormat={}{0:0.000}}">
                         <DataGridTextColumn.Header>
-                            <TextBlock FontSize="10">UNIT.</TextBlock>
+                            <TextBlock FontSize="8">QTD</TextBlock>
                         </DataGridTextColumn.Header>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Width="45"  Binding="{local:CultureAwareBinding ValorTotal, StringFormat=C2}">
+
+                    <DataGridTextColumn Width="23" FontSize="8"  Binding="{Binding IditemNavigation.Unidade}">
                         <DataGridTextColumn.Header>
-                            <TextBlock FontSize="10">TOTAL</TextBlock>
+                            <TextBlock FontSize="8">UN</TextBlock>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+
+                    <DataGridTextColumn Width="40" FontSize="8"  Binding="{local:CultureAwareBinding Valor, StringFormat=C2}">
+                        <DataGridTextColumn.Header>
+                            <TextBlock FontSize="8">UNIT.</TextBlock>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Width="40" FontSize="8"  Binding="{local:CultureAwareBinding ValorTotal, StringFormat=C2}">
+                        <DataGridTextColumn.Header>
+                            <TextBlock FontSize="8">TOTAL</TextBlock>
                         </DataGridTextColumn.Header>
                     </DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
-        <Grid x:Name="GridResumoVenda" Grid.Row="4"  Margin="5,0,5,0">
+        <Grid x:Name="GridResumoVenda" Grid.Row="4"  Margin="5,0,5,5">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>

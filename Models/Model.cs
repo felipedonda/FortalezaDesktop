@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
@@ -119,7 +120,7 @@ namespace FortalezaDesktop.Models
                 _path += await (new FormUrlEncodedContent(options)).ReadAsStringAsync();
             }
 
-            HttpRequestMessage httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, Server.URI + _path);
+            HttpRequestMessage httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, Server.APIURI + _path);
 
             HttpResponseMessage httpResponse = await httpClient.SendAsync(httpRequestMessage);
             if (httpResponse.IsSuccessStatusCode)
@@ -139,9 +140,53 @@ namespace FortalezaDesktop.Models
             }
         }
 
+        public static async Task<Stream> GetFile(string path)
+        {
+            HttpClient httpClient = new HttpClient();
+
+            HttpRequestMessage httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, Server.URI + path);
+
+            HttpResponseMessage httpResponse = await httpClient.SendAsync(httpRequestMessage);
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                return await httpResponse.Content.ReadAsStreamAsync();
+            }
+            else
+            {
+                throw new BadResponseStatusCodeException("Bad status code: "
+                    + httpResponse.ReasonPhrase
+                    + "\nOn: " + httpResponse.RequestMessage.RequestUri);
+            }
+        }
+
         public static async Task<T> Get(string path, int id, Dictionary<string, string> options = null)
         {
             return await Get(path + "/" + id, options);
+        }
+
+        public static async Task<string> PostFile(string path, Stream file, string fileName)
+        {
+            HttpClient httpClient = new HttpClient();
+            file.Seek(0, SeekOrigin.Begin);
+            byte[] fileBinaries = new byte[file.Length];
+            await file.ReadAsync(fileBinaries, 0, (int)file.Length);
+
+            ByteArrayContent fileContent = new ByteArrayContent(fileBinaries);
+            MultipartFormDataContent httpContent = new MultipartFormDataContent();
+            httpContent.Add(fileContent, "file", fileName);
+
+            HttpResponseMessage httpResponse = await httpClient.PostAsync(Server.APIURI + path, httpContent);
+
+            if (!httpResponse.IsSuccessStatusCode)
+            {
+                throw new BadResponseStatusCodeException("Bad status code: "
+                    + httpResponse.ReasonPhrase
+                    + "\nOn: " + httpResponse.RequestMessage.RequestUri);
+            }
+            else
+            {
+                return await httpResponse.Content.ReadAsStringAsync();
+            }
         }
 
         public static async Task<T> Post(string path, object item)
@@ -156,7 +201,7 @@ namespace FortalezaDesktop.Models
 
             HttpClient httpClient = new HttpClient();
             StringContent httpContent = new StringContent(itemJson, Encoding.UTF8, "application/json");
-            HttpResponseMessage httpResponse = await httpClient.PostAsync(Server.URI + path, httpContent);
+            HttpResponseMessage httpResponse = await httpClient.PostAsync(Server.APIURI + path, httpContent);
 
             if (httpResponse.IsSuccessStatusCode)
             {
@@ -196,7 +241,7 @@ namespace FortalezaDesktop.Models
 
             HttpClient httpClient = new HttpClient();
             StringContent httpContent = new StringContent(itemJson, Encoding.UTF8, "application/json");
-            HttpResponseMessage httpResponse = await httpClient.PutAsync(Server.URI + path, httpContent);
+            HttpResponseMessage httpResponse = await httpClient.PutAsync(Server.APIURI + path, httpContent);
 
             if (httpResponse.IsSuccessStatusCode)
             {
@@ -219,7 +264,7 @@ namespace FortalezaDesktop.Models
         public static async Task<bool> Delete(string path)
         {
             HttpClient httpClient = new HttpClient();
-            HttpResponseMessage httpResponse = await httpClient.DeleteAsync(Server.URI + path);
+            HttpResponseMessage httpResponse = await httpClient.DeleteAsync(Server.APIURI + path);
 
             if (httpResponse.IsSuccessStatusCode)
             {

@@ -49,13 +49,17 @@ namespace FortalezaDesktop.Views
                 if(PedidoIsNew)
                 {
                     await Pedido.DeleteInstance();
+                    await ItemsSelecionados.LimparVenda();
                 }
                 else
                 {
                     Pedido.Status = 5;
                     await Pedido.UpdateInstance();
+                    await ItemsSelecionados.LimparVenda();
+                    await DeliveryDetails.LoadPedido(Pedido.Idvenda);
                 }
-
+                await LoadListaPedidos();
+                await LoadDeliveryDetails();
             }
             else
             {

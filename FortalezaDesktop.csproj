@@ -4,6 +4,10 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
+    <Version>0.4.0</Version>
+    <Company>Fortaleza</Company>
+    <Authors>Felipe Donda</Authors>
+    <ApplicationIcon>Fortaleza Icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>

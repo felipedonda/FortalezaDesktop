@@ -73,5 +73,18 @@ namespace FortalezaDesktop.Views
         {
             await SelecionarCliente();
         }
+
+        private void ButtonNovoCliente_Click(object sender, RoutedEventArgs e)
+        {
+            ClienteDetails clienteDetails = new ClienteDetails();
+            clienteDetails.AlteracaoRealizada += ClienteDetails_AlteracaoRealizada;
+            clienteDetails.ExigirEndereco = true;
+            clienteDetails.Show();
+        }
+
+        private async void ClienteDetails_AlteracaoRealizada(object sender, EventArgs e)
+        {
+            await LoadClientes();
+        }
     }
 }

@@ -40,6 +40,11 @@ namespace FortalezaDesktop.Utils
                     NullValueHandling = NullValueHandling.Ignore
                 });
 
+                if(endereco == null)
+                {
+                    endereco = new Endereco();
+                }
+
                 endereco.Cep = CEP;
                 endereco.Bairro = result.bairro;
                 endereco.Municipio = result.localidade;

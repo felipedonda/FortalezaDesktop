@@ -31,7 +31,8 @@ namespace FortalezaDesktop.Views
         public async Task LoadPedido(int idpedido)
         {
             Pedido = await new Pedido().FindById(idpedido, new Dictionary<string, string> {
-                {"itemvenda","true"}
+                {"itemvenda","true"},
+                {"pagamento","true" }
             });
             gridPrincipal.DataContext = Pedido;
             await LoadCupomPedido();
@@ -46,10 +47,11 @@ namespace FortalezaDesktop.Views
         {
             if(Pedido != null)
             {
-                TemplateCupomFiscal cupomFiscal = new TemplateCupomFiscal();
-                cupomFiscal.mainGrid.ItemsSource = Pedido.IdvendaNavigation.ItemVenda;
+                TemplateDeliveryDetails cupomRelatorio = new TemplateDeliveryDetails();
+                cupomRelatorio.mainGrid.ItemsSource = Pedido.IdvendaNavigation.ItemVenda;
+                cupomRelatorio.datagridPagamentos.ItemsSource = Pedido.IdvendaNavigation.Pagamento;
                 frameCupomFiscal.NavigationService.RemoveBackEntry();
-                frameCupomFiscal.Navigate(cupomFiscal);
+                frameCupomFiscal.Navigate(cupomRelatorio);
             }
         }
 

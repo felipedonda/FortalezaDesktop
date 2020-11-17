@@ -27,6 +27,11 @@
                         <Label Content="Produtos" />
                     </StackPanel>
                 </Button>
+                <Button Margin="0,5,0,0" Click="buttonGrupos_Click">
+                    <StackPanel Orientation="Horizontal" Width="120" Height="30" >
+                        <Label Content="Grupos" />
+                    </StackPanel>
+                </Button>
                 <Button Margin="0,5,0,0" Click="buttonClientes_Click">
                     <StackPanel Orientation="Horizontal" Width="120" Height="30" >
                         <Label Content="Clientes" />
@@ -53,7 +58,12 @@
                 <Label Content="Configurações" FontSize="14"/>
                 <Button Margin="0,5,0,0" Click="buttonConfiguracoes_Click">
                     <StackPanel Orientation="Horizontal" Width="120" Height="30" >
-                        <Label Content="Configurações" />
+                        <Label Content="Preferências" />
+                    </StackPanel>
+                </Button>
+                <Button Margin="0,5,0,0" Click="buttonDadosLoja_Click">
+                    <StackPanel Orientation="Horizontal" Width="120" Height="30" >
+                        <Label Content="Dados da Loja" />
                     </StackPanel>
                 </Button>
             </StackPanel>

@@ -21,18 +21,31 @@ namespace FortalezaDesktop.Views
     /// </summary>
     public partial class ClienteDetails : Window
     {
+        public event EventHandler AlteracaoRealizada;
+
         public Cliente Cliente { get; set; }
+
+        public bool ExigirEndereco { get; set; }
+
         public ClienteDetails()
         {
             InitializeComponent();
+            
             textblockErroCpf.Visibility = Visibility.Hidden;
+            TextblockLogradouroErro.Visibility = Visibility.Hidden;
+            TextblockNumeroErro.Visibility = Visibility.Hidden;
 
             buttonAlterar.Visibility = Visibility.Collapsed;
             buttonRemover.Visibility = Visibility.Collapsed;
+
+
+            ExigirEndereco = false;
+
             Cliente cliente = new Cliente
             {
                 IdenderecoNavigation = new Endereco()
             };
+
             LoadCliente(cliente);
         }
 
@@ -61,6 +74,41 @@ namespace FortalezaDesktop.Views
             Cliente = (Cliente)gridCliente.DataContext;
         }
 
+        public async Task<bool> ValidateCliente()
+        {
+            textblockErroCpf.Visibility = Visibility.Hidden;
+            bool validated = true;
+
+            if (Cliente.Cpf != null)
+            {
+                if (Cliente.Cpf.Length != 11 & Cliente.Cpf.Length != 14)
+                {
+                    textblockErroCpf.Text = "CPF ou CNPJ inválido.";
+                    textblockErroCpf.Visibility = Visibility.Visible;
+                    validated = false;
+                }
+            }
+
+            if (ExigirEndereco)
+            {
+                if(string.IsNullOrEmpty(TextboxLogradouro.Text))
+                {
+                    TextblockLogradouroErro.Text = "Logradouro vazio.";
+                    TextblockLogradouroErro.Visibility = Visibility.Visible;
+                    validated = false;
+                }
+
+                if (string.IsNullOrEmpty(TextboxNumero.Text))
+                {
+                    TextblockNumeroErro.Text = "Número vazio.";
+                    TextblockNumeroErro.Visibility = Visibility.Visible;
+                    validated = false;
+                }
+            }
+
+            return validated;
+        }
+
         private async void buttonConsultarCEP(object sender, RoutedEventArgs e)
         {
             await GetClientFromForm();
@@ -79,23 +127,11 @@ namespace FortalezaDesktop.Views
         private async void buttonCriar_Click(object sender, RoutedEventArgs e)
         {
             await GetClientFromForm();
-            bool validated = true;
 
-            textblockErroCpf.Visibility = Visibility.Hidden;
-            
-            if(Cliente.Cpf != null)
-            {
-                if (Cliente.Cpf.Length != 11 & Cliente.Cpf.Length != 14)
-                {
-                    validated = false;
-                    textblockErroCpf.Text = "CPF ou CNPJ inválido.";
-                    textblockErroCpf.Visibility = Visibility.Visible;
-                }
-            }
-
-            if(validated)
+            if(await ValidateCliente())
             {
                 await Cliente.SaveInstance();
+                AlteracaoRealizada?.Invoke(sender, new EventArgs());
                 Close();
             }
         }
@@ -103,13 +139,28 @@ namespace FortalezaDesktop.Views
         private async void buttonAlterar_Click(object sender, RoutedEventArgs e)
         {
             await GetClientFromForm();
-            await Cliente.UpdateInstance();
-            Close();
+            if(await ValidateCliente())
+            {
+                if (await Cliente.UpdateInstance())
+                {
+                    AlteracaoRealizada?.Invoke(sender, new EventArgs());
+                    Close();
+                }
+            }
         }
 
-        private void buttonRemover_Click(object sender, RoutedEventArgs e)
+        private async void buttonRemover_Click(object sender, RoutedEventArgs e)
         {
-
+            var result = MessageBox.Show(
+                "Deseja realmente remover o cliente " + Cliente.Nome + "?",
+                "Remover Cliente",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                await Cliente.DeleteInstance();
+                Close();
+            }
         }
 
         private void buttonCancelar_Click(object sender, RoutedEventArgs e)

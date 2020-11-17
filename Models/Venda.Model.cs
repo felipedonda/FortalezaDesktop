@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FortalezaDesktop.Views;
+using FortalezaDesktop.Views.Relatorios;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
 using System.Text;
@@ -40,11 +42,52 @@ namespace FortalezaDesktop.Models
             set { Idvenda = value ?? default; }
         }
 
+        public async Task GerarCupom()
+        {
+            TemplateCupomFiscal cupomFiscal = new TemplateCupomFiscal();
+            cupomFiscal.GridInformacoesDelivery.Visibility = Visibility.Collapsed;
+            cupomFiscal.GridResumoVenda.DataContext = this;
+            cupomFiscal.GridNumeroPedido.Visibility = Visibility.Collapsed;
+
+            if(IdclienteNavigation != null)
+            {
+                cupomFiscal.GridReciboCliente.DataContext = IdclienteNavigation;
+            }
+            else
+            {
+                cupomFiscal.GridReciboCliente.Visibility = Visibility.Collapsed;
+            }
+
+            InformacoesEmpresa informacoesEmpresa = await new InformacoesEmpresa().FindById(1);
+            cupomFiscal.gridHeader.DataContext = informacoesEmpresa;
+
+            cupomFiscal.TextHoraRecibo.Text = HoraEntrada.ToString("dd/MM/yy");
+            cupomFiscal.TextHoraRecibo.Text += " " + HoraEntrada.ToString("hh:mm");
+            cupomFiscal.mainGrid.ItemsSource = ItemVenda;
+
+            RelatoriosVizualizador vizualizador = new RelatoriosVizualizador();
+            vizualizador.LoadChildPage(cupomFiscal);
+            vizualizador.Show();
+        }
+
         public async Task<int> GetVendaAberta()
         {
             try
             {
                 return await ServerEntry<int>.Get(Path + "/actions/aberta");
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message + "\n\nStack:\n" + e.StackTrace, "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return default;
+            }
+        }
+
+        public async Task<bool> HasVendaAberta()
+        {
+            try
+            {
+                return await ServerEntry<bool>.Get(Path + "/actions/hasaberta");
             }
             catch (Exception e)
             {

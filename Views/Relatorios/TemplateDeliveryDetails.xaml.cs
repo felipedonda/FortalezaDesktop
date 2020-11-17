@@ -10,16 +10,15 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using FortalezaDesktop.Models;
 
 namespace FortalezaDesktop.Views.Relatorios
 {
     /// <summary>
-    /// Interaction logic for TemplateCupomFiscal.xaml
+    /// Interaction logic for TemplateDeliveryDetails.xaml
     /// </summary>
-    public partial class TemplateCupomFiscal : Page
+    public partial class TemplateDeliveryDetails : Page
     {
-        public TemplateCupomFiscal()
+        public TemplateDeliveryDetails()
         {
             InitializeComponent();
         }

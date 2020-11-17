@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FortalezaDesktop.Views"
         mc:Ignorable="d"
-        Title="VendaCancelarItem" Height="auto" Width="auto"
+        Title="VendaCancelarItem" Height="auto" Width="280"
         SizeToContent="Height">
     <Grid>
         <StackPanel Orientation="Vertical" Margin="10,10,10,15">

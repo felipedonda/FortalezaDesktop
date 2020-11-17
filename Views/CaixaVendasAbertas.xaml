@@ -1,0 +1,47 @@
+﻿<Window x:Class="FortalezaDesktop.Views.CaixaVendasAbertas"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FortalezaDesktop.Views"
+        mc:Ignorable="d"
+        Title="CaixaVendasAbertas" Height="450" Width="800"
+        Loaded="Window_Loaded">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <TextBlock Text="Deseja fechar o Caixa com as seguintes Vendas em aberto?" Margin="10,10,10,0" FontSize="18"/>
+        </Grid>
+        <Grid Grid.Row="1">
+            <DataGrid DockPanel.Dock="Top"
+                          Margin="10"
+                          x:Name="DatagridVendasAbertas"
+                          AutoGenerateColumns="False"
+                          GridLinesVisibility="None"
+                          HeadersVisibility="Column"
+                          CanUserAddRows="False"
+                          CanUserDeleteRows="False"
+                          IsReadOnly="True"
+                          SelectedCellsChanged="DatagridFechamentos_MouseDoubleClick">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Data" Width="80" Binding="{Binding Idcaixa}" />
+                    <DataGridTextColumn Header="Hora" Width="60" Binding="{Binding HoraAbertura, StringFormat=dd/MM/yy}" />
+                    <DataGridTextColumn Header="Número" Width="70" Binding="{Binding HoraAbertura, StringFormat=hh:mm}" />
+                    <DataGridTextColumn Header="Tipo" Width="2*" Binding="{Binding Nome}" />
+                    <DataGridTextColumn Header="Situação" Width="2*" Binding="{Binding IdresponsavelNavigation.Nome}" />
+                    <DataGridTextColumn Header="Pessoas" Width="70" Binding="{local:CultureAwareBinding HoraFechamento, StringFormat=dd/MM/yy}" />
+                    <DataGridTextColumn Header="Valor Total" Width="90" Binding="{local:CultureAwareBinding HoraFechamento, StringFormat=hh:mm}" />
+                    <DataGridTextColumn Header="Responsável" Width="3*" Binding="{local:CultureAwareBinding HoraFechamento, StringFormat=hh:mm}" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" FlowDirection="RightToLeft" Margin="10,5,10,5">
+            <Button x:Name="buttonConfirmar" Click="ButtonConfirmar_Click" Content="Confirmar" HorizontalAlignment="Left" FontSize="14" Width="80" Margin="0,0,5,5" Padding="5" />
+            <Button x:Name="buttonCancelar" Click="ButtonCancelar_Click" Content="Cancelar" HorizontalAlignment="Left" FontSize="14" Width="80" Margin="0,0,5,5" Padding="5" />
+        </StackPanel>
+    </Grid>
+</Window>

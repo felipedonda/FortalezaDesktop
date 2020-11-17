@@ -33,13 +33,54 @@ namespace FortalezaDesktop.Views
         private async void ButtonOk(object sender, RoutedEventArgs e)
         {
             TemplateRelatorioProdutosVendidos relatorio = new TemplateRelatorioProdutosVendidos();
-            relatorio.textSubtitulo.Text = "Período de: 00/00/00 até: 00/00/00.";
-            List<ItemVenda> itemsVendidos = await (new ItemVenda()).FindAll();
+            relatorio.textSubtitulo.Text =
+                "Período de: " + (datePickerFrom.SelectedDate ?? default).ToString("dd/MM/yy")
+                + " até: " + (datePicker.SelectedDate ?? default).ToString("dd/MM/yy");
+            List<ItemVenda> itemsVendidos = await (new ItemVenda()).FindAll( new Dictionary<string, string> {
+                {"filtroData", "true"},
+                {"filtroDataInicio", (datePickerFrom.SelectedDate ?? default).ToString()},
+                {"filtroDataFinal", (datePicker.SelectedDate ?? default).ToString()}
+            });
+
+            if(checkboxCustoUnidade.IsChecked ?? false)
+            {
+                itemsVendidos = itemsVendidos
+                    .GroupBy(e => e.Iditem)
+                    .Select(e => new ItemVenda
+                    {
+                        IditemNavigation = e.FirstOrDefault().IditemNavigation,
+                        Custo = e.Sum(v => v.Custo)/e.Count(),
+                        Quantidade = e.Sum(v => v.Quantidade),
+                        Valor = e.Sum(v => v.Valor) / e.Count()
+                    })
+                    .ToList();
+            }
+
             relatorio.mainGrid.ItemsSource = itemsVendidos;
 
             RelatoriosVizualizador vizualizador = new RelatoriosVizualizador();
             vizualizador.LoadChildPage(relatorio);
             vizualizador.Show();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+
+
+            DateTime dataInicial = new DateTime(
+                DateTime.UtcNow.Year,
+                DateTime.UtcNow.Month,
+                DateTime.UtcNow.Day,
+                0, 0, 0).AddDays(-1);
+
+            DateTime dataFinal = new DateTime(
+                DateTime.UtcNow.Year,
+                DateTime.UtcNow.Month,
+                DateTime.UtcNow.Day,
+                23, 59, 59);
+
+            datePickerFrom.SelectedDate = dataInicial;
+            datePicker.SelectedDate = dataFinal;
         }
     }
 }

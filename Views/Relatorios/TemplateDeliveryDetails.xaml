@@ -1,0 +1,135 @@
+﻿<Page x:Class="FortalezaDesktop.Views.Relatorios.TemplateDeliveryDetails"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:FortalezaDesktop.Views"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="280"
+      Title="TemplateDeliveryDetails"
+      Background="White">
+
+    <Grid Margin="0,5,0,10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid x:Name="GridNumeroPedido" Grid.Row="0"  Margin="5,8,5,5">
+            <TextBlock x:Name="TextNumeroPedido" TextAlignment="Center" Text="Pedido: " FontSize="16" />
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <DataGrid x:Name="mainGrid"
+                      Margin="5,5,5,15"
+                      CanUserAddRows="False"
+                      CanUserDeleteRows="False"
+                      AutoGenerateColumns="False"
+                      HeadersVisibility="Column"
+                      GridLinesVisibility="None"
+                      VerticalAlignment="Top"
+                      IsReadOnly="True">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Width="30"  Binding="{Binding IditemNavigation.Iditem, StringFormat={}{0:00000}}">
+                        <DataGridTextColumn.Header>
+                            <TextBlock FontSize="10">QTD</TextBlock>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Width="25"  Binding="{Binding IditemNavigation.Unidade}">
+                        <DataGridTextColumn.Header>
+                            <TextBlock FontSize="10">UN</TextBlock>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Width="*"  Binding="{Binding IditemNavigation.Descricao}">
+                        <DataGridTextColumn.Header>
+                            <TextBlock FontSize="10">DESCRIÇÃO</TextBlock>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Width="45"  Binding="{local:CultureAwareBinding Valor, StringFormat=C2}">
+                        <DataGridTextColumn.Header>
+                            <TextBlock FontSize="10">UNIT.</TextBlock>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Width="45"  Binding="{local:CultureAwareBinding ValorTotal, StringFormat=C2}">
+                        <DataGridTextColumn.Header>
+                            <TextBlock FontSize="10">TOTAL</TextBlock>
+                        </DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+
+        <Grid  x:Name="GridTituloPagamentos" Grid.Row="2"  Margin="5,8,5,5">
+            <TextBlock TextAlignment="Center" Text="Pagamentos " FontSize="16" />
+        </Grid>
+
+        <Grid x:Name="GridPagamentos" Grid.Row="3">
+            <DataGrid x:Name="datagridPagamentos"
+                        Margin="5,5,5,10"
+                          AutoGenerateColumns="False"
+                          CanUserAddRows="False"
+                          GridLinesVisibility="None"
+                          HeadersVisibility="Column"
+                          IsReadOnly="True">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Pagamento" Width="*" Binding="{Binding IdmovimentoNavigation.IdformaPagamentoNavigation.Nome}" />
+                    <DataGridTextColumn Header="Valor" Width="60" Binding="{local:CultureAwareBinding IdmovimentoNavigation.Valor, StringFormat=C2}" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+
+        <Grid x:Name="GridResumoVenda" Grid.Row="4"  Margin="5,0,5,5">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Column="0" Grid.Row="0">
+                    Total Bruto dos Itens <LineBreak />
+                    Desconto sobre Itens <LineBreak />
+                    Acréscimo sobre Itens <LineBreak />
+                    <Run FontWeight="Bold">Valor Total R$</Run>
+                </TextBlock>
+                <StackPanel Grid.Row="1" Grid.Column="0">
+                    <ItemsControl ItemsSource="{Binding Pagamento}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding IdmovimentoNavigation.IdformaPagamentoNavigation.Nome}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+
+                <TextBlock Grid.Column="0" Grid.Row="3" Text="Troco" />
+
+                <TextBlock TextAlignment="Right" Grid.Column="1" Grid.Row="0">
+                    <Run Text="{local:CultureAwareBinding ValorTotal, StringFormat=C2, Mode=OneWay}" /> <LineBreak />
+                    <Run Text="{local:CultureAwareBinding Desconto, StringFormat=C2, Mode=OneWay}" /> <LineBreak />
+                    <Run Text="{local:CultureAwareBinding Acrescimo, StringFormat=C2, Mode=OneWay}" /> <LineBreak />
+                    <Run FontWeight="Bold" Text="{local:CultureAwareBinding ValorLiquido, StringFormat=C2, Mode=OneWay}"/>
+                </TextBlock>
+
+
+                <StackPanel Grid.Row="1" Grid.Column="1">
+                    <ItemsControl ItemsSource="{Binding Pagamento}" >
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock TextAlignment="Right" Text="{local:CultureAwareBinding IdmovimentoNavigation.Valor, StringFormat=C2}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+
+                <TextBlock Grid.Column="1" Grid.Row="3" TextAlignment="Right" Text="{local:CultureAwareBinding Troco, StringFormat=C2}" />
+
+            </Grid>
+        </Grid>
+    </Grid>
+</Page>
