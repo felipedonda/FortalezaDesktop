@@ -42,34 +42,6 @@ namespace FortalezaDesktop.Models
             set { Idvenda = value ?? default; }
         }
 
-        public async Task GerarCupom()
-        {
-            TemplateCupomFiscal cupomFiscal = new TemplateCupomFiscal();
-            cupomFiscal.GridInformacoesDelivery.Visibility = Visibility.Collapsed;
-            cupomFiscal.GridResumoVenda.DataContext = this;
-            cupomFiscal.GridNumeroPedido.Visibility = Visibility.Collapsed;
-
-            if(IdclienteNavigation != null)
-            {
-                cupomFiscal.GridReciboCliente.DataContext = IdclienteNavigation;
-            }
-            else
-            {
-                cupomFiscal.GridReciboCliente.Visibility = Visibility.Collapsed;
-            }
-
-            InformacoesEmpresa informacoesEmpresa = await new InformacoesEmpresa().FindById(1);
-            cupomFiscal.gridHeader.DataContext = informacoesEmpresa;
-
-            cupomFiscal.TextHoraRecibo.Text = HoraEntrada.ToString("dd/MM/yy");
-            cupomFiscal.TextHoraRecibo.Text += " " + HoraEntrada.ToString("hh:mm");
-            cupomFiscal.mainGrid.ItemsSource = ItemVenda;
-
-            RelatoriosVizualizador vizualizador = new RelatoriosVizualizador();
-            vizualizador.LoadChildPage(cupomFiscal);
-            vizualizador.Show();
-        }
-
         public async Task<int> GetVendaAberta()
         {
             try
@@ -136,9 +108,9 @@ namespace FortalezaDesktop.Models
                 ItemVenda = result.ItemVenda;
                 ValorTotal = result.ValorTotal;
             }
-            catch (Exception e)
+            catch (BadResponseStatusCodeException e)
             {
-                MessageBox.Show(e.Message + "\n\nStack:\n" + e.StackTrace, "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                ServerEntry.CommonExceptionHandler(e);
                 return false;
             }
             return true;
@@ -156,9 +128,9 @@ namespace FortalezaDesktop.Models
                 Pagamento = result.Pagamento;
                 ValorPago = result.ValorPago;
             }
-            catch (Exception e)
+            catch (BadResponseStatusCodeException e)
             {
-                MessageBox.Show(e.Message + "\n\nStack:\n" + e.StackTrace, "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                ServerEntry.CommonExceptionHandler(e);
                 return false;
             }
             return true;

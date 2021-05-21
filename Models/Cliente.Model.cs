@@ -17,11 +17,25 @@ namespace FortalezaDesktop.Models
             set { Idcliente = value ?? default; }
         }
 
-        public decimal CreditoEmConta { get; set; }
+        public decimal SaldoEmConta { get; set; }
 
         public async Task<Cliente> FindByCPF(string CPF)
         {
             return await ServerEntry<Cliente>.Get(Path + "/" + CPF, new Dictionary<string, string> { {"cpf","true"} });
+        }
+
+        public async Task<bool> SaveMovimento(Movimento movimento)
+        {
+            try
+            {
+                await ServerEntry<Movimento>.Post(Path + "/" + Id + "/movimento", movimento);
+            }
+            catch (BadResponseStatusCodeException e)
+            {
+                ServerEntry.CommonExceptionHandler(e);
+                return false;
+            }
+            return true;
         }
 
         [JsonIgnore]
@@ -55,6 +69,27 @@ namespace FortalezaDesktop.Models
                         formatted += Cpf.Substring(8, 4) + "-" ;
                         formatted += Cpf.Substring(12, 2);
                     }
+                    return formatted;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
+        [JsonIgnore]
+        public string RgFormatted
+        {
+            get
+            {
+                if (Rg != null)
+                {
+                    string formatted = "";
+                    formatted += Cpf.Substring(0, 2) + ".";
+                    formatted += Cpf.Substring(2, 3) + ".";
+                    formatted += Cpf.Substring(5, 3) + "-";
+                    formatted += Cpf.Substring(8, 1);
                     return formatted;
                 }
                 else

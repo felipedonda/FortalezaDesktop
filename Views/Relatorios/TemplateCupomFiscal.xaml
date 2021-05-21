@@ -64,7 +64,7 @@
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" Grid.Column="0" x:Name="TextTituloRecibo" Text="Recibo: " FontSize="14" Margin="0,0,0,3" />
                 <TextBlock Grid.Row="0" Grid.Column="1" x:Name="TextHoraRecibo" Text="Hora" FontSize="14" Margin="0,0,0,3" />
-                <TextBlock Grid.Row="1" Grid.ColumnSpan="2" FontSize="12" Margin="0,0,0,2">
+                <TextBlock x:Name="GridInfoCliente" Grid.Row="1" Grid.ColumnSpan="2" FontSize="12" Margin="0,0,0,2">
                     <Run Text="Nome: " />
                     <Run Text="{Binding Nome}" />
                     <LineBreak />

@@ -22,7 +22,7 @@ namespace FortalezaDesktop.Models
         {
             try
             {
-                string logo = await ServerEntry<InformacoesEmpresa>.PostFile(Path + "/" + IdinformacoesEmpresa + "/imagem", image, fileName);
+                string logo = await ServerEntry.PostFile(Path + "/" + IdinformacoesEmpresa + "/imagem", image, fileName);
                 if(logo != null)
                 {
                     Logo = logo;
@@ -45,7 +45,7 @@ namespace FortalezaDesktop.Models
         {
             try
             {
-                return await ServerEntry<InformacoesEmpresa>.GetFile("/images/" + Logo);
+                return await ServerEntry.GetFile("/images/" + Logo);
             }
             catch (Exception e)
             {

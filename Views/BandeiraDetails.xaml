@@ -1,0 +1,65 @@
+﻿<Window x:Class="FortalezaDesktop.Views.BandeiraDetails"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FortalezaDesktop.Views"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        SizeToContent="Height"
+        Title="Bandeira" Height="230" Width="300"
+        KeyDown="Window_KeyDown"
+        Loaded="Window_Loaded">
+    <Window.Resources>
+        <local:TinyIntBoolConverter x:Key="tinyIntBoolConverter" />
+    </Window.Resources>
+    <Grid Margin="10" x:Name="GridPrincipal">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="Nome da bandeira" Margin="0,0,0,5" />
+                <TextBox Text="{Binding Nome}" Margin="0,0,0,10" />
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,15" >
+                    <TextBlock Text="Ordem:" Margin="0,0,5,0" />
+                    <TextBox Text="{Binding Ordem}" Width="40"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,15" >
+                    <TextBlock Text="1º Prazo:" Margin="0,0,5,0" />
+                    <TextBox Text="{Binding Prazo1}" Width="60"/>
+                    <TextBlock Text="Taxa:" Margin="15,0,5,0" />
+                    <TextBox Text="{Binding Taxa1}" Width="60"/>
+                    <TextBlock Text="%" Margin="3,0,5,0" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,10" >
+                    <TextBlock Text="2º Prazo:" Margin="0,0,5,0" />
+                    <TextBox Text="{Binding Prazo2}" Width="60"/>
+                    <TextBlock Text="Taxa:" Margin="15,0,5,0" />
+                    <TextBox Text="{Binding Taxa2}" Width="60"/>
+                    <TextBlock Text="%" Margin="3,0,5,0" />
+                </StackPanel>
+
+            </StackPanel>
+        </Grid>
+
+        <UniformGrid Grid.Row="1" Columns="3" FlowDirection="RightToLeft" Margin="0,15,0,0" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            <Button Height="30" Margin="0,0,5,0" Width="80" Click="ButtonCancelar_Click" >
+                <TextBlock TextAlignment="Center">
+                        Cancelar
+                </TextBlock>
+            </Button>
+            <Button x:Name="ButtonAlterar" Height="30" Margin="0,0,5,0" Width="80" Click="ButtonAlterar_Click" >
+                <TextBlock TextAlignment="Center">
+                        Salvar
+                </TextBlock>
+            </Button>
+            <Button x:Name="ButtonCriar" Height="30" Margin="0,0,5,0" Width="80" Click="ButtonCriar_Click" >
+                <TextBlock TextAlignment="Center">
+                        Criar
+                </TextBlock>
+            </Button>
+        </UniformGrid>
+    </Grid>
+</Window>

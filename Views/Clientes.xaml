@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:FortalezaDesktop.Views"
         mc:Ignorable="d"
         Title="Clientes" Height="450" Width="810"
+        WindowStartupLocation="CenterScreen"
         Loaded="OnLoad">
 
     <Window.Resources>
@@ -60,7 +61,7 @@
             <DataGrid Margin="10" x:Name="datagridClientes" AutoGenerateColumns="False" GridLinesVisibility="None" CanUserAddRows="False" HeadersVisibility="Column" Style="{DynamicResource DataGridStyle}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Nome" Width="3*"  Binding="{Binding Nome}" />
-                    <DataGridTextColumn Header="Cpf" Width="95" Binding="{Binding Cpf}" />
+                    <DataGridTextColumn Header="Cpf" Width="95" Binding="{Binding CpfFormatted}" />
                     <DataGridTextColumn Header="Telefone" Width="80" Binding="{Binding Telefone}" />
                     <DataGridTextColumn Header="E-mail" Width="2*" Binding="{Binding Email}" />
                     <DataGridTemplateColumn Width="30">

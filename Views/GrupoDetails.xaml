@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FortalezaDesktop.Views"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
         Title="GrupoDetails" Height="auto" Width="300"
+        KeyDown="Window_KeyDown"
         SizeToContent="Height">
     <Window.Resources>
         <local:TinyIntBoolConverter x:Key="tinyIntBoolConverter" />
@@ -30,7 +32,7 @@
             </Button>
             <Button x:Name="ButtonAlterar" Height="30" Margin="0,0,5,0" Width="80" Click="ButtonAlterar_Click" >
                 <TextBlock TextAlignment="Center">
-                        Alterar
+                        Salvar
                 </TextBlock>
             </Button>
             <Button x:Name="ButtonCriar" Height="30" Margin="0,0,5,0" Width="80" Click="ButtonCriar_Click" >

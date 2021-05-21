@@ -4,7 +4,6 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:FortalezaDesktop.Views"
-      xmlns:utils="clr-namespace:FortalezaDesktop.Wpf.Utils"
       mc:Ignorable="d" 
       d:DesignHeight="654" d:DesignWidth="735"
       Title="VendaView"
@@ -50,12 +49,12 @@
             <ColumnDefinition MinWidth="320" Width="2*"/>
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="0">
-            <Frame x:Name="gridSelecaoProdutos" NavigationUIVisibility="Hidden">
+            <Frame IsTabStop="False" x:Name="gridSelecaoProdutos" NavigationUIVisibility="Hidden">
 
             </Frame>
         </Grid>
         <Grid Grid.Column="1">
-            <Frame x:Name="gridItemsSelecionados" NavigationUIVisibility="Hidden">
+            <Frame IsTabStop="False" x:Name="gridItemsSelecionados" NavigationUIVisibility="Hidden">
             </Frame>
         </Grid>
     </Grid>

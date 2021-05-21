@@ -4,5 +4,17 @@
              xmlns:local="clr-namespace:FortalezaDesktop"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
+
+        <Style TargetType="DataGrid" x:Key="Datagrid-TabRow">
+            <Setter Property="CellStyle" Value="{DynamicResource DatagridCell_NoTab}" />
+            <Setter Property="RowStyle" Value="{DynamicResource DatagridRow_Tab}" />
+        </Style>
+        
+        <Style TargetType="DataGridCell" x:Key="DatagridCell_NoTab">
+            <Setter Property="IsTabStop" Value="False" />
+        </Style>
+        <Style TargetType="DataGridRow" x:Key="DatagridRow_Tab">
+            <Setter Property="IsTabStop" Value="True" />
+        </Style>
     </Application.Resources>
 </Application>

@@ -4,8 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FortalezaDesktop.Views"
+        WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
         Title="Caixas" Height="450" Width="800"
+        KeyDown="Window_KeyDown"
         Loaded="OnLoad">
 
     <Window.Resources>
@@ -60,19 +62,19 @@
                             <StackPanel Orientation="Horizontal">
                                 <StackPanel Orientation="Vertical">
                                     <TextBlock Text="Caixa" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,5" FontSize="12"/>
-                                    <TextBox Text="{Binding Nome}" MinWidth="100" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,10,10" FontSize="12" IsReadOnly="True"/>
+                                    <TextBox Text="{Binding IdnomeCaixaNavigation.Nome}" VerticalContentAlignment="Center" MinWidth="100" Height="22" Margin="10,0,10,10" FontSize="12" IsReadOnly="True"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Vertical">
                                     <TextBlock Text="Data Abertura" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,5" FontSize="12"/>
-                                    <TextBox Text="{Binding HoraAbertura, StringFormat=dd/MM/yyyy}" MinWidth="100" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,10,10" FontSize="12" IsReadOnly="True"/>
+                                    <DatePicker SelectedDate="{Binding Abertura.Hora}" FontSize="12" AllowDrop="False" />
                                 </StackPanel>
                                 <StackPanel Orientation="Vertical">
                                     <TextBlock Text="Hora Abertura" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,5" FontSize="12"/>
-                                    <TextBox Text="{Binding HoraAbertura, StringFormat=hh:mm:ss}" MinWidth="100" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,10,10" FontSize="12" IsReadOnly="True"/>
+                                    <local:TimePicker Value="{Binding Abertura.Hora}" Margin="10,0,10,10" MinWidth="100" FontSize="12" AllowChanges="False" />
                                 </StackPanel>
                                 <StackPanel Orientation="Vertical">
                                     <TextBlock Text="Responsável" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,5" FontSize="12"/>
-                                    <TextBox Text="{Binding Responsavel.Nome}" MinWidth="100" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,10,10" FontSize="12" IsReadOnly="True"/>
+                                    <TextBox Text="{Binding Abertura.IdusuarioNavigation.Nome}" MinWidth="100" Height="22" Margin="10,0,10,10" FontSize="12" IsReadOnly="True"/>
                                 </StackPanel>
                             </StackPanel>
                         </Grid>
@@ -90,8 +92,8 @@
                                 <DataGridTextColumn Header="Hora" Width="60" Binding="{Binding HoraEntrada, StringFormat=hh:mm:ss}" />
                                 <DataGridTextColumn Header="Descricao" Width="*" Binding="{Binding Descricao}" />
                                 <DataGridTextColumn Header="Forma de Pagamento" Width="160" Binding="{Binding IdformaPagamentoNavigation.Nome}" />
-                                <DataGridTextColumn Header="Valor" Width="60" Binding="{local:CultureAwareBinding Valor, StringFormat=C2}" />
-                                <DataGridTextColumn Header="Tipo" Width="50" Binding="{Binding Tipo}" />
+                                <DataGridTextColumn Header="Valor" Width="65" Binding="{local:CultureAwareBinding Valor, StringFormat=C2}" />
+                                <DataGridTextColumn Header="Tipo" Width="65" Binding="{Binding TipoString}" />
                             </DataGrid.Columns>
                         </DataGrid>
                     </Grid>
@@ -101,7 +103,7 @@
                                 <Button Content="Abrir caixa" Width="80" VerticalAlignment="Center" Margin="10" Padding="5" Click="ButtonAbrirCaixa_Click" />
                                 <Button Content="Suprimento" Width="80" VerticalAlignment="Center" Margin="10" Padding="5" Click="ButtonSuprimento_Click"/>
                                 <Button Content="Sangria" Width="80" VerticalAlignment="Center" Margin="10" Padding="5" Click="ButtonSangria_Click"/>
-                                <Button Content="Fechar caixa" Width="80" VerticalAlignment="Center" Margin="10" Padding="5" Click="ButtonFecharCaixa_Click"/>
+                                <Button x:Name="ButtonFecharCaixa" Content="Fechar caixa" Width="80" VerticalAlignment="Center" Margin="10" Padding="5" Click="ButtonFecharCaixa_Click"/>
                             </StackPanel>
                         </Grid>
                     </Border>
@@ -132,11 +134,11 @@
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Margin="5" Grid.Column="2">
                             <TextBlock Text="Data Inicial" Margin="0,0,0,5" FontSize="12"/>
-                            <TextBox x:Name="TextboxDataInicial" Height="22" FontSize="12"/>
+                            <DatePicker x:Name="DatePickerDataInicial" FontSize="12" SelectedDateChanged="DatePicked"/>
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Margin="5" Grid.Column="3">
                             <TextBlock Text="Data Final" Margin="0,0,0,5" FontSize="12"/>
-                            <TextBox x:Name="TextboxDataFinal" Height="22" FontSize="12"/>
+                            <DatePicker x:Name="DatePickerDataFinal" FontSize="12" SelectedDateChanged="DatePicked"/>
                         </StackPanel>
                     </Grid>
                     <Grid Grid.Row="1">
@@ -152,12 +154,12 @@
                           SelectedCellsChanged="DatagridFechamentos_MouseDoubleClick">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Registro" Width="70" Binding="{Binding Idcaixa}" />
-                                <DataGridTextColumn Header="Abertura" Width="80" Binding="{Binding HoraAbertura, StringFormat=dd/MM/yy}" />
-                                <DataGridTextColumn Header="Hora" Width="60" Binding="{Binding HoraAbertura, StringFormat=hh:mm}" />
-                                <DataGridTextColumn Header="Caixa" Width="*" Binding="{Binding Nome}" />
-                                <DataGridTextColumn Header="Responsável" Width="*" Binding="{Binding IdresponsavelNavigation.Nome}" />
-                                <DataGridTextColumn Header="Fechamento" Width="80" Binding="{local:CultureAwareBinding HoraFechamento, StringFormat=dd/MM/yy}" />
-                                <DataGridTextColumn Header="Hora" Width="60" Binding="{local:CultureAwareBinding HoraFechamento, StringFormat=hh:mm}" />
+                                <DataGridTextColumn Header="Abertura" Width="80" Binding="{Binding Abertura.Hora, StringFormat=dd/MM/yy}" />
+                                <DataGridTextColumn Header="Hora" Width="60" Binding="{Binding Abertura.Hora, StringFormat=hh:mm}" />
+                                <DataGridTextColumn Header="Caixa" Width="*" Binding="{Binding IdnomeCaixaNavigation.Nome}" />
+                                <DataGridTextColumn Header="Responsável" Width="*" Binding="{Binding Fechamento.IdusuarioNavigation.Nome}" />
+                                <DataGridTextColumn Header="Fechamento" Width="80" Binding="{local:CultureAwareBinding Fechamento.Hora, StringFormat=dd/MM/yy}" />
+                                <DataGridTextColumn Header="Hora" Width="60" Binding="{local:CultureAwareBinding Fechamento.Hora, StringFormat=hh:mm}" />
                             </DataGrid.Columns>
                         </DataGrid>
                     </Grid>
@@ -176,7 +178,7 @@
                                 <DataGridTextColumn Header="Descricao" Width="*" Binding="{Binding Descricao}" />
                                 <DataGridTextColumn Header="Forma de Pagamento" Width="160" Binding="{Binding IdformaPagamentoNavigation.Nome}" />
                                 <DataGridTextColumn Header="Valor" Width="60" Binding="{local:CultureAwareBinding Valor, StringFormat=C2}" />
-                                <DataGridTextColumn Header="Tipo" Width="50" Binding="{Binding Tipo}" />
+                                <DataGridTextColumn Header="Tipo" Width="50" Binding="{Binding TipoString}" />
                             </DataGrid.Columns>
                         </DataGrid>
                     </Grid>

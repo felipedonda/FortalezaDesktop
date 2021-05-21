@@ -3,10 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:utils="clr-namespace:FortalezaDesktop.Wpf.Utils"
         xmlns:local="clr-namespace:FortalezaDesktop.Views"
         mc:Ignorable="d"
-        Title="PedidoDetailsCliente" Height="450" Width="800"
+        Title="Selecionar Cliente" Height="450" Width="800"
+        KeyDown="Window_KeyDown"
         Loaded="Window_Loaded">
     <Window.Resources>
         <Style x:Key="DataGridStyle" TargetType="{x:Type DataGrid}">
@@ -53,16 +53,20 @@
         </Grid.RowDefinitions>
         <Border Grid.Row="0" BorderBrush="DarkGray" BorderThickness="0,0,0,1">
             <Grid x:Name="gridTituloCaixaAberto" >
-                <DockPanel>
-                    <StackPanel Orientation="Vertical" DockPanel.Dock="Left">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Vertical" Grid.Column="0" Margin="0,0,20,0">
                         <TextBlock Text="Filtrar Clientes" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,5" FontSize="12"/>
-                        <TextBox x:Name="textboxBuscaDescricao" MinWidth="400" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,10,10" FontSize="12"/>
+                        <TextBox x:Name="textboxBuscaDescricao" Margin="10,0,10,10" FontSize="12" TextChanged="textboxBuscaDescricao_TextChanged"/>
                     </StackPanel>
-                    <Grid DockPanel.Dock="Right">
-                        <Button Content="Novo Cliente" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,10,10,10" Padding="5" Click="ButtonNovoCliente_Click" />
+                    <Grid Grid.Column="1">
+                        <Button Content="Novo Cliente" VerticalAlignment="Bottom" Margin="10,10,10,10" Padding="5" Click="ButtonNovoCliente_Click" />
                     </Grid>
 
-                </DockPanel>
+                </Grid>
             </Grid>
         </Border>
         <Grid Grid.Row="1">
@@ -78,13 +82,13 @@
                     <DataGridTextColumn Header="Telefone" Width="90" Binding="{Binding Telefone}" />
                     <DataGridTextColumn Header="Endereço" Width="*" Binding="{Binding IdenderecoNavigation.Logradouro}" />
                     <DataGridTextColumn Header="CEP" Width="70" Binding="{Binding Email}" />
-                    <DataGridTextColumn Header="CPF/CNPJ" Width="95" Binding="{Binding Cpf}" />
+                    <DataGridTextColumn Header="CPF/CNPJ" Width="95" Binding="{Binding CpfFormatted}" />
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
         <Border Grid.Row="2" BorderBrush="DarkGray" BorderThickness="0,1,0,0">
             <Grid>
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button Content="Adicionar" Width="80" VerticalAlignment="Center" Margin="10" Padding="5" Click="ButtonAdicionar" />
                     <Button Content="Cancelar" Width="80" VerticalAlignment="Center" Margin="10" Padding="5" Click="ButtonCancelar"/>
                 </StackPanel>

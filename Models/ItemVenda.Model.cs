@@ -23,6 +23,22 @@ namespace FortalezaDesktop.Models
             }
         }
 
+        public decimal ValorTotalDisponivel
+        {
+            get
+            {
+                return QuantidadeDisponivel * Valor ?? default;
+            }
+        }
+
+        public decimal ValorTotalCancelado
+        {
+            get
+            {
+                return Cancelado * Valor ?? default;
+            }
+        }
+
         public decimal CustoTotal {
             get
             {
@@ -33,6 +49,14 @@ namespace FortalezaDesktop.Models
             get
             {
                 return ValorTotal - CustoTotal;
+            }
+        }
+
+        public decimal QuantidadeDisponivel
+        {
+            get
+            {
+                return Quantidade - Cancelado;
             }
         }
     }

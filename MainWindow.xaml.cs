@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using FortalezaDesktop.Views;
+using FortalezaDesktop.Utils;
 
 namespace FortalezaDesktop
 {
@@ -26,16 +27,20 @@ namespace FortalezaDesktop
             InitializeComponent();
         }
 
+        public Page LoadedPage { get; set; }
+
         public async void LoadChildPage(Page page)
         {
             Server.LoadServerConfig();
             frameChildContainer.NavigationService.RemoveBackEntry();
             if (await Server.CheckConnection())
             {
+                LoadedPage = page;
                 frameChildContainer.Navigate(page);
             }
             else
             {
+                Logger.Log("Falha de conexão com o servidor '" + Server.URI + "'.", Logger.LogType.Warning);
                 var msgBoxResult = MessageBox.Show("Falha de conexão com servidor. Tentar novamente?", "Falha de conexão" ,MessageBoxButton.OKCancel);
                 if (msgBoxResult == MessageBoxResult.OK)
                 {
@@ -48,11 +53,11 @@ namespace FortalezaDesktop
             }
         }
 
-        bool Loggar()
+        private bool Loggar()
         {
-            if (UserControl.UsuarioLogado == null)
+            if (UserController.UsuarioLogado == null)
             {
-                UserControl.Loggar("", "");
+                UserController.Loggar("", "");
                 return Loggar();
             }
             else
@@ -61,31 +66,122 @@ namespace FortalezaDesktop
             }
         }
 
-        void OnLoad(object sender, RoutedEventArgs e)
+        private async Task<bool> InitialConnection()
         {
-            UserPreferences.Load();
-            if(Loggar())
+            if (await Server.CheckConnection())
             {
-                LoadChildPage(new VendaView());
+                return true;
+            }
+            else
+            {
+                Logger.Log("Falha de conexão com o servidor '" + Server.URI + "'.", Logger.LogType.Warning);
+                var msgBoxResult = MessageBox.Show("Falha de conexão com servidor. Tentar novamente?", "Falha de conexão", MessageBoxButton.OKCancel);
+                if (msgBoxResult == MessageBoxResult.OK)
+                {
+                    return await InitialConnection();
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        private async void OnLoad(object sender, RoutedEventArgs e)
+        {
+            Server.LoadServerConfig();
+            Logger.Log("Sistema iniciado.", Logger.LogType.Info);
+            UserPreferences.Load();
+
+            if (!UserPreferences.Preferences.ModuloVenda)
+            {
+                ButtonVenda.Visibility = Visibility.Collapsed;
+            }
+
+            if (!UserPreferences.Preferences.ModuloPedido)
+            {
+                ButtonPedido.Visibility = Visibility.Collapsed;
+            }
+
+            if (!UserPreferences.Preferences.ModuloDelivery)
+            {
+                ButtonDelivery.Visibility = Visibility.Collapsed;
+            }
+
+            if (!UserPreferences.Preferences.ModuloTroca)
+            {
+                ButtonTroca.Visibility = Visibility.Collapsed;
+            }
+
+            if (await InitialConnection())
+            {
+                Logger.Log("Conexão feita com servidor '" + Server.URI + "'.", Logger.LogType.Info);
+                if (Loggar())
+                {
+                    LoadChildPage(new VendaView());
+                }
             }
         }
 
         private void buttonMenuGerencial_Click(object sender, RoutedEventArgs e)
         {
             MenuGerencial menuGerencialView = new MenuGerencial();
-            menuGerencialView.UpdateParent += MenuGerencialView_UpdateParent;
-            menuGerencialView.Show();
+            menuGerencialView.Closed += MenuGerencialView_UpdateParent;
+            menuGerencialView.ShowDialog();
         }
 
         private void MenuGerencialView_UpdateParent(object sender, EventArgs e)
         {
-            LoadChildPage(new VendaView());
+            if (!UserPreferences.Preferences.ModuloVenda)
+            {
+                ButtonVenda.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                ButtonVenda.Visibility = Visibility.Visible;
+            }
+
+            if (!UserPreferences.Preferences.ModuloPedido)
+            {
+                ButtonPedido.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                ButtonPedido.Visibility = Visibility.Visible;
+            }
+
+            if (!UserPreferences.Preferences.ModuloDelivery)
+            {
+                ButtonDelivery.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                ButtonDelivery.Visibility = Visibility.Visible;
+            }
+
+            if (!UserPreferences.Preferences.ModuloTroca)
+            {
+                ButtonTroca.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                ButtonTroca.Visibility = Visibility.Visible;
+            }
+
+            ReloadPage();
+        }
+
+        public void ReloadPage()
+        {
+            Type pageType = LoadedPage.GetType();
+            Page newPage = (Page)Activator.CreateInstance(pageType);
+            LoadChildPage(newPage);
         }
 
         public void ButtonCaixa_Click(object sender, RoutedEventArgs e)
         {
             CaixasView caixasView = new CaixasView();
-            caixasView.Show();
+            caixasView.ShowDialog();
         }
 
         private void ButtonPedido_Click(object sender, RoutedEventArgs e)
@@ -101,6 +197,16 @@ namespace FortalezaDesktop
         private void ButtonDelivery_Click(object sender, RoutedEventArgs e)
         {
             LoadChildPage(new DeliveryView());
+        }
+
+        private void ButtonTroca_Click(object sender, RoutedEventArgs e)
+        {
+            LoadChildPage(new TrocaView());
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Logger.Log("Sistema desligando.", Logger.LogType.Info);
         }
     }
 }

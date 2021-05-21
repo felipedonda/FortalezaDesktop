@@ -37,7 +37,7 @@ namespace FortalezaDesktop.Views
         {
             EstoqueEntradaProdutos entradaEstoqueProdutos = new EstoqueEntradaProdutos(Saida);
             entradaEstoqueProdutos.Selecionado += EntradaEstoqueProdutos_Selecionado;
-            entradaEstoqueProdutos.Show();
+            entradaEstoqueProdutos.ShowDialog();
 
         }
 
@@ -80,7 +80,7 @@ namespace FortalezaDesktop.Views
                     };
 
                 }
-                estoque.HoraEntrada = DateTime.UtcNow;
+                estoque.HoraEntrada = DateTime.Now;
 
                 await item.SaveEstoque(estoque);
             }

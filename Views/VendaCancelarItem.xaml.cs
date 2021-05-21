@@ -49,15 +49,32 @@ namespace FortalezaDesktop.Views
 
         private void ButtonItem_Click(object sender, RoutedEventArgs e)
         {
-            VendaCancelarItemInput cancelarItemInput = new VendaCancelarItemInput();
+            VendaCancelarItemInput cancelarItemInput = new VendaCancelarItemInput(false,false);
             cancelarItemInput.NumeroInserido += CancelarItemInput_NumeroInserido;
-            cancelarItemInput.Show();
+            cancelarItemInput.ShowDialog();
         }
 
         private void CancelarItemInput_NumeroInserido(object sender, VendaCancelarItemInput.NumeroInseridoEventArgs e)
         {
             CancelarItem?.Invoke(this, new CancelarItemEventArgs(e.NumeroIndice));
             Close();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            Dispatcher.InvokeAsync(new Action(() => {
+                Activate();
+                Focus();
+                ButtonCancelarVenda.Focus();
+            }), System.Windows.Threading.DispatcherPriority.ApplicationIdle);
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Escape)
+            {
+                Close();
+            }
         }
     }
 }

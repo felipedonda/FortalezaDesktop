@@ -6,7 +6,9 @@
       xmlns:local="clr-namespace:FortalezaDesktop.Views"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="350"
-      Title="VendaItemsSelecionados">
+      Title="VendaItemsSelecionados"
+      Loaded="Page_Loaded"
+      KeyDown="Page_KeyDown">
 
     <Grid Background="White">
         <Border BorderThickness="1,0,0,0" BorderBrush="DarkGray" >
@@ -20,8 +22,12 @@
                     <StackPanel Margin="3,5,0,5" Orientation="Vertical">
                         <TextBlock Margin="5" Text="Código" FontSize="14" />
                         <StackPanel Orientation="Horizontal">
-                            <TextBox x:Name="textboxCodigo" Margin="5,5,3,5" TextAlignment="Right" Text="" Width="90" Height="25"  FontSize="14"/>
-                            <Button Width="25" Height="25" Margin="0,0,5,0" Click="SelecionarCodigo_Click">
+                            <TextBox x:Name="textboxCodigo"
+                                     TabIndex="0"
+                                     KeyDown="TextboxCodQuan_KeyDown"
+                                     PreviewTextInput="textboxCodigo_PreviewTextInput"
+                                     Margin="5,5,3,5" TextAlignment="Right" Text="" Width="90" Height="25"  FontSize="14"/>
+                            <Button Width="25" Height="25" Margin="0,0,5,0" IsTabStop="False" Click="SelecionarCodigo_Click">
                                 <TextBlock Text="..." />
                             </Button>
                         </StackPanel>
@@ -29,14 +35,17 @@
                     <StackPanel Margin="3,5,3,5" Orientation="Vertical">
                         <TextBlock Margin="5" Text="Quantidade" FontSize="14" />
                         <StackPanel Orientation="Horizontal">
-                            <TextBox x:Name="textboxQuantidade" Margin="5,5,3,5" Text="1" TextAlignment="Right" Width="68" Height="25"  FontSize="14"/>
-                            <Button Width="25" Height="25" Margin="0,0,2,0" Click="ButtonIncrease_Click">
+                            <TextBox x:Name="textboxQuantidade"
+                                     GotFocus="textboxQuantidade_GotFocus"
+                                     KeyDown="TextboxCodQuan_KeyDown"
+                                     Margin="5,5,3,5" Text="1" TabIndex="1" TextAlignment="Right" Width="68" Height="25"  FontSize="14"/>
+                            <Button Width="25" Height="25" Margin="0,0,2,0" IsTabStop="False" Click="ButtonIncrease_Click">
                                 <TextBlock Text="+" />
                             </Button>
-                            <Button Width="25" Height="25" Margin="0,0,2,0" Click="ButtonDecrease_Click">
+                            <Button Width="25" Height="25" Margin="0,0,2,0" IsTabStop="False" Click="ButtonDecrease_Click">
                                 <TextBlock Text="-" />
                             </Button>
-                            <Button x:Name="buttonQuantidadeOk" Width="25" Height="25" Margin="0,0,5,0" Click="buttonQuantidadeOk_Click">
+                            <Button x:Name="buttonQuantidadeOk" IsTabStop="False" Width="25" Height="25" Margin="0,0,5,0" Click="buttonQuantidadeOk_Click">
                                 <TextBlock Text="Ok" />
                             </Button>
                         </StackPanel>
@@ -44,7 +53,10 @@
                 </StackPanel>
                 <DataGrid x:Name="gridProdutoVendas"
                           ItemsSource="{Binding ItemVenda}"
+                          KeyboardNavigation.TabNavigation="None"
+                          IsReadOnly="True"
                           Grid.Row="1"
+                          IsTabStop="False"
                           Margin="10,5,10,10"
                           AutoGenerateColumns="False"
                           CanUserAddRows="False"
@@ -60,12 +72,12 @@
                 </DataGrid>
                 <StackPanel Grid.Row="2" Orientation="Vertical">
                     <TextBlock Text="Valor Total" FontSize="20" Margin="10,0,10,0" />
-                    <TextBox x:Name="textboxValorTotal" Text="{local:CultureAwareBinding ValorTotal, StringFormat=C2}" Margin="10,5,10,10" FontSize="24" />
+                    <TextBox x:Name="textboxValorTotal" IsTabStop="False" Text="{local:CultureAwareBinding ValorTotal, StringFormat=C2}" Margin="10,5,10,10" FontSize="24" />
                     <StackPanel  Orientation="Horizontal" FlowDirection="RightToLeft" >
-                        <Button Width="auto" VerticalAlignment="Center" Margin="10,0,0,10" Padding="5" Click="ButtonReceber_Click">
+                        <Button Width="auto" TabIndex="2" VerticalAlignment="Center" Margin="10,0,0,10" Padding="5" Click="ButtonReceber_Click">
                             <TextBlock Text="Receber e Finalizar" FontSize="14" TextAlignment="Center" Margin="3,0,3,0"/>
                         </Button>
-                        <Button Width="auto" VerticalAlignment="Center" Margin="10,0,0,10" Padding="5" Click="ButtonCancelar_Click">
+                        <Button Width="auto" TabIndex="3" VerticalAlignment="Center" Margin="10,0,0,10" Padding="5" Click="ButtonCancelar_Click">
                             <TextBlock Text="Cancelar" TextWrapping="Wrap" FontSize="14" TextAlignment="Center" Margin="3,0,3,0"/>
                         </Button>
                     </StackPanel>

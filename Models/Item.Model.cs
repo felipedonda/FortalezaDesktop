@@ -26,12 +26,50 @@ namespace FortalezaDesktop.Models
             {
                 await ServerEntry<Estoque>.Post(Path + "/" + Id + "/estoques", estoque);
             }
-            catch (Exception e)
+            catch (BadResponseStatusCodeException e)
             {
-                MessageBox.Show(e.Message + "\n\nStack:\n" + e.StackTrace, "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                ServerEntry.CommonExceptionHandler(e);
                 return false;
             }
             return true;
+        }
+
+        public async Task<bool> ItemExists(int id)
+        {
+            try
+            {
+                return await ServerEntry<bool>.Get(Path + "/" + id.ToString() + "/exists");
+            }
+            catch (BadResponseStatusCodeException e)
+            {
+                ServerEntry.CommonExceptionHandler(e);
+                return false;
+            }
+        }
+
+        [JsonIgnore]
+        public string TipoString
+        {
+            get
+            {
+                return Tipo switch
+                {
+                    1 => "Produto",
+                    2 => "Pacote",
+                    _ => "Sistema",
+                };
+            }
+
+            set
+            {
+                Tipo = value switch
+                {
+                    "Produto" => 1,
+                    "Pacote" => 2,
+                    "Sistema" => 9,
+                    _ => -1,
+                };
+            }
         }
     }
 }

@@ -57,7 +57,7 @@ namespace FortalezaDesktop.Views
             {
                 EstoqueEntradaProdutoQuantidade produtoQuantidade = new EstoqueEntradaProdutoQuantidade(ItemSelecionado, Saida);
                 produtoQuantidade.Closed += ProdutoQuantidade_Closed;
-                produtoQuantidade.Show();
+                produtoQuantidade.ShowDialog();
             }
         }
 

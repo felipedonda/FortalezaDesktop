@@ -5,38 +5,59 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FortalezaDesktop.Views"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
         Title="AdicionarMovimento" Height="450" Width="800"
         Loaded="OnLoad">
-    <Grid x:Name="gridAdicionarMovimento">
+    <Grid x:Name="MainGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="303*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5*"/>
-            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="322"/>
         </Grid.ColumnDefinitions>
-        <Grid Grid.Row="0" Grid.Column="0"  >
-            <StackPanel Orientation="Horizontal" >
-                <StackPanel Orientation="Vertical" x:Name="gridTituloCaixaAberto">
-                    <TextBlock Text="Caixa" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,5" FontSize="12"/>
-                    <TextBox x:Name="textboxCaixaNome"  MinWidth="100" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,10,0" FontSize="12" />
-                    <TextBlock Text="Responsável" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,5" FontSize="12"/>
-                    <TextBox x:Name="textboxResponsavel"  Text="" MinWidth="100" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,10,15" FontSize="12" IsReadOnly="True"/>
-                </StackPanel>
-                <StackPanel Orientation="Vertical">
-                    <TextBlock Text="Data" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,5" FontSize="12"/>
-                    <TextBox Text="{Binding HoraEntrada, StringFormat=dd/MM/yyyy}" MinWidth="100" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,10,0" FontSize="12" />
-                    <TextBlock Text="Hora" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,5" FontSize="12"/>
-                    <TextBox Text="{Binding HoraEntrada, StringFormat=hh:mm:ss}" MinWidth="100" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,10,15" FontSize="12" />
-                </StackPanel>
+        <Grid Grid.Row="0" Grid.Column="0" Margin="5" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="0" Margin="5,5,0,0">
+                <TextBlock Text="Caixa" FontSize="12" Margin="0,0,5,5" />
+                <TextBox Text="{Binding IdcaixaNavigation.IdnomeCaixaNavigation.Nome}" IsReadOnly="True"  FontSize="12"  Margin="0,0,5,5" />
+            </StackPanel>
+
+            <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="0" Margin="5,5,0,0">
+                <TextBlock Text="PDV" FontSize="12" Margin="0,0,5,5" />
+                <TextBox Text="{Binding IdpdvNavigation.Nome}" IsReadOnly="True"  FontSize="12"  Margin="0,0,5,5" />
+            </StackPanel>
+
+            <StackPanel Orientation="Vertical" Grid.Column="2" Grid.Row="0" Margin="5,5,0,0">
+                <TextBlock Text="Responsável" FontSize="12" Margin="0,0,5,5" />
+                <TextBox Text="{Binding IdusuarioNavigation.Nome}" IsReadOnly="True"  FontSize="12"  Margin="0,0,5,5" />
+            </StackPanel>
+
+            <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="1" Margin="5,5,0,0">
+                <TextBlock Text="Data" FontSize="12" Margin="0,0,5,5" />
+                <TextBox Text="{local:CultureAwareBinding Path=HoraEntrada, StringFormat=dd/MM/yy}" IsReadOnly="True"  FontSize="12"  Margin="0,0,5,5" />
+            </StackPanel>
+
+            <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="1" Margin="5,5,0,0">
+                <TextBlock Text="Hora" FontSize="12" Margin="0,0,5,5" />
+                <TextBox Text="{local:CultureAwareBinding Path=HoraEntrada, StringFormat=hh:mm}" IsReadOnly="True"  FontSize="12"  Margin="0,0,5,5" />
             </StackPanel>
         </Grid>
         <Border Grid.Column="0" Grid.Row="1" BorderBrush="DarkGray" BorderThickness="0,1,0,0">
             <DockPanel >
-                <StackPanel Orientation="Vertical" DockPanel.Dock="Top">
-                    <TextBlock Text="Descricao" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,5" FontSize="12"/>
-                    <TextBox Text="{Binding Descricao}" MinWidth="200" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,10,15" FontSize="12" />
+                <StackPanel Orientation="Vertical" Margin="10,10,5,5" DockPanel.Dock="Top">
+                    <TextBlock Text="Descrição" FontSize="12" Margin="0,0,5,5" />
+                    <TextBox Text="{Binding Descricao}" IsReadOnly="True"  FontSize="12"  Margin="0,0,5,5" />
                 </StackPanel>
                 <Border BorderBrush="DarkGray" BorderThickness="0,1,0,0" DockPanel.Dock="Top">
                     <Grid Background="White">
@@ -63,91 +84,19 @@
             </DockPanel>
         </Border>
         <Border Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" BorderBrush="DarkGray" BorderThickness="1,0,0,0" DockPanel.Dock="Top">
-            <DockPanel>
-                <TextBlock x:Name="textblockMeioPagamento" Text="Dinheiro" TextWrapping="Wrap" TextAlignment="Center" Margin="10" FontSize="18" DockPanel.Dock="Top" />
-                <TextBox Text="{Binding Valor, StringFormat={}{0:C2}}" DockPanel.Dock="Top" Height="40" FontSize="18" TextAlignment="Center" VerticalContentAlignment="Center" Margin="20,0,20,0" />
-                <Grid DockPanel.Dock="Top" Margin="20,20,20,5" Height="250">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <Grid Grid.Row="0" Grid.Column="0" >
-                        <Button Margin="1">
-                            <TextBlock Text="7" TextWrapping="Wrap" FontSize="14" TextAlignment="Center" />
-                        </Button>
-                    </Grid>
-                    <Grid Grid.Row="0" Grid.Column="1" >
-                        <Button Margin="1">
-                            <TextBlock Text="8" TextWrapping="Wrap" FontSize="14" TextAlignment="Center" />
-                        </Button>
-                    </Grid>
-                    <Grid Grid.Row="0" Grid.Column="2" >
-                        <Button Margin="1">
-                            <TextBlock Text="9" TextWrapping="Wrap" FontSize="14" TextAlignment="Center" />
-                        </Button>
-                    </Grid>
-                    <Grid Grid.Row="1" Grid.Column="0" >
-                        <Button Margin="1">
-                            <TextBlock Text="4" TextWrapping="Wrap" FontSize="14" TextAlignment="Center" />
-                        </Button>
-                    </Grid>
-                    <Grid Grid.Row="1" Grid.Column="1" >
-                        <Button Margin="1">
-                            <TextBlock Text="5" TextWrapping="Wrap" FontSize="14" TextAlignment="Center" />
-                        </Button>
-                    </Grid>
-                    <Grid Grid.Row="1" Grid.Column="2" >
-                        <Button Margin="1">
-                            <TextBlock Text="6" TextWrapping="Wrap" FontSize="14" TextAlignment="Center" />
-                        </Button>
-                    </Grid>
-                    <Grid Grid.Row="2" Grid.Column="0" >
-                        <Button Margin="1">
-                            <TextBlock Text="1" TextWrapping="Wrap" FontSize="14" TextAlignment="Center" />
-                        </Button>
-                    </Grid>
-                    <Grid Grid.Row="2" Grid.Column="1" >
-                        <Button Margin="1">
-                            <TextBlock Text="2" TextWrapping="Wrap" FontSize="14" TextAlignment="Center" />
-                        </Button>
-                    </Grid>
-                    <Grid Grid.Row="2" Grid.Column="2" >
-                        <Button Margin="1">
-                            <TextBlock Text="3" TextWrapping="Wrap" FontSize="14" TextAlignment="Center" />
-                        </Button>
-                    </Grid>
-                    <Grid Grid.Row="3" Grid.Column="0" >
-                        <Button Margin="1">
-                            <TextBlock Text="0" TextWrapping="Wrap" FontSize="14" TextAlignment="Center" />
-                        </Button>
-                    </Grid>
-                    <Grid Grid.Row="3" Grid.Column="1" >
-                        <Button Margin="1">
-                            <TextBlock Text="," TextWrapping="Wrap" FontSize="14" TextAlignment="Center" />
-                        </Button>
-                    </Grid>
-                    <Grid Grid.Row="3" Grid.Column="2" >
-                        <Button Margin="1">
-                            <TextBlock Text="del" TextWrapping="Wrap" FontSize="14" TextAlignment="Center" />
-                        </Button>
-                    </Grid>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <TextBlock x:Name="TextBlockFormaPagamento" Text="{Binding IdformaPagamentoNavigation.Nome}" TextAlignment="Center" Margin="10,10,10,0" FontSize="18" />
                 </Grid>
-                <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" Height="auto"  DockPanel.Dock="Top">
-                    <Button Width="90" VerticalAlignment="Center" Margin="20,5,0,5" Padding="5" Click="ButtonOk_Click">
-                        <TextBlock Text="Ok" TextWrapping="Wrap" FontSize="14" TextAlignment="Center" />
-                    </Button>
-                    <Button Width="90" VerticalAlignment="Center" Margin="10,5,0,5" Padding="5" Click="ButtonCancelar_Click">
-                        <TextBlock Text="Cancelar" TextWrapping="Wrap" FontSize="14" TextAlignment="Center" />
-                    </Button>
-                </StackPanel>
-            </DockPanel>
+                <local:PadNumerico x:Name="PadNumerico" Value="{Binding Valor}" Grid.Row="1" />
+                <!-- 
+                    <TextBox Text="{Binding Valor, StringFormat={}{0:C2}}" DockPanel.Dock="Top" Height="40" FontSize="18" TextAlignment="Center" VerticalContentAlignment="Center" Margin="20,0,20,0" />
+                -->
+            </Grid>
         </Border>
     </Grid>
 </Window>

@@ -38,15 +38,15 @@ namespace FortalezaDesktop.Views
             InitializeComponent();
 
             DateTime dataInicial = new DateTime(
-                DateTime.UtcNow.Year,
-                DateTime.UtcNow.Month,
-                DateTime.UtcNow.Day,
+                DateTime.Now.Year,
+                DateTime.Now.Month,
+                DateTime.Now.Day,
                 0, 0, 0);
 
             DateTime dataFinal = new DateTime(
-                DateTime.UtcNow.Year,
-                DateTime.UtcNow.Month,
-                DateTime.UtcNow.Day,
+                DateTime.Now.Year,
+                DateTime.Now.Month,
+                DateTime.Now.Day,
                 23, 59, 59);
 
             textboxDataInicial.Text = dataInicial.ToString("dd/MM/yy");

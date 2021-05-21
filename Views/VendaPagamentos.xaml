@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FortalezaDesktop.Views"
         mc:Ignorable="d"
-        Title="VendaPagamentos" Height="450" Width="800"
+        Title="Pagamento" Height="450" Width="800"
+        KeyDown="Window_KeyDown"
+        WindowStartupLocation="CenterScreen"
         Loaded="OnLoad">
     <Grid>
         <Grid.RowDefinitions>
@@ -18,27 +20,46 @@
             <ColumnDefinition Width="296"/>
         </Grid.ColumnDefinitions>
         <Grid Grid.Row="0" Grid.Column="0" x:Name="gridCliente" >
-            <StackPanel Orientation="Vertical">
-                <StackPanel Orientation="Horizontal"  >
-                    <StackPanel Orientation="Vertical" >
-                        <TextBlock Text="Cliente" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,5" FontSize="12"/>
-                        <TextBox Text="{Binding Nome}" MinWidth="150" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,10,0" FontSize="12" />
-                    </StackPanel>
-                    <StackPanel Orientation="Vertical">
-                        <TextBlock Text="CPF/CNPJ" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,5" FontSize="12"/>
-                        <TextBox x:Name="textboxCPF" Text="{Binding Cpf}" MinWidth="116" Padding="3,0,3,0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,10,0" FontSize="12" KeyDown="textboxCPF_KeyDown" />
-                    </StackPanel>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
 
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <StackPanel Orientation="Vertical">
-                        <TextBlock Text="E-mail" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,5" FontSize="12"/>
-                        <TextBox Text="" MinWidth="286" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,10,15" FontSize="12" IsReadOnly="True"/>
-                    </StackPanel>
-                    <Button Width="90" Height="auto" VerticalAlignment="Bottom" Margin="10,10,10,15" Padding="5" Click="BuscarCliente_Click" >
+            <Grid Grid.Row="0" Grid.RowSpan="2" Grid.Column="1">
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                    <Button IsTabStop="False" Width="90" Height="auto" Margin="10,10,10,10" Padding="5" Click="BuscarCliente_Click" >
                         <TextBlock Text="Buscar cliente" TextWrapping="Wrap" TextAlignment="Center" FontSize="12" />
                     </Button>
+                    <Button IsTabStop="False" Width="90" Height="auto" Margin="10,0,10,10" Padding="5" Click="LimparCliente_Click" >
+                        <TextBlock Text="Limpar" TextWrapping="Wrap" TextAlignment="Center" FontSize="12" />
+                    </Button>
                 </StackPanel>
+                
+            </Grid>
+            
+            <Grid Grid.Row="0" Grid.Column="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition Width="3*" />
+                </Grid.ColumnDefinitions>
+                
+                <StackPanel Orientation="Vertical" Grid.Column="0">
+                    <TextBlock Text="Cliente" Margin="10,10,0,5" FontSize="12"/>
+                    <TextBox IsTabStop="False" Text="{Binding Nome}" MinWidth="150" Margin="10,0,10,10" FontSize="12" />
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Grid.Column="1">
+                    <TextBlock Text="CPF/CNPJ"  Margin="10,10,0,5" FontSize="12"/>
+                    <TextBox TabIndex="0" x:Name="textboxCPF" Text="{Binding Cpf}" MinWidth="116" Padding="3,0,3,0" Margin="10,0,10,10" FontSize="12" KeyDown="textboxCPF_KeyDown"  />
+                </StackPanel>
+            </Grid>
+
+            <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="0">
+                <TextBlock Text="E-mail" Margin="10,0,10,5" FontSize="12"/>
+                <TextBox IsTabStop="False" Text="" MinWidth="286" Margin="10,0,10,15" FontSize="12" IsReadOnly="True"/>
             </StackPanel>
 
         </Grid>
@@ -47,10 +68,10 @@
                 <Border BorderBrush="DarkGray" BorderThickness="0,1,0,0" DockPanel.Dock="Top">
                     <Grid Background="White">
                         <ScrollViewer VerticalScrollBarVisibility="Auto">
-                            <ItemsControl x:Name="itemsMeiosPagamentos">
+                            <ItemsControl IsTabStop="False" x:Name="itemsMeiosPagamentos">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
-                                        <WrapPanel Orientation="Horizontal" MinHeight="52" Height="auto" Margin="0,0,10,10"/>
+                                        <WrapPanel Orientation="Horizontal" MinHeight="52" Height="auto" Margin="0,0,10,10" x:Name="teste"/>
                                     </ItemsPanelTemplate>
                                 </ItemsControl.ItemsPanel>
                                 <ItemsControl.ItemTemplate>
@@ -80,21 +101,21 @@
                 </Grid.RowDefinitions>
                 <StackPanel Grid.Row="0" VerticalAlignment="Top" Orientation="Vertical" DockPanel.Dock="Top">
                     <TextBlock Text="Desconto" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,10,10,5" FontSize="18"/>
-                    <TextBox x:Name="textboxValorDesconto" Text="" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="10,0,10,5" FontSize="18" TextChanged="textboxValorDesconto_TextChanged" />
+                    <TextBox TabIndex="1" x:Name="textboxValorDesconto" Text="" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="10,0,10,5" FontSize="18" TextChanged="textboxValorDesconto_TextChanged" />
                 </StackPanel>
                 <StackPanel Grid.Row="1" VerticalAlignment="Top" Orientation="Vertical" DockPanel.Dock="Top">
                     <TextBlock Text="Valor Total" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,5,10,0" FontSize="18"/>
-                    <TextBox x:Name="textboxValorTotal" Text="" Margin="10,5,10,5" FontSize="18"/>
+                    <TextBox IsReadOnly="True" IsTabStop="False" x:Name="textboxValorTotal" Text="" Margin="10,5,10,5" FontSize="18"/>
                 </StackPanel>
                 <StackPanel Grid.Row="2" VerticalAlignment="Top" Orientation="Vertical" DockPanel.Dock="Top">
                     <UniformGrid Columns="2">
                         <StackPanel Orientation="Vertical" >
                             <TextBlock Text="Troco" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,5,10,5" FontSize="16"/>
-                            <TextBox x:Name="textboxTroco" Text="" MinWidth="100" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="10,0,10,5" FontSize="16" />
+                            <TextBox IsReadOnly="True" IsTabStop="False" x:Name="textboxTroco" Text="" MinWidth="100" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="10,0,10,5" FontSize="16" />
                         </StackPanel>
                         <StackPanel Orientation="Vertical" >
                             <TextBlock Text="Recebido" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,5,10,5" FontSize="16"/>
-                            <TextBox x:Name="textboxRecebido" Text="" MinWidth="100" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="10,0,10,5" FontSize="16" />
+                            <TextBox IsReadOnly="True" IsTabStop="False" x:Name="textboxRecebido" Text="" MinWidth="100" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="10,0,10,5" FontSize="16" />
                         </StackPanel>
                     </UniformGrid>
                 </StackPanel>
@@ -106,6 +127,8 @@
                           CanUserAddRows="False"
                           GridLinesVisibility="None"
                           HeadersVisibility="Column"
+                          KeyboardNavigation.TabNavigation="None"
+                          IsTabStop="False"
                           IsReadOnly="True">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="" Width="20" />
@@ -119,13 +142,13 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <Button Grid.Column="0" Width="80" VerticalAlignment="Center" Padding="5" Click="ButtonCancelar_Click">
+                    <Button TabIndex="4" Grid.Column="0" Width="80" VerticalAlignment="Center" Padding="5" Click="ButtonCancelar_Click">
                         <TextBlock Text="Cancelar" TextWrapping="Wrap" FontSize="14" TextAlignment="Center" />
                     </Button>
-                    <Button x:Name="ButtonAlterar" Grid.Column="1" Width="80" VerticalAlignment="Center" Padding="5" Click="ButtonAlterar_Click">
+                    <Button TabIndex="3" x:Name="ButtonAlterar" Grid.Column="1" Width="80" VerticalAlignment="Center" Padding="5" Click="ButtonAlterar_Click">
                         <TextBlock Text="Alterar" TextWrapping="Wrap" FontSize="14" TextAlignment="Center" />
                     </Button>
-                    <Button Grid.Column="2" Width="80" VerticalAlignment="Center" Padding="5" Click="ButtonOk_Click" >
+                    <Button TabIndex="2" Grid.Column="2" Width="80" VerticalAlignment="Center" Padding="5" x:Name="ButtonOk" Click="ButtonOk_Click" >
                         <TextBlock x:Name="textButtonFinalizar" Text="Finalizar" TextWrapping="Wrap" FontSize="14" TextAlignment="Center" />
                     </Button>
                 </Grid>

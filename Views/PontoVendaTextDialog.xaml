@@ -1,0 +1,25 @@
+﻿<Window x:Class="FortalezaDesktop.Views.PontoVendaTextDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FortalezaDesktop.Views"
+        mc:Ignorable="d"
+        KeyDown="Window_KeyDown"
+        Title="PontoVendaTextDialog" Height="160" Width="300">
+    <Grid>
+        <StackPanel Orientation="Vertical" Margin="10,10,10,15">
+            <TextBlock x:Name="TextboxDialogo">
+                Dialogo
+            </TextBlock>
+            <TextBox x:Name="TextboxInput"  Margin="0,10,0,0"/>
+            <Grid>
+                <UniformGrid Columns="3" Margin="0,20,0,0" HorizontalAlignment="Right">
+                    <Button x:Name="ButtonCriar" Click="ButtonCriar_Click" Content="Criar" Width="80" Margin="0,0,5,5" Padding="5" />
+                    <Button x:Name="ButtonAlterar" Click="ButtonAlterar_Click" Content="Alterar" Width="80" Margin="0,0,5,5" Padding="5" />
+                    <Button x:Name="ButtonCancelar" Click="ButtonCancelar_Click" Content="Cancelar" Width="80" Margin="0,0,5,5" Padding="5" />
+                </UniformGrid>
+            </Grid>
+        </StackPanel>
+    </Grid>
+</Window>

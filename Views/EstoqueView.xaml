@@ -6,6 +6,8 @@
         xmlns:local="clr-namespace:FortalezaDesktop.Views"
         mc:Ignorable="d"
         Title="Estoque" Height="450" Width="800"
+        WindowStartupLocation="CenterScreen"
+        KeyDown="Window_KeyDown"
         Loaded="OnLoad">
     
     <Window.Resources>

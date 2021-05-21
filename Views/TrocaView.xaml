@@ -1,0 +1,143 @@
+﻿<Page x:Class="FortalezaDesktop.Views.TrocaView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:FortalezaDesktop.Views"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="TrocaView">
+
+    <Grid Background="White" x:Name="MainGrid" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Border BorderBrush="DarkGray" Grid.Row="0" BorderThickness="0,1,0,0">
+            <Grid Grid.Row="0" Margin="5,5,5,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Vertical" Margin="5" Grid.Column="0" VerticalAlignment="Bottom">
+                    <Button x:Name="ButtonBuscar" Content="Buscar" Click="ButtonBuscar_Click"  Width="80" Height="30" Padding="5"  />
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Margin="5" Grid.Column="1">
+                    <TextBlock Text="Venda" Margin="0,0,0,5" FontSize="12"/>
+                    <TextBox Height="22" Width="240" FontSize="12" Text="{Binding Idvenda}"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Margin="5" Grid.Column="2">
+                    <TextBlock Text="Data" Margin="0,0,0,5" FontSize="12"/>
+                    <TextBox Height="22" Width="100" FontSize="12" Text="{Binding HoraEntrada, StringFormat=dd/MM/yy}" />
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Margin="5" Grid.Column="3">
+                    <TextBlock Text="Hora" Margin="0,0,0,5" FontSize="12"/>
+                    <TextBox Height="22" Width="100" FontSize="12" Text="{Binding HoraEntrada, StringFormat=hh:mm}"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical" Margin="5" Grid.Column="4">
+                    <TextBlock Text="Cliente" Margin="0,0,0,5" FontSize="12"/>
+                    <TextBox Height="22" FontSize="12" Text="{Binding IdclienteNavigation.Nome}"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Margin="5" Grid.Column="5" VerticalAlignment="Bottom">
+                    <Button Content="Cadastrar" Width="80" Height="30" Padding="5" Click="ButtonCliente_Click" />
+                </StackPanel>
+            </Grid>
+        </Border>
+        <Grid Grid.Row="1" Margin="5,0,5,5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+
+        </Grid>
+        <Border BorderBrush="DarkGray" Grid.Row="1" BorderThickness="0,1,0,0">
+            <Grid Margin="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <TextBlock Text="Items Venda" Margin="5,0,0,5" Grid.Row="0" Grid.Column="0" FontSize="14"/>
+                <DataGrid x:Name="gridProdutoVendas"
+                          ItemsSource="{Binding ItemVenda}"
+                          Grid.Column="0"
+                            Grid.Row="1"
+                          Margin="5,5,7,0"
+                          AutoGenerateColumns="False"
+                          CanUserAddRows="False"
+                          GridLinesVisibility="None"
+                          HeadersVisibility="Column">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="" Width="25" Binding="{Binding Indice}"/>
+                        <DataGridTextColumn Header="Descricao" Width="*" Binding="{Binding IditemNavigation.Descricao}" />
+                        <DataGridTextColumn Header="Valor" Width="60" Binding="{local:CultureAwareBinding Valor, StringFormat=C2}" />
+                        <DataGridTextColumn Header="Quan." Width="42" Binding="{local:CultureAwareBinding QuantidadeDisponivel}" />
+                        <DataGridTextColumn Header="Total" Width="60" Binding="{local:CultureAwareBinding ValorTotalDisponivel, StringFormat=C2}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+                <StackPanel Orientation="Horizontal" Margin="5" Grid.Column="0" Grid.Row="2" >
+                    <TextBlock Text="Valor Total:" Margin="0,0,5,0" FontSize="14"/>
+                    <TextBlock Text="{local:CultureAwareBinding ValorTotal, StringFormat=C2}" FontSize="14"/>
+                </StackPanel>
+                <TextBlock Text="Items Troca" Margin="5,0,0,5" Grid.Row="0" Grid.Column="1" FontSize="14"/>
+                <DataGrid x:Name="gridItemsTroca"
+                          Grid.Column="1"
+                          Grid.Row="1"
+                          Margin="7,5,5,0"
+                          AutoGenerateColumns="False"
+                          CanUserAddRows="False"
+                          GridLinesVisibility="None"
+                          HeadersVisibility="Column">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="" Width="25" Binding="{Binding Indice}"/>
+                        <DataGridTextColumn Header="Descricao" Width="*" Binding="{Binding IditemVendaNavigation.IditemNavigation.Descricao}" />
+                        <DataGridTextColumn Header="Valor" Width="60" Binding="{local:CultureAwareBinding IditemVendaNavigation.Valor, StringFormat=C2}" />
+                        <DataGridTextColumn Header="Quan." Width="42" Binding="{local:CultureAwareBinding IditemVendaNavigation.Cancelado}" />
+                        <DataGridTextColumn Header="Total" Width="60" Binding="{local:CultureAwareBinding IditemVendaNavigation.ValorTotalCancelado, StringFormat=C2}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+                <StackPanel Orientation="Horizontal" Margin="5" Grid.Column="1" Grid.Row="2" >
+                    <TextBlock Text="Valor Troca:" Margin="0,0,7,0" FontSize="14"/>
+                    <TextBlock x:Name="TextblockValorTroca" FontSize="14"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+        <Border Grid.Row="2" BorderBrush="DarkGray" BorderThickness="0,1,0,0">
+            <StackPanel Orientation="Horizontal" Margin="5,10,5,10">
+                <Button Width="80" VerticalAlignment="Center" Margin="10,0,0,0" Padding="5" Click="ButtonSelecionarItem_Click">
+                    <TextBlock TextAlignment="Center">
+                        Selecionar <LineBreak/>
+                        Item
+                    </TextBlock>
+                </Button>
+                <Button Height="44" Width="80" VerticalAlignment="Center" Margin="10,0,0,0" Padding="5" Click="ButtonCancelarItem_Click">
+                    <TextBlock TextAlignment="Center">
+                        Cancelar <LineBreak/>
+                        Item
+                    </TextBlock>
+                </Button>
+                <Button Height="44" Width="80" VerticalAlignment="Center" Margin="10,0,0,0" Padding="5" Click="ButtonConcluir_Click" >
+                    <TextBlock TextAlignment="Center">
+                        Concluir <LineBreak/>
+                        Troca
+                    </TextBlock>
+                </Button>
+                <Button Height="44" Width="80" VerticalAlignment="Center" Margin="10,0,0,0" Padding="5" Click="ButtonCancelar_Click" >
+                    <TextBlock TextAlignment="Center">
+                        Cancelar
+                    </TextBlock>
+                </Button>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Page>

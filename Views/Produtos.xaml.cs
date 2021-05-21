@@ -45,8 +45,8 @@ namespace FortalezaDesktop.Views
             Button senderAsButton = (Button)sender;
             item = await item.FindById((int)senderAsButton.Tag);
             MessageBoxResult result = MessageBox.Show(
-                "Deseja realmente remover o " + item.Tipo.ToLower() + ": " + item.Descricao + "?",
-                "Remover " + item.Tipo.ToLower(),
+                "Deseja realmente remover o " + item.TipoString.ToLower() + ": " + item.Descricao + "?",
+                "Remover " + item.TipoString.ToLower(),
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Question);
             if(result == MessageBoxResult.Yes)
@@ -67,9 +67,11 @@ namespace FortalezaDesktop.Views
         public async void buttonEditProduto_Click(object sender, RoutedEventArgs e)
         {
             Button senderAsButton = (Button)sender;
-            ProdutoDetails produtoDetailsView = new ProdutoDetails((int)senderAsButton.Tag);
+            int Iditem = (int)senderAsButton.Tag;
+            ProdutoDetails produtoDetailsView = new ProdutoDetails();
+            await produtoDetailsView.LoadItem(Iditem);
             produtoDetailsView.Closing += ProdutoDetailsView_Closing;
-            produtoDetailsView.Show();
+            produtoDetailsView.ShowDialog();
         }
 
         private async void ProdutoDetailsView_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -81,7 +83,7 @@ namespace FortalezaDesktop.Views
         {
             ProdutoDetails produtoDetailsView = new ProdutoDetails();
             produtoDetailsView.Closing += ProdutoDetailsView_Closing;
-            produtoDetailsView.Show();
+            produtoDetailsView.ShowDialog();
         }
     }
 }

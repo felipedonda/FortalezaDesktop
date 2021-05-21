@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using FortalezaDesktop.Controllers;
 
 namespace FortalezaDesktop.Views
 {
@@ -19,32 +20,49 @@ namespace FortalezaDesktop.Views
     /// </summary>
     public partial class RelatoriosVizualizador : Window
     {
+        public enum TipoEmpressaoEnum {
+            Cupom,
+            Cozinha,
+            Relatorio
+        }
         public Page LoadedPage { get; set; }
-        public RelatoriosVizualizador()
+        public TipoEmpressaoEnum TipoEmpressao { get; set; }
+
+        public RelatoriosVizualizador(TipoEmpressaoEnum tipoEmpressao)
         {
             InitializeComponent();
+            TipoEmpressao = tipoEmpressao;
         }
 
-        public async void LoadChildPage(Page page)
+        public void LoadChildPage(Page page)
         {
             LoadedPage = page;
             frameRelatorio.NavigationService.RemoveBackEntry();
             frameRelatorio.Navigate(LoadedPage);
         }
 
-        public async Task Print()
+        public void Print()
         {
-            if(LoadedPage != null)
+            if (LoadedPage != null)
             {
-                PrintDialog printDialog = new PrintDialog();
-                printDialog.ShowDialog();
-                printDialog.PrintVisual(LoadedPage, "");
+                switch(TipoEmpressao)
+                {
+                    case TipoEmpressaoEnum.Cupom:
+                        PrintersController.PrintCupom(LoadedPage);
+                        break;
+                    case TipoEmpressaoEnum.Cozinha:
+                        PrintersController.PrintCozinha(LoadedPage);
+                        break;
+                    case TipoEmpressaoEnum.Relatorio:
+                        PrintersController.PrintRelatorio(LoadedPage);
+                        break;
+                }
             }
         }
 
         private async void ButtonImprimir(object sender, RoutedEventArgs e)
         {
-            await Print();
+            Print();
         }
     }
 }

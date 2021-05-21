@@ -52,7 +52,7 @@ namespace FortalezaDesktop.Views
             VendaPagamentos vendaPagamentos = new VendaPagamentos(false, true);
             await vendaPagamentos.LoadVenda(Pedido.Idvenda);
             vendaPagamentos.PagamentoRealizado += VendaPagamentos_PagamentoRealizado;
-            vendaPagamentos.Show();
+            vendaPagamentos.ShowDialog();
         }
 
         private async void VendaPagamentos_PagamentoRealizado(object sender, EventArgs e)

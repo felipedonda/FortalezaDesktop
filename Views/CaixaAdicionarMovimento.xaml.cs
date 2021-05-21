@@ -19,132 +19,128 @@ namespace FortalezaDesktop.Views
     /// <summary>
     /// Interaction logic for AdicionarMovimentoView.xaml
     /// </summary>
-    
-    public enum OperacaoCaixa
-    {
-        Abertura,
-        Suprimento,
-        Sangria,
-        Fechamento
-    }
 
     public partial class AdicionarMovimento : Window
     {
 
-        public Caixa Caixa { get; set; }
-        public string Tipo { get; set; }
-        public string Descricao { get; set; }
-        public OperacaoCaixa Operacao { get; set; }
-        public FormaPagamento MeioPagamento { get; set; }
-
-        public AdicionarMovimento()
+        public enum TipoMovimento
         {
-            Tipo = "C";
-            Descricao = "ABERTURA DE CAIXA";
-            Operacao = OperacaoCaixa.Abertura;
-            Caixa = new Caixa
-            {
-                Nome = UserPreferences.Preferences.NomeCaixa,
-                Aberto = 1,
-                Idresponsavel = UserControl.UsuarioLogado.Idusuario
-            };
-            InitializeComponent();
+            Venda = 1,
+            Suprimento = 2,
+            Sangria = 3,
+            Abertura = 4,
+            Fechamento = 5
         }
 
-        public AdicionarMovimento(Caixa caixa, OperacaoCaixa operacaoCaixa)
+        public TipoMovimento Tipo { get; set; }
+
+        public Movimento Movimento { get; set; }
+
+        public bool AberturaEmAndamento { get; set; }
+
+        public AdicionarMovimento(TipoMovimento tipoMovimento)
         {
-            switch (operacaoCaixa)
+            InitializeComponent();
+            Tipo = tipoMovimento;
+            AberturaEmAndamento = false;
+            PadNumerico.OkClick += PadNumerico_OkClick;
+            PadNumerico.CancelarClick += PadNumerico_CancelarClick;
+            PadNumerico.SetValorRemanescente(0);
+        }
+
+        private void PadNumerico_CancelarClick(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private async void PadNumerico_OkClick(object sender, EventArgs e)
+        {
+            if (!AberturaEmAndamento)
             {
-                case OperacaoCaixa.Suprimento:
-                    Tipo = "C";
-                    Descricao = "SUPRIMENTO";
-                    break;
-                case OperacaoCaixa.Sangria:
-                    Tipo = "D";
-                    Descricao = "SANGRIA";
-                    break;
+                AberturaEmAndamento = true;
+                if (Tipo == TipoMovimento.Abertura)
+                {
+                    if (await Movimento.IdcaixaNavigation.SaveInstance())
+                    {
+                        if (!await Movimento.IdcaixaNavigation.AbrirCaixa(UserController.UsuarioLogado.Idusuario, UserPreferences.Preferences.Idpdv))
+                        {
+                            AberturaEmAndamento = false;
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        AberturaEmAndamento = false;
+                        return;
+                    }
+                }
+                if (await Movimento.SaveInstance())
+                {
+                    Close();
+                }
+                else
+                {
+                    AberturaEmAndamento = false;
+                    return;
+                }
             }
-
-            Caixa = caixa;
-            Operacao = operacaoCaixa;
-            InitializeComponent();
         }
 
-        public async Task InitiateMovimento()
+        public async Task LoadMovimento(Movimento movimento)
         {
-            Movimento movimento = new Movimento
-            {
-                Descricao = Descricao,
-                Valor = 0,
-                HoraEntrada = DateTime.UtcNow,
-                Tipo = Tipo,
-            };
-            gridAdicionarMovimento.DataContext = movimento;
-            textboxCaixaNome.Text = Caixa.Nome;
-            textboxResponsavel.Text = UserControl.UsuarioLogado.Nome;
+            Movimento = movimento;
+            MainGrid.DataContext = null;
+            MainGrid.DataContext = Movimento;
         }
 
         public async void OnLoad(object sender, RoutedEventArgs e)
         {
+            Caixa caixaAberto = await new Caixa().GetCaixaAberto(UserPreferences.Preferences.IdnomeCaixa);
+            if (caixaAberto == null)
+            {
+                if (Tipo == TipoMovimento.Abertura)
+                {
+                    NomeCaixa nomeCaixa = await new NomeCaixa().FindById(UserPreferences.Preferences.IdnomeCaixa);
+                    caixaAberto = new Caixa
+                    {
+                        IdnomeCaixaNavigation = nomeCaixa
+                    };
+                }
+                else
+                {
+                    MessageBox.Show("Nenhum caixa aberto.", "Aviso", MessageBoxButton.OK, MessageBoxImage.Information);
+                    Close();
+                }
+            }
+            else
+            {
+                if (Tipo == TipoMovimento.Abertura)
+                {
+                    MessageBox.Show("Caixa já está aberto.", "Aviso", MessageBoxButton.OK, MessageBoxImage.Information);
+                    Close();
+                }
+            }
+
+
+            Pdv pdv = await new Pdv().FindById(UserPreferences.Preferences.Idpdv);
+            Movimento movimento = new Movimento
+            {
+                HoraEntrada = DateTime.Now,
+                IdusuarioNavigation = UserController.UsuarioLogado,
+                IdcaixaNavigation = caixaAberto,
+                IdpdvNavigation = pdv,
+                Valor = 0,
+                Tipo = (int)Tipo,
+                Descricao = Tipo switch
+                {
+                    TipoMovimento.Abertura => "ABERTURA CAIXA",
+                    TipoMovimento.Sangria => "SANGRIA",
+                    TipoMovimento.Suprimento => "SUPRIMENTO",
+                    _ => ""
+                }
+            };
+            await LoadMovimento(movimento);
             await LoadFormaPagamentos();
-            await InitiateMovimento();
-        }
-
-        public async void ButtonOk_Click(object sender, RoutedEventArgs e)
-        {
-            Movimento movimento = ((Movimento)gridAdicionarMovimento.DataContext);
-
-            switch (Operacao)
-            {
-                case OperacaoCaixa.Abertura:
-                    Caixa.HoraAbertura = movimento.HoraEntrada;
-                    Caixa.Nome = textboxCaixaNome.Text;
-                    if (textboxCaixaNome.Text != UserPreferences.Preferences.NomeCaixa)
-                    {
-                        UserPreferences.Preferences.NomeCaixa = textboxCaixaNome.Text;
-                        UserPreferences.Save();
-                    }
-                    Caixa.Aberto = 1;
-                    try
-                    {
-                        await Caixa.SaveInstance() ;
-                    }
-                    catch(BadResponseStatusCodeException ex)
-                    {
-                        MessageBox.Show(ex.Message,"Erro",MessageBoxButton.OK,MessageBoxImage.Exclamation);
-                        return;
-                    }
-                    break;
-                case OperacaoCaixa.Fechamento:
-                    Caixa.HoraFechamento = movimento.HoraEntrada;
-                    Caixa.Aberto = 0;
-                    try
-                    {
-                        await Caixa.UpdateInstance();
-                    }
-                    catch (BadResponseStatusCodeException ex)
-                    {
-                        MessageBox.Show(ex.Message, "Erro", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                        return;
-                    }
-                    break;
-            }
-
-            if(Operacao != OperacaoCaixa.Fechamento)
-            {
-                movimento.Idcaixa = Caixa.Idcaixa;
-                movimento.IdformaPagamento = MeioPagamento.IdformaPagamento;
-                try
-                {
-                    await movimento.SaveInstance();
-                }
-                catch (BadResponseStatusCodeException ex)
-                {
-                    MessageBox.Show(ex.Message, "Erro", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                    return;
-                }
-            }
-            Close();
         }
 
         public async Task LoadFormaPagamentos()
@@ -153,24 +149,31 @@ namespace FortalezaDesktop.Views
             List<FormaPagamento> formaPagamentos = await FormaPagamento.FindAll();
             itemsFormasPagamentos.ItemsSource = null;
             itemsFormasPagamentos.ItemsSource = formaPagamentos.OrderBy((e) => e.Ordem);
-            await SetFormaPagamento(formaPagamentos[0]);
-        }
-
-        public async Task SetFormaPagamento(FormaPagamento meioPagamento)
-        {
-            MeioPagamento = meioPagamento;
-            textblockMeioPagamento.Text = MeioPagamento.Nome;
+            Movimento.IdformaPagamentoNavigation = formaPagamentos[0];
+            TextBlockFormaPagamento.GetBindingExpression(TextBlock.TextProperty).UpdateTarget();
         }
 
         private async void FormaPagamento_Click(object sender, RoutedEventArgs e)
         {
             Button senderAsButton = (Button)sender;
-            await SetFormaPagamento((FormaPagamento)senderAsButton.Tag);
+            FormaPagamento formaPagamento = (FormaPagamento)senderAsButton.Tag;
+            Movimento.IdformaPagamentoNavigation = formaPagamento;
+            TextBlockFormaPagamento.GetBindingExpression(TextBlock.TextProperty).UpdateTarget();
+            if (formaPagamento.Bandeira == 1)
+            {
+                VendaPagamentoBandeira vendaPagamentoBandeira = new VendaPagamentoBandeira(formaPagamento);
+                vendaPagamentoBandeira.BandeiraSelecionada += VendaPagamentoBandeira_Selecionado;
+                vendaPagamentoBandeira.ShowDialog();
+            }
+            else
+            {
+                Movimento.Idbandeira = null;
+            }
         }
 
-        private void ButtonCancelar_Click(object sender, RoutedEventArgs e)
+        private void VendaPagamentoBandeira_Selecionado(object sender, VendaPagamentoBandeira.BandeiraSelecionadaArgs e)
         {
-            Close();
+            Movimento.Idbandeira = e.Bandeira.Idbandeira;
         }
     }
 }

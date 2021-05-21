@@ -9,6 +9,12 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="Views\BandeiraDetails.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\BuscaVenda.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\CaixaAdicionarMovimento.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -21,10 +27,19 @@
     <Compile Update="Views\ClienteDetails.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\ClienteDetailsAddMovimento.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\Clientes.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\ConfiguracaoSat.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\Configuracoes.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\ConfiguracoesModulos.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\DeliveryEntregador.xaml.cs">
@@ -54,16 +69,28 @@
     <Compile Update="Views\EstoqueView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\FormaPagamentoDetails.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\FormaPagamentosView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\GrupoDetails.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\GruposView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\Impressoras.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\InformacoesEmpresaDetails.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\MenuGerencial.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\PadNumerico.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\PedidoDetails.xaml.cs">
@@ -90,6 +117,12 @@
     <Compile Update="Views\PedidoDetailsEntregador.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\PontoVendaTextDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\PontoVendaView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\RelatoriosProdutosVendidos.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -103,6 +136,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Relatorios\TemplateRelatorioProdutosVendidos.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\TimePicker.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\TrocaView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\VendaCancelarItem.xaml.cs">
@@ -146,6 +185,15 @@
     <Page Update="MainWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Themes\Generic.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\BandeiraDetails.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\BuscaVenda.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\CaixaAdicionarMovimento.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -158,10 +206,19 @@
     <Page Update="Views\ClienteDetails.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\ClienteDetailsAddMovimento.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\Clientes.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\ConfiguracaoSat.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\Configuracoes.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\ConfiguracoesModulos.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\DeliveryEntregador.xaml">
@@ -191,16 +248,28 @@
     <Page Update="Views\EstoqueView.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\FormaPagamentoDetails.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\FormaPagamentosView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\GrupoDetails.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\GruposView.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\Impressoras.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\InformacoesEmpresaDetails.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\MenuGerencial.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\PadNumerico.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\PedidoDetails.xaml">
@@ -227,6 +296,12 @@
     <Page Update="Views\PedidoDetailsEntregador.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\PontoVendaTextDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\PontoVendaView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\RelatoriosProdutosVendidos.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -240,6 +315,12 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\Relatorios\TemplateRelatorioProdutosVendidos.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\TimePicker.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\TrocaView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\VendaCancelarItem.xaml">

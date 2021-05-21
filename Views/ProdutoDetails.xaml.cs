@@ -24,41 +24,45 @@ namespace FortalezaDesktop.Views
     {
         public Item Item { get; set; }
 
+        public class ItemTipo
+        {
+            public int Value { get; set; }
+            public string Text { get; set; }
+        }
+
         public ProdutoDetails()
         {
             InitializeComponent();
             buttonAlterar.Visibility = Visibility.Collapsed;
             buttonRemover.Visibility = Visibility.Collapsed;
-            FillCombobox();
-            Item item = new Item
+
+            List<ItemTipo> source = new List<ItemTipo> {
+                new ItemTipo {Value = 1, Text = "Produto"},
+                new ItemTipo {Value = 2, Text = "Pacote"}
+            };
+            comboboxTipo.ItemsSource = source;
+            comboboxTipo.DisplayMemberPath = "Text";
+            comboboxTipo.SelectedValuePath = "Value";
+
+            Item = new Item
             {
-                Tipo = "Produto",
+                Tipo = 1,
                 Visivel = 1,
                 Estoque = 1,
                 Disponivel = 1,
-                Unidade = "UN"
+                Unidade = "UN",
+                Fiscal = new Fiscal
+                {
+                    Ncm = null,
+                    Cest = null,
+                    Cfop = 5001,
+                    CstIcms = 00,
+                    AliquotaIcms = 10,
+                    Origem = 0
+                }
             };
-            LoadItem(item);
-        }
+            gridProdutoDetails.DataContext = Item;
 
-        public ProdutoDetails(int id)
-        {
-            InitializeComponent();
-            buttonCriar.Visibility = Visibility.Collapsed;
-            textboxEstoque.IsReadOnly = true;
-            textboxCodigo.IsReadOnly = true;
-            textboxCusto.IsReadOnly = true;
-            comboboxTipo.IsReadOnly = true;
-            FillCombobox();
-            LoadItem(id);
-        }
-
-        public async void FillCombobox()
-        {
-            List<string> source = new List<string>();
-            source.Add("Produto");
-            source.Add("Pacote");
-            comboboxTipo.ItemsSource = source;
         }
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
@@ -70,43 +74,48 @@ namespace FortalezaDesktop.Views
         {
             switch (Item.Tipo)
             {
-                case "Produto":
-                    tabPacote.Visibility = Visibility.Collapsed;
-                    gridPacote.Visibility = Visibility.Collapsed;
+                case 1:
+                    TabPacote.Visibility = Visibility.Collapsed;
                     CheckboxControlarEstoque.IsEnabled = true;
                     break;
-                case "Pacote":
-                    tabPacote.Visibility = Visibility.Visible;
-                    gridPacote.Visibility = Visibility.Visible;
+                case 2:
+                    if(Item.Pacote == null)
+                    {
+                        Item.Pacote = new Pacote
+                        {
+                            Padrao = 1,
+                            Quantidade = 2
+                        };
+                    }
+                    CheckboxControlarEstoque.IsEnabled = false;
+                    TabPacote.Visibility = Visibility.Visible;
                     CheckboxControlarEstoque.IsEnabled = false;
                     break;
             }
         }
 
-        public async void LoadItem(int id)
+        public async Task LoadItem(int id)
         {
+            buttonAlterar.Visibility = Visibility.Visible;
+            buttonRemover.Visibility = Visibility.Visible;
+            buttonCriar.Visibility = Visibility.Collapsed;
+            textboxEstoque.IsReadOnly = true;
+            textboxCodigo.IsReadOnly = true;
+            textboxCusto.IsReadOnly = true;
+            comboboxTipo.IsReadOnly = true;
             Item _item = new Item();
             _item = await _item.FindById(id, new Dictionary<string, string> {
                 {"grupos","true" },
                 {"tipo","true" },
                 {"estoqueatual","true" }
             });
-            LoadItem(_item);
+            await LoadItem(_item);
         }
 
-        public async void LoadItem(Item item)
+        public async Task LoadItem(Item item)
         {
             Item = item;
-
             gridProdutoDetails.DataContext = Item;
-
-            for(int i =0; i < ((List<string>)comboboxTipo.ItemsSource).Count; i++)
-            {
-                if(((List<string>)comboboxTipo.ItemsSource)[i] == Item.Tipo)
-                {
-                    comboboxTipo.SelectedIndex = i;
-                }
-            }
 
             try
             {
@@ -122,39 +131,22 @@ namespace FortalezaDesktop.Views
             {
 
             }
-            
 
             await TrocaTipo();
         }
 
-        public async Task GetItemFromForm()
+        public async Task<bool> CreateProduto()
         {
-            Item = (Item)gridProdutoDetails.DataContext;
-            Item.Valor = decimal.Parse(textboxValor.Text, System.Globalization.NumberStyles.Currency);
-            Item.Tipo = (string)comboboxTipo.SelectedItem;
             if (!string.IsNullOrEmpty(textboxEstoque.Text) & !string.IsNullOrEmpty(textboxCusto.Text))
             {
-                Item.EstoqueAtual = new Models.Estoque
+                Item.EstoqueAtual = new Estoque
                 {
                     QuantidadeDisponivel = decimal.Parse(textboxEstoque.Text),
                     Custo = decimal.Parse(textboxCusto.Text, System.Globalization.NumberStyles.Currency)
                 };
             }
-            
-            if(Item.Tipo == "Pacote")
-            {
-                if(Item.PacoteIditemNavigation != null)
-                {
-                    Item.PacoteIditemNavigation.Quantidade = decimal.Parse(textboxQuantidade.Text);
-                }
-            }
-        }
 
-        public async Task<bool> CreateProduto()
-        {
-            await GetItemFromForm();
-
-            if (Item.Estoque == 1 & Item.EstoqueAtual != null & Item.Tipo == "Produto")
+            if (Item.Estoque == 1 & Item.EstoqueAtual != null & Item.Tipo == 1)
             {
                 Estoque estoque = new Estoque
                 {
@@ -172,13 +164,22 @@ namespace FortalezaDesktop.Views
                 });
             }
 
+            if(Item.Tipo != 2)
+            {
+                Item.Pacote = null;
+            }
+            else
+            {
+                Item.Estoque = 1;
+            }
+
             return await Item.SaveInstance();
 
         }
 
         public async Task<bool> UpdateProduto()
         {
-            await GetItemFromForm();
+            //await GetItemFromForm();
             return await Item.UpdateInstance();
         }
 
@@ -186,7 +187,7 @@ namespace FortalezaDesktop.Views
         {
             ProdutoDetailsGrupos produtoDetailsGruposView = new ProdutoDetailsGrupos(Item.ItemHasGrupo.Select(e => e.IdgrupoNavigation).ToList());
             produtoDetailsGruposView.Closed += ProdutoDetailsGruposView_Closed;
-            produtoDetailsGruposView.Show();
+            produtoDetailsGruposView.ShowDialog();
         }
 
         private void ProdutoDetailsGruposView_Closed(object sender, EventArgs e)
@@ -204,10 +205,18 @@ namespace FortalezaDesktop.Views
 
         private async void buttonCriar_Click(object sender, RoutedEventArgs e)
         {
-            if(await CreateProduto())
+            try
             {
-                Close();
+                if (await CreateProduto())
+                {
+                    Close();
+                }
             }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            
         }
 
         private void buttonCancelar_Click(object sender, RoutedEventArgs e)
@@ -241,31 +250,32 @@ namespace FortalezaDesktop.Views
         {
             ProdutoDetailsPacoteAdd produtoDetailsPacoteAdd = new ProdutoDetailsPacoteAdd();
             produtoDetailsPacoteAdd.ItemPacoteSelecionado += ProdutoDetailsPacoteAdd_ItemPacoteSelecionado;
-            produtoDetailsPacoteAdd.Show();
+            produtoDetailsPacoteAdd.ShowDialog();
         }
 
         private void ProdutoDetailsPacoteAdd_ItemPacoteSelecionado(object sender, ProdutoDetailsPacoteAdd.ItemPacoteSelecionadoEventArgs e)
         {
-            if(Item.PacoteIditemNavigation == null)
+            if(Item.Pacote == null)
             {
-                Item.PacoteIditemNavigation = new Pacote
+                Item.Pacote = new Pacote
                 {
                     IditemProduto = e.Item.Iditem,
-                    IditemProdutoNavigation = e.Item
+                    IditemProdutoNavigation = e.Item,
                 };
             }
             else
             {
-                Item.PacoteIditemNavigation.IditemProduto = e.Item.Iditem;
-                Item.PacoteIditemNavigation.IditemProdutoNavigation = e.Item;
+                Item.Pacote.IditemProduto = e.Item.Iditem;
+                Item.Pacote.IditemProdutoNavigation = e.Item;
             }
 
-            textboxPacoteProduto.Text = Item.PacoteIditemNavigation.IditemProdutoNavigation.Descricao;
+            Item.Fiscal = e.Item.Fiscal;
+
+            textboxPacoteProduto.Text = Item.Pacote.IditemProdutoNavigation.Descricao;
         }
 
         private async void comboboxTipo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Item.Tipo = ((ComboBox)sender).SelectedItem.ToString();
             await TrocaTipo();
         }
 
@@ -284,6 +294,19 @@ namespace FortalezaDesktop.Views
                 {
 
                 }
+            }
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                Close();
             }
         }
     }

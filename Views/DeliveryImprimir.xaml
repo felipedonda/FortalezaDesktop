@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FortalezaDesktop.Views"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
         Title="DeliveryImprimir" Height="240" Width="180">
     <Grid>
         <Grid.RowDefinitions>

@@ -24,17 +24,19 @@ namespace FortalezaDesktop.Views
         public decimal Desconto { get; set; }
         public decimal Troco { get; set; }
         public Caixa CaixaAberto { get; set; }
-        public int Idbandeira { get; set; }
-        public FormaPagamento FormaPagamentoSelecionada { get; set; }
         public bool AllowPagamentoIncompleto { get; set; }
         public bool ModoAlteracao { get; set; }
+        public bool RealizandoPagamento { get; set; }
+        private int FormaPagamentosGeneratorCounter { get; set; }
 
         public VendaPagamentos(bool allowPagamentoIncompleto = false, bool modoAlteracao = false)
         {
+            InitializeComponent();
+            RealizandoPagamento = false;
             AllowPagamentoIncompleto = allowPagamentoIncompleto;
             ModoAlteracao = modoAlteracao;
+            FormaPagamentosGeneratorCounter = 0;
             UserPreferences.Load();
-            InitializeComponent();
         }
 
         public event EventHandler PagamentoRealizado;
@@ -62,27 +64,43 @@ namespace FortalezaDesktop.Views
 
         public async Task FinalizarPagamento()
         {
-            if(!AllowPagamentoIncompleto && (await GetValorRemanescente()) > 0)
+            //Check para evitar requisição dupla em double click.
+            if(!RealizandoPagamento)
             {
-                MessageBox.Show("Valor pendente de pagamento: " + (await GetValorRemanescente()).ToString("C2"),"Pagamento", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                return;
-            }
-            
-            Venda.Desconto = Desconto;
-            await Venda.UpdateInstance();
-            
-            if(!AllowPagamentoIncompleto)
-            {
-                await Venda.FecharVenda();
-            }
+                RealizandoPagamento = true;
 
-            
-            if(Troco > 0)
-            {
-                MessageBox.Show("Troco total: " + Troco.ToString("C2"), "Troco", MessageBoxButton.OK, MessageBoxImage.Information);
+                if (!AllowPagamentoIncompleto && (await GetValorRemanescente()) > 0)
+                {
+                    MessageBox.Show("Valor pendente de pagamento: " + (await GetValorRemanescente()).ToString("C2"), "Pagamento", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    RealizandoPagamento = false;
+                    return;
+                }
+
+                if (!AllowPagamentoIncompleto)
+                {
+                    if(await Venda.FecharVenda())
+                    {
+                        if (Troco > 0)
+                        {
+                            MessageBox.Show("Troco total: " + Troco.ToString("C2"), "Troco", MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
+                        PagamentoRealizado?.Invoke(this, new EventArgs());
+                        Close();
+                        return;
+                    }
+                    else
+                    {
+                        RealizandoPagamento = false;
+                        return;
+                    }
+                }
+                else
+                {
+                    //Caminho caso permita pagamento incompleto (pedidos e delivery).
+                    PagamentoRealizado?.Invoke(this, new EventArgs());
+                    Close();
+                }     
             }
-            PagamentoRealizado?.Invoke(this, new EventArgs());
-            Close();
         }
 
         private async void ButtonOk_Click(object sender, RoutedEventArgs e)
@@ -92,60 +110,62 @@ namespace FortalezaDesktop.Views
 
         private async void Pagamento_Click(object sender, RoutedEventArgs e)
         {
-            FormaPagamentoSelecionada = (FormaPagamento)((Button)sender).Tag;
-            
-            if (FormaPagamentoSelecionada.Bandeira == 1)
+            await SelecionarFormaPagamento((FormaPagamento)((Button)sender).Tag);
+        }
+
+        private async Task SelecionarFormaPagamento(FormaPagamento formaPagamento)
+        {
+            if (formaPagamento.Bandeira == 1)
             {
-                VendaPagamentoBandeira vendaPagamentoBandeira = new VendaPagamentoBandeira();
-                vendaPagamentoBandeira.Selecionado += VendaPagamentoBandeira_Selecionado;
-                vendaPagamentoBandeira.Show();
+                VendaPagamentoBandeira vendaPagamentoBandeira = new VendaPagamentoBandeira(formaPagamento);
+                vendaPagamentoBandeira.BandeiraSelecionada += VendaPagamentoBandeira_Selecionado;
+                vendaPagamentoBandeira.ShowDialog();
             }
             else
             {
-                await OpenPagamentosVendaValor();
+                await OpenPagamentosVendaValor(formaPagamento, null);
             }
         }
 
-        public async Task OpenPagamentosVendaValor()
+        public async Task OpenPagamentosVendaValor(FormaPagamento formaPagamento, Bandeira bandeira)
         {
-            VendaPagamentosValor pagamentosVendaValorView = new VendaPagamentosValor();
-            pagamentosVendaValorView.LoadFormaPagamento(FormaPagamentoSelecionada);
+            VendaPagamentosValor pagamentosVendaValorView = new VendaPagamentosValor(formaPagamento, bandeira);
             pagamentosVendaValorView.SetValorRemanescente(await GetValorRemanescente());
             pagamentosVendaValorView.InserirValor += PagamentosVendaValorView_InserirValor;
-            pagamentosVendaValorView.Show();
+            pagamentosVendaValorView.ShowDialog();
         }
 
-        private async void VendaPagamentoBandeira_Selecionado(object sender, EventArgs e)
+        private async void VendaPagamentoBandeira_Selecionado(object sender, VendaPagamentoBandeira.BandeiraSelecionadaArgs e)
         {
-            Idbandeira = -1;
-            VendaPagamentoBandeira senderAsForm = (VendaPagamentoBandeira)sender;
-            Idbandeira = senderAsForm.BandeiraSelecionada.Idbandeira;
-            await OpenPagamentosVendaValor();
+            await OpenPagamentosVendaValor(e.FormaPagamento, e.Bandeira);
         }
 
-        private async void PagamentosVendaValorView_InserirValor(object sender, EventArgs e)
+        private async void PagamentosVendaValorView_InserirValor(object sender, VendaPagamentosValor.ValorInseridoArgs e)
         {
-            VendaPagamentosValor senderAsForm = (VendaPagamentosValor)sender;
             Pagamento pagamento = new Pagamento
             {
                 IdmovimentoNavigation = new Movimento
                 {
                     Idcaixa = CaixaAberto.Idcaixa,
-                    IdformaPagamentoNavigation = senderAsForm.MeioPagamento,
-                    IdformaPagamento = senderAsForm.MeioPagamento.IdformaPagamento,
-                    HoraEntrada = DateTime.UtcNow,
-                    Tipo = "C",
-                    Valor = senderAsForm.Valor,
-                    Descricao = "VENDA - CONSUMIDOR NÃO IDENTIFICADO"
+                    IdformaPagamentoNavigation = e.FormaPagamento,
+                    IdformaPagamento = e.FormaPagamento.IdformaPagamento,
+                    HoraEntrada = DateTime.Now,
+                    Tipo = 1,
+                    Valor = e.Valor,
+                    Descricao = "VENDA - CONSUMIDOR NÃO IDENTIFICADO",
+                    Idpdv = UserPreferences.Preferences.Idpdv,
+                    Idusuario = UserController.UsuarioLogado.Idusuario
                 }
             };
 
-            if(senderAsForm.MeioPagamento.Bandeira == 1)
+            if(e.FormaPagamento.Bandeira == 1 && e.Bandeira != null)
             {
-                if(Idbandeira > -1)
+                if(e.Bandeira == null)
                 {
-                    pagamento.IdmovimentoNavigation.Idbandeira = Idbandeira;
+                    MessageBox.Show("Bandeira não selecionada.", "Erro", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    return;
                 }
+                pagamento.IdmovimentoNavigation.Idbandeira = e.Bandeira.Idbandeira;
             }
 
             if(Venda.IdclienteNavigation != null)
@@ -156,26 +176,34 @@ namespace FortalezaDesktop.Views
             await Venda.SavePagamento(pagamento);
             await ReloadVenda();
 
-            if (
-                (await GetValorRemanescente() <= 0) &
-                UserPreferences.Preferences.ConcluirVendaPagamentoCompleto &
-                !ModoAlteracao
-               )
+            if(await GetValorRemanescente() <= 0)
             {
-                await FinalizarPagamento();
+                if (!ModoAlteracao & UserPreferences.Preferences.ConcluirVendaPagamentoCompleto)
+                {
+                    await FinalizarPagamento();
+                }
+                else
+                {
+                    ButtonOk.Focus();
+                }
             }
         }
 
         private async void OnLoad(object sender, RoutedEventArgs e)
         {
-            CaixaAberto = await (new Caixa()).GetCaixaAberto();
+            CaixaAberto = await (new Caixa()).GetCaixaAberto(UserPreferences.Preferences.IdnomeCaixa);
+            if(CaixaAberto == null)
+            {
+                MessageBox.Show("Caixa fechado.", "Caixa", MessageBoxButton.OK, MessageBoxImage.Information);
+                Close();
+            }
             await LoadFormaPagamentos();
             await UpdateValues();
         }
 
         public async Task UpdateValues()
         {
-            decimal valorTotal = Venda.ValorTotal + Venda.Desconto;
+            decimal valorTotal = Venda.ValorTotal - Venda.Desconto;
             decimal valorPago = Venda.ValorPago;
             textboxRecebido.Text = valorPago.ToString("C2");
             textboxValorTotal.Text = valorTotal.ToString("C2");
@@ -188,6 +216,7 @@ namespace FortalezaDesktop.Views
                 Troco = 0;
             }
             textboxTroco.Text = Troco.ToString("C2");
+
         }
 
 
@@ -286,7 +315,7 @@ namespace FortalezaDesktop.Views
         {
             PedidoDetailsCliente detailsCliente = new PedidoDetailsCliente();
             detailsCliente.Selecionado += DetailsCliente_Selecionado;
-            detailsCliente.Show();
+            detailsCliente.ShowDialog();
         }
 
         private async void DetailsCliente_Selecionado(object sender, PedidoDetailsCliente.ClienteSelecionadoEventArgs e)
@@ -294,6 +323,50 @@ namespace FortalezaDesktop.Views
             Venda.Idcliente = e.Cliente.Idcliente;
             await Venda.UpdateInstance();
             await ReloadVenda();
+        }
+
+        private async void LimparCliente_Click(object sender, RoutedEventArgs e)
+        {
+            Venda.Idcliente = null;
+            await Venda.UpdateInstance();
+            await ReloadVenda();
+        }
+
+        private async void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch(e.Key)
+            {
+                case (Key.Escape):
+                    Close();
+                    break;
+                case (Key.F11):
+                    Close();
+                    break;
+                case (Key.F12):
+                    await FinalizarPagamento();
+                    break;
+            }
+
+            if(!textboxValorDesconto.IsKeyboardFocusWithin && !textboxCPF.IsKeyboardFocusWithin)
+            {
+                if (e.Key >= Key.NumPad1 && e.Key <= Key.NumPad9)
+                {
+                    await FormaPagamentoFromNumpad(e.Key);
+                }
+            }
+        }
+
+        private async Task FormaPagamentoFromNumpad(Key key)
+        {
+            int ordem = (int)key - 74;
+            if (ordem > 0 && ordem < 10)
+            {
+                var formaPagamento = ((List<FormaPagamento>)itemsMeiosPagamentos.ItemsSource).Where(e => e.Ordem == ordem).FirstOrDefault();
+                if (formaPagamento != null)
+                {
+                    await SelecionarFormaPagamento(formaPagamento);
+                }
+            }
         }
     }
 }

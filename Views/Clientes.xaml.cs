@@ -40,9 +40,10 @@ namespace FortalezaDesktop.Views
         private async void buttonEditCliente_Click(object sender, RoutedEventArgs e)
         {
             Button senderAsButton = (Button)sender;
-            ClienteDetails clienteDetails = new ClienteDetails((int)senderAsButton.Tag);
+            ClienteDetails clienteDetails = new ClienteDetails();
             clienteDetails.Closed += ClienteDetails_Closed;
-            clienteDetails.Show();
+            clienteDetails.LoadCliente((int)senderAsButton.Tag);
+            clienteDetails.ShowDialog();
         }
 
         private async void ClienteDetails_Closed(object sender, EventArgs e)
@@ -71,7 +72,7 @@ namespace FortalezaDesktop.Views
         {
             ClienteDetails clienteDetails = new ClienteDetails();
             clienteDetails.Closed += ClienteDetails_Closed;
-            clienteDetails.Show();
+            clienteDetails.ShowDialog();
         }
     }
 }

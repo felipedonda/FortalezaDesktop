@@ -1,0 +1,68 @@
+﻿<Window x:Class="FortalezaDesktop.Views.Impressoras"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FortalezaDesktop.Views"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        SizeToContent="Height"
+        Title="Impressoras" Height="400" Width="330"
+        KeyDown="Window_KeyDown"
+        Loaded="Window_Loaded">
+    <Window.Resources>
+        <local:TinyIntBoolConverter x:Key="tinyIntBoolConverter" />
+    </Window.Resources>
+    <Grid Margin="10" x:Name="GridPrincipal">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="Impressora de Cupom" Margin="0,0,0,5" />
+                <ComboBox x:Name="ComboBoxCupom" Margin="0,0,0,10" />
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                    <CheckBox Content="Habilitada" x:Name="CheckboxHabilitadaCupom" Margin="0,0,10,0" Checked="CheckboxHabilitadaCupom_Checked" Unchecked="CheckboxHabilitadaCupom_Checked"/>
+                    <CheckBox Content="Visualizar" x:Name="CheckboxVisualizarCupom" Margin="0,0,10,0" />
+                    <CheckBox Content="Sempre Imprimir" x:Name="CheckboxSempreImprimirCupom"  />
+                </StackPanel>
+                <TextBlock Text="Tamanho:" Margin="0,0,0,5" />
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="0,0,0,15">
+                    <RadioButton Content="80mm" Name="RadioButton80" GroupName="TamanhoCupom" Margin="0,0,10,0" />
+                    <RadioButton Content="50mm" Name="RadioButton50" GroupName="TamanhoCupom" />
+                </StackPanel>
+                <Border BorderBrush="DarkGray" BorderThickness="0,1,0,0" Margin="0,0,0,10" />
+                <TextBlock Text="Impressora de Cupom" Margin="0,0,0,5" />
+                <ComboBox x:Name="ComboBoxCozinha" Margin="0,0,0,10" />
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
+                    <CheckBox Content="Habilitada" x:Name="CheckboxHabilitadaCozinha" Margin="0,0,10,0" Checked="CheckboxHabilitadaCozinha_Checked" Unchecked="CheckboxHabilitadaCozinha_Checked" />
+                    <CheckBox Content="Visualizar" x:Name="CheckboxVisualizarCozinha" Margin="0,0,10,0" />
+                    <CheckBox Content="Sempre Imprimir" x:Name="CheckboxSempreImprimirCozinha" />
+
+                </StackPanel>
+                <Border BorderBrush="DarkGray" BorderThickness="0,1,0,0" Margin="0,0,0,10" />
+                <TextBlock Text="Impressora de Relatório" Margin="0,0,0,5" />
+                <ComboBox x:Name="ComboBoxRelatorio" Margin="0,0,0,10" />
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox Content="Habilitada" x:Name="CheckboxHabilitadaRelatorio" Margin="0,0,10,0" Checked="CheckboxHabilitadaRelatorio_Checked" Unchecked="CheckboxHabilitadaRelatorio_Checked" />
+                    <CheckBox Content="Visualizar" x:Name="CheckboxVisualizarRelatorio" Margin="0,0,10,0" />
+                    <CheckBox Content="Sempre Imprimir" x:Name="CheckboxSempreImprimirRelatorio"  />
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+
+        <UniformGrid Grid.Row="1" Columns="3" FlowDirection="RightToLeft" Margin="0,15,0,0" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            <Button Height="30" Margin="0,0,5,0" Width="80" Click="ButtonCancelar_Click" >
+                <TextBlock TextAlignment="Center">
+                        Cancelar
+                </TextBlock>
+            </Button>
+            <Button x:Name="ButtonSalvar" Height="30" Margin="0,0,5,0" Width="80" Click="ButtoSalvar_Click" >
+                <TextBlock TextAlignment="Center">
+                        Salvar
+                </TextBlock>
+            </Button>
+        </UniformGrid>
+    </Grid>
+</Window>

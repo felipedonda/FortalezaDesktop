@@ -56,9 +56,9 @@ namespace FortalezaDesktop.Views
             Movimento = new Movimento
             {
                 IdformaPagamento = 1,
-                HoraEntrada = DateTime.UtcNow,
+                HoraEntrada = DateTime.Now,
                 Descricao = "VENDA - " + Venda.IdclienteNavigation.Nome,
-                Tipo = "C",
+                Tipo = 1,
                 Idcaixa = CaixaAberto.Idcaixa
             };
 
@@ -109,9 +109,9 @@ namespace FortalezaDesktop.Views
             Movimento.IdformaPagamento = formaPagamento.IdformaPagamento;
             if(formaPagamento.Bandeira == 1)
             {
-                VendaPagamentoBandeira vendaPagamentoBandeira = new VendaPagamentoBandeira();
-                vendaPagamentoBandeira.Selecionado += VendaPagamentoBandeira_Selecionado; ;
-                vendaPagamentoBandeira.Show();
+                VendaPagamentoBandeira vendaPagamentoBandeira = new VendaPagamentoBandeira(formaPagamento);
+                vendaPagamentoBandeira.BandeiraSelecionada += VendaPagamentoBandeira_Selecionado; ;
+                vendaPagamentoBandeira.ShowDialog();
             }
             else
             {
@@ -119,13 +119,12 @@ namespace FortalezaDesktop.Views
             }
         }
 
-        private async void VendaPagamentoBandeira_Selecionado(object sender, EventArgs e)
+        private async void VendaPagamentoBandeira_Selecionado(object sender, VendaPagamentoBandeira.BandeiraSelecionadaArgs e)
         {
             Movimento.Idbandeira = null;
-            VendaPagamentoBandeira senderAsForm = (VendaPagamentoBandeira)sender;
-            if(senderAsForm.BandeiraSelecionada != null)
+            if(e.Bandeira != null)
             {
-                Movimento.Idbandeira = senderAsForm.BandeiraSelecionada.Idbandeira;
+                Movimento.Idbandeira = e.Bandeira.Idbandeira;
                 await FinalizarPagamento();
             }
         }
@@ -157,6 +156,14 @@ namespace FortalezaDesktop.Views
         {
             await Movimento.DeleteInstance();
             Close();
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                Close();
+            }
         }
     }
 }

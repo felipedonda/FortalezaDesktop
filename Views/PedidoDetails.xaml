@@ -5,8 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FortalezaDesktop.Views"
         mc:Ignorable="d"
-        Title="PedidoDetails" Height="550" Width="800"
-        SizeToContent="Height">
+        Title="Novo pedido" Height="550" Width="800"
+        WindowStartupLocation="CenterScreen"
+        SizeToContent="Height"
+        KeyDown="Window_KeyDown">
 
     <Grid x:Name="gridPedidoDetails">
         <Grid>
@@ -106,7 +108,8 @@
                     AutoGenerateColumns="False"
                     GridLinesVisibility="None"
                     HeadersVisibility="Column"
-                    CanUserAddRows="False">
+                    CanUserAddRows="False"
+                    MinHeight="60">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Codigo" Width="Auto"  Binding="{Binding Iditem, StringFormat={}{0:00000}}" />
                     <DataGridTextColumn Header="Descricao" Width="*" Binding="{Binding IditemNavigation.Descricao}" />

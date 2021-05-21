@@ -21,64 +21,40 @@ namespace FortalezaDesktop.Views
     public partial class CaixasView : Window
     {
         public Caixa CaixaAberto { get; set; }
-        private DateTime DataInicial { get; set; }
-        private DateTime DataFinal { get; set; }
 
         public CaixasView()
         {
             InitializeComponent();
+            DatePickerDataInicial.SelectedDate = DateTime.Now.AddDays(-7);
+            DatePickerDataFinal.SelectedDate = DateTime.Now;
         }
 
         public async void OnLoad(object sender, RoutedEventArgs e)
         {
-            AssignDataInicial(DateTime.UtcNow.AddDays(-7));
-            AssignDataFinal(DateTime.UtcNow);
-
-            DataFinal = new DateTime(
-                DateTime.UtcNow.Year,
-                DateTime.UtcNow.Month,
-                DateTime.UtcNow.Day,
-                23, 59, 59);
-
-            TextboxDataInicial.Text = DataInicial.ToString("dd/MM/yy");
-            TextboxDataFinal.Text = DataFinal.ToString("dd/MM/yy");
-
             await LoadCaixaAberto();
             await LoadCaixas();
         }
 
 
-        public void AssignDataInicial(DateTime dateTime)
+        public DateTime GetDataInicial()
         {
-            DataInicial = new DateTime(
-                dateTime.Year,
-                dateTime.Month,
-                dateTime.Day,
-                0, 0, 0);
+            return DatePickerDataInicial.SelectedDate ?? default;
         }
 
-        public void AssignDataFinal(DateTime dateTime)
+        public DateTime GetDataFinal()
         {
-            DataFinal = new DateTime(
-                dateTime.Year,
-                dateTime.Month,
-                dateTime.Day,
-                23, 59, 59);
+            return DatePickerDataFinal.SelectedDate ?? default;
         }
 
         public async Task LoadCaixas()
         {
             try
             {
-                DateTime _dataInicial = DateTime.ParseExact(TextboxDataInicial.Text, "dd/MM/yy", CultureInfo.InvariantCulture);
-                DateTime _dataFinal = DateTime.ParseExact(TextboxDataFinal.Text, "dd/MM/yy", CultureInfo.InvariantCulture);
-                AssignDataInicial(_dataInicial);
-                AssignDataFinal(_dataFinal);
 
                 List<Caixa> caixas = await new Caixa().FindAll(new Dictionary<string, string> {
                     {"filtroData","true"},
-                    {"dataInicial",DataInicial.ToString()},
-                    {"dataFinal",DataFinal.ToString() }
+                    {"dataInicial",GetDataInicial().ToString("yyyy-MM-dd")},
+                    {"dataFinal",GetDataFinal().ToString("yyyy-MM-dd") }
                 });
                 DatagridFechamentos.ItemsSource = null;
                 DatagridFechamentos.ItemsSource = caixas;
@@ -91,17 +67,21 @@ namespace FortalezaDesktop.Views
 
         public async Task LoadCaixaAberto()
         {
-            Caixa caixa = new Caixa();
-            CaixaAberto = await caixa.GetCaixaAberto(new Dictionary<string, string> {
+            CaixaAberto = await new Caixa().GetCaixaAberto(
+                UserPreferences.Preferences.IdnomeCaixa,
+                new Dictionary<string, string> {
                 { "movimentos","true"}
             });
             if(CaixaAberto != null)
             {
                 gridTituloCaixaAberto.DataContext = CaixaAberto;
+                ButtonFecharCaixa.IsEnabled = true;
                 await LoadMovimentos();
             }
             else
             {
+                gridTituloCaixaAberto.DataContext = null;
+                ButtonFecharCaixa.IsEnabled = false;
                 //MessageBox.Show("Nenhum caixa aberto.");
             }
             
@@ -119,35 +99,28 @@ namespace FortalezaDesktop.Views
         private async void AdicionarMovimentoView_Closing(object sender, EventArgs e)
         {
             await LoadCaixaAberto();
+            await LoadCaixas();
         }
 
         private void ButtonAbrirCaixa_Click(object sender, RoutedEventArgs e)
         {
-            AdicionarMovimento adicionarMovimentoView = new AdicionarMovimento();
+            AdicionarMovimento adicionarMovimentoView = new AdicionarMovimento(AdicionarMovimento.TipoMovimento.Abertura);
             adicionarMovimentoView.Closing += AdicionarMovimentoView_Closing;
-            adicionarMovimentoView.Show();
+            adicionarMovimentoView.ShowDialog();
         }
 
         private void ButtonSuprimento_Click(object sender, RoutedEventArgs e)
         {
-            AdicionarMovimento adicionarMovimentoView = new AdicionarMovimento(CaixaAberto,OperacaoCaixa.Suprimento);
+            AdicionarMovimento adicionarMovimentoView = new AdicionarMovimento(AdicionarMovimento.TipoMovimento.Suprimento);
             adicionarMovimentoView.Closing += AdicionarMovimentoView_Closing;
-            adicionarMovimentoView.Show();
-        }
-
-
-        private void ButtonFechamento_Click(object sender, RoutedEventArgs e)
-        {
-            AdicionarMovimento adicionarMovimentoView = new AdicionarMovimento(CaixaAberto, OperacaoCaixa.Sangria);
-            adicionarMovimentoView.Closing += AdicionarMovimentoView_Closing;
-            adicionarMovimentoView.Show();
+            adicionarMovimentoView.ShowDialog();
         }
 
         private void ButtonSangria_Click(object sender, RoutedEventArgs e)
         {
-            AdicionarMovimento adicionarMovimentoView = new AdicionarMovimento(CaixaAberto, OperacaoCaixa.Sangria);
+            AdicionarMovimento adicionarMovimentoView = new AdicionarMovimento(AdicionarMovimento.TipoMovimento.Sangria);
             adicionarMovimentoView.Closing += AdicionarMovimentoView_Closing;
-            adicionarMovimentoView.Show();
+            adicionarMovimentoView.ShowDialog();
         }
 
         private async void ButtonFecharCaixa_Click(object sender, RoutedEventArgs e)
@@ -157,11 +130,26 @@ namespace FortalezaDesktop.Views
                 if (await new Venda().HasVendaAberta())
                 {
                     CaixaVendasAbertas vendasAbertas = new CaixaVendasAbertas();
-                    vendasAbertas.Show();
+                    vendasAbertas.ShowDialog();
                 }
-                AdicionarMovimento adicionarMovimentoView = new AdicionarMovimento(CaixaAberto, OperacaoCaixa.Fechamento);
-                adicionarMovimentoView.Closing += AdicionarMovimentoView_Closing;
-                adicionarMovimentoView.Show();
+                else
+                {
+                    // IMPLEMENTAR SALDO PRÉ FECHAMENTO
+                    var result = MessageBox.Show(
+                        "Deseja realmente fechar o caixa?",
+                        "Fechar Caixa",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Question);
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        if(await CaixaAberto.FecharCaixa(UserController.UsuarioLogado.Idusuario, UserPreferences.Preferences.Idpdv))
+                        {
+                            CaixaAberto = null;
+                            gridTituloCaixaAberto.DataContext = null;
+                            ButtonFecharCaixa.IsEnabled = false;
+                        }
+                    }
+                }
             }
         }
 
@@ -175,6 +163,22 @@ namespace FortalezaDesktop.Views
                 });
                 DatagridMovimentacoesFechamento.ItemsSource = null;
                 DatagridMovimentacoesFechamento.ItemsSource = caixa.Movimento;
+            }
+        }
+
+        private async void DatePicked(object sender, SelectionChangedEventArgs e)
+        {
+            if(IsLoaded)
+            {
+                await LoadCaixas();
+            }
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Escape)
+            {
+                Close();
             }
         }
     }

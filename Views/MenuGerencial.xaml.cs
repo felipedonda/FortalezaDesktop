@@ -19,69 +19,100 @@ namespace FortalezaDesktop.Views
     /// </summary>
     public partial class MenuGerencial : Window
     {
-        public event EventHandler UpdateParent;
         public MenuGerencial()
         {
             InitializeComponent();
         }
-        
+
         public void buttonProdutos_Click(object sender, RoutedEventArgs e)
         {
             Produtos produtoView = new Produtos();
-            produtoView.Closed += ConfiguracoesView_UpdateParent;
-            produtoView.Show();
+            produtoView.ShowDialog();
             Close();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
         }
 
         private void buttonConfiguracoes_Click(object sender, RoutedEventArgs e)
         {
             Configuracoes configuracoesView = new Configuracoes();
-            configuracoesView.UpdateParent += ConfiguracoesView_UpdateParent;
-            configuracoesView.Show();
-        }
-
-        private void ConfiguracoesView_UpdateParent(object sender, EventArgs e)
-        {
-            UpdateParent?.Invoke(this,new EventArgs());
+            configuracoesView.ShowDialog();
+            Close();
         }
 
         private void buttonEstoque_Click(object sender, RoutedEventArgs e)
         {
             EstoqueView estoqueView = new EstoqueView();
-            estoqueView.Show();
+            estoqueView.ShowDialog();
             Close();
         }
 
         private void buttonProdutosVendidos_Click(object sender, RoutedEventArgs e)
         {
             RelatoriosProdutosVendidos relatoriosProdutosVendidos = new RelatoriosProdutosVendidos();
-            relatoriosProdutosVendidos.Show();
+            relatoriosProdutosVendidos.ShowDialog();
             Close();
         }
 
         private void buttonClientes_Click(object sender, RoutedEventArgs e)
         {
             Clientes clientes = new Clientes();
-            clientes.Show();
+            clientes.ShowDialog();
             Close();
         }
 
         private void buttonGrupos_Click(object sender, RoutedEventArgs e)
         {
             GruposView gruposView = new GruposView();
-            gruposView.Show();
+            gruposView.ShowDialog();
             Close();
         }
 
         private void buttonDadosLoja_Click(object sender, RoutedEventArgs e)
         {
             InformacoesEmpresaDetails informacoesEmpresaDetails = new InformacoesEmpresaDetails();
-            informacoesEmpresaDetails.Show();
+            informacoesEmpresaDetails.ShowDialog();
+            Close();
+        }
+
+        private void ButtonPontoVenda_Click(object sender, RoutedEventArgs e)
+        {
+            PontoVendaView pontoVendaView = new PontoVendaView();
+            pontoVendaView.ShowDialog();
+            Close();
+        }
+
+        private void ButtonPagamentos_Click(object sender, RoutedEventArgs e)
+        {
+            FormaPagamentosView formaPagamentosView = new FormaPagamentosView();
+            formaPagamentosView.ShowDialog();
+            Close();
+        }
+
+        private void ButtonImpressoras_Click(object sender, RoutedEventArgs e)
+        {
+            Impressoras impressoras = new Impressoras();
+            impressoras.ShowDialog();
+            Close();
+        }
+
+        private void ButtonModulos_Click(object sender, RoutedEventArgs e)
+        {
+            ConfiguracoesModulos configuracoesModulos = new ConfiguracoesModulos();
+            configuracoesModulos.ShowDialog();
+            Close();
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Escape)
+            {
+                Close();
+            }
+        }
+
+        private void ButtonSat_Click(object sender, RoutedEventArgs e)
+        {
+            ConfiguracaoSat configuracaoSat = new ConfiguracaoSat();
+            configuracaoSat.ShowDialog();
             Close();
         }
     }

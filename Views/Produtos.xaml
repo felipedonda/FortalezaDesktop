@@ -71,7 +71,7 @@
                     <DataGridTextColumn Header="Codigo" Width="65"  Binding="{Binding Iditem, StringFormat={}{0:00000}}" />
                     <DataGridTextColumn Header="Descrição" Width="*" Binding="{Binding Descricao}" />
                     <DataGridTextColumn Header="Valor" Width="65" Binding="{local:CultureAwareBinding Valor, StringFormat=C2}" />
-                    <DataGridTextColumn Header="Tipo" Width="75" Binding="{Binding Tipo}" />
+                    <DataGridTextColumn Header="Tipo" Width="75" Binding="{Binding TipoString}" />
                     <DataGridCheckBoxColumn Header="Visível" Width="55" Binding="{Binding Visivel}" />
                     <DataGridCheckBoxColumn Header="Disponível" Width="72" Binding="{Binding Disponivel}" />
                     <DataGridTemplateColumn Width="30">

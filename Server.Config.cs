@@ -92,65 +92,30 @@ namespace FortalezaDesktop
                 HttpResponseMessage httpResponse = await httpClient.GetAsync(APIURI);
                 return httpResponse.IsSuccessStatusCode;
             }
-            catch(Exception ex)
+            catch (Exception)
             {
-                //if (ex.InnerException is SocketException) return false;
-                //throw ex;
                 return false;
             }
         }
     }
 
 
-    class BadResponseStatusCodeException : Exception
+    public class BadResponseStatusCodeException : Exception
     {
+        public string Status { get; set; }
+        public int StatusCode { get; set; }
+        public string RequestUri { get; set; }
+
         public BadResponseStatusCodeException()
         {
 
         }
-        public BadResponseStatusCodeException(string message)
+        public BadResponseStatusCodeException(string message, string status, int statusCode, string requestUri)
             :base(message)
         {
-
-        }
-    }
-
-    class MissingPropertyException : Exception
-    {
-        public MissingPropertyException()
-        {
-
-        }
-        public MissingPropertyException(string message)
-            : base(message)
-        {
-
-        }
-    }
-
-    class GenericServerException : Exception
-    {
-        public GenericServerException()
-        {
-
-        }
-        public GenericServerException(string message)
-            : base(message)
-        {
-
-        }
-    }
-
-    class EmptyObjectException : Exception
-    {
-        public EmptyObjectException()
-        {
-
-        }
-        public EmptyObjectException(string message)
-            :base(message)
-        {
-            
+            Status = status;
+            StatusCode = statusCode;
+            RequestUri = requestUri;
         }
     }
 }

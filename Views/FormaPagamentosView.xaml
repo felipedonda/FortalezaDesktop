@@ -1,0 +1,106 @@
+﻿<Window x:Class="FortalezaDesktop.Views.FormaPagamentosView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FortalezaDesktop.Views"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="FormaPagamentosView" Height="450" Width="800"
+        KeyDown="Window_KeyDown"
+        Loaded="Window_Loaded">
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            <TabControl x:Name="TabControlMain">
+                <TabItem Header="Formas de Pagamentos">
+                    <Grid>
+                        <DataGrid Margin="10"
+                          x:Name="DatagridFormasPagamentos"
+                          AutoGenerateColumns="False"
+                          GridLinesVisibility="None"
+                          CanUserAddRows="False"
+                          HeadersVisibility="Column"
+                          CanUserDeleteRows="False"
+                          IsReadOnly="True">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Ordem" Width="55"  Binding="{Binding Ordem}" />
+                                <DataGridTextColumn Header="Nome" Width="3*"  Binding="{Binding Nome}" />
+                                <DataGridTextColumn Header="Débito" Width="65" Binding="{Binding DebitoString}"  />
+                                <DataGridTextColumn Header="Bandeira" Width="70" Binding="{Binding BandeiraString}" />
+                                <DataGridTextColumn Header="Debitar Cliente" Width="100" Binding="{Binding DebitarClienteString}" />
+                                <DataGridTextColumn Header="Gerar Conta" Width="80" Binding="{Binding GerarContasReceberString}" />
+                                <DataGridTemplateColumn Width="30">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Click="ButtonRemoverFormaPagamento_Click" BorderThickness="0" Background="Transparent" Tag="{Binding IdformaPagamento}">
+                                                <Image Width="25" Height="25" Source="../images/trash.png" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                            </Button>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Width="30">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Click="ButtonEditFormaPagamento_Click" BorderThickness="0" Background="Transparent" Tag="{Binding IdformaPagamento}">
+                                                <Image Width="25" Height="25" Source="../images/pencil.png" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                            </Button>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Bandeiras">
+                    <Grid>
+                        <DataGrid Margin="10"
+                          x:Name="DatagridBandeiras"
+                          AutoGenerateColumns="False"
+                          GridLinesVisibility="None"
+                          CanUserAddRows="False"
+                          HeadersVisibility="Column"
+                          CanUserDeleteRows="False"
+                          IsReadOnly="True">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Ordem" Width="55"  Binding="{Binding Ordem}" />
+                                <DataGridTextColumn Header="Nome" Width="3*"  Binding="{Binding Nome}" />
+                                <DataGridTemplateColumn Width="30">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Click="ButtonRemoverBandeira_Click" BorderThickness="0" Background="Transparent" Tag="{Binding Idbandeira}">
+                                                <Image Width="25" Height="25" Source="../images/trash.png" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                            </Button>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Width="30">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Click="ButtonEditBandeira_Click" BorderThickness="0" Background="Transparent" Tag="{Binding Idbandeira}">
+                                                <Image Width="25" Height="25" Source="../images/pencil.png" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                            </Button>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+            
+
+
+            <Border BorderBrush="DarkGray" BorderThickness="0,0,0,0" Grid.Row="1"  Margin="0,5,0,5" >
+                <StackPanel Orientation="Horizontal"  FlowDirection="RightToLeft" Margin="10,10,10,0" VerticalAlignment="Bottom">
+                    <Button x:Name="ButtonCancelar" Click="ButtonCancelar_Click" Content="Fechar" Width="80" Height="28" Margin="0,0,5,5" Padding="5" />
+                    <Button x:Name="ButtonAdicionar" Click="ButtonAdicionar_Click" Content="Adicionar" Width="80" Height="28" Margin="0,0,5,5" Padding="5" />
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>

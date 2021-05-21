@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FortalezaDesktop.Views"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
         Title="EstoqueEntradaProdutoQuantidade" Height="230" Width="250">
     <Grid>
         <Grid.ColumnDefinitions>

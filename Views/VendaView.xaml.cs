@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using FortalezaDesktop.Controllers;
 using FortalezaDesktop.Models;
 
 namespace FortalezaDesktop.Views
@@ -51,7 +52,7 @@ namespace FortalezaDesktop.Views
             }
         }
 
-        public async void LoadSelecaoProdutos()
+        public void LoadSelecaoProdutos()
         {
             VendaSelecaoProdutos selecaoProdutos = new VendaSelecaoProdutos();
             selecaoProdutos.ProdutoSelected += SelecaoProdutos_ProdutoSelected;
@@ -61,10 +62,10 @@ namespace FortalezaDesktop.Views
 
         private async void SelecaoProdutos_ProdutoSelected(object sender, VendaSelecaoProdutos.ProdutoSelectedEventArgs e)
         {
-            await ItemsSelecionados.AddProdutoVenda(e.Iditem, 1);
+            await ItemsSelecionados.AddProdutoVenda(e.Iditem);
         }
 
-        public async void LoadItemsSelecionados()
+        public void LoadItemsSelecionados()
         {
             ItemsSelecionados = new VendaItemsSelecionados();
             ItemsSelecionados.ItemVendaSelected += ItemsSelecionados_ItemVendaSelected;
@@ -76,35 +77,33 @@ namespace FortalezaDesktop.Views
 
         private async void ItemsSelecionados_CancelarSelected(object sender, EventArgs e)
         {
-            await ItemsSelecionados.Venda.DeleteInstance();
-            await ItemsSelecionados.LimparVenda();
+            if(ItemsSelecionados.Venda != null)
+            {
+                await ItemsSelecionados.Venda.DeleteInstance();
+                ItemsSelecionados.LimparVenda();
+            }
         }
 
         private async void ItemsSelecionados_ReceberClicked(object sender, EventArgs e)
         {
-            VendaPagamentos vendaPagamentos = new VendaPagamentos();
-            await vendaPagamentos.LoadVenda(ItemsSelecionados.Venda.Idvenda);
-            vendaPagamentos.PagamentoRealizado += VendaPagamentos_PagamentoRealizado;
-            vendaPagamentos.Show();
+            if(ItemsSelecionados.Venda != null)
+            {
+                VendaPagamentos vendaPagamentos = new VendaPagamentos();
+                await vendaPagamentos.LoadVenda(ItemsSelecionados.Venda.Idvenda);
+                vendaPagamentos.PagamentoRealizado += VendaPagamentos_PagamentoRealizado;
+                vendaPagamentos.ShowDialog();
+            }
         }
 
-        private async void VendaPagamentos_PagamentoRealizado(object sender, EventArgs e)
+        private void VendaPagamentos_PagamentoRealizado(object sender, EventArgs e)
         {
-            var result = MessageBox.Show(
-                "Deseja imprimir o cupom?",
-                "Concluir venda",
-                MessageBoxButton.YesNo
-                );
-            if(result == MessageBoxResult.Yes)
-            {
-                await ItemsSelecionados.Venda.GerarCupom();
-            }
-            await ItemsSelecionados.LimparVenda();
+            RelatoriosController.ImprimirCupom(ItemsSelecionados.Venda);
+            ItemsSelecionados.LimparVenda();
         }
 
         private async void ItemsSelecionados_ItemVendaSelected(object sender, VendaItemsSelecionados.ItemVendaSelectedEventArgs e)
         {
-            await ItemsSelecionados.AddProdutoVenda(e.Iditem, e.Quantidade);
+            await ItemsSelecionados.AddProdutoVenda(e.Iditem);
         }
     }
 }

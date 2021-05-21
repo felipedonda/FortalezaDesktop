@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:FortalezaDesktop.Views"
         mc:Ignorable="d"
         Title="ProdutoDetailsEntregador" Height="450" Width="800"
+        KeyDown="Window_KeyDown"
         Loaded="Window_Loaded">
     <Grid>
         <Grid.RowDefinitions>

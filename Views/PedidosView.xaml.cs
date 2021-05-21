@@ -31,15 +31,15 @@ namespace FortalezaDesktop.Views
             comboboxFiltroEntrega.ItemsSource = new List<string> { "Todos", "Iniciado", "Aguardando Entrega", "Saiu para Entrega", "Entregue", "Cancelado" };
 
             DateTime dataInicial = new DateTime(
-                DateTime.UtcNow.Year,
-                DateTime.UtcNow.Month,
-                DateTime.UtcNow.Day,
+                DateTime.Now.Year,
+                DateTime.Now.Month,
+                DateTime.Now.Day,
                 0,0,0);
 
             DateTime dataFinal = new DateTime(
-                DateTime.UtcNow.Year,
-                DateTime.UtcNow.Month,
-                DateTime.UtcNow.Day,
+                DateTime.Now.Year,
+                DateTime.Now.Month,
+                DateTime.Now.Day,
                 23,59,59);
 
             textboxDataInicial.Text = dataInicial.ToString("dd/MM/yy");
@@ -53,7 +53,7 @@ namespace FortalezaDesktop.Views
         {
             PedidoDetails pedidoDetails = new PedidoDetails();
             pedidoDetails.Closed += PedidoDetails_Closed;
-            pedidoDetails.Show();
+            pedidoDetails.ShowDialog();
         }
 
         private async void PedidoDetails_Closed(object sender, EventArgs e)
@@ -78,7 +78,7 @@ namespace FortalezaDesktop.Views
             int Idvenda = ((Pedido)datagridItems.SelectedItem).Idvenda;
             PedidoDetails pedidoDetails = new PedidoDetails(Idvenda);
             pedidoDetails.Closed += PedidoDetails_Closed;
-            pedidoDetails.Show();
+            pedidoDetails.ShowDialog();
         }
 
         private async void datagridItems_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -93,14 +93,14 @@ namespace FortalezaDesktop.Views
 
         private async void ButtonFechar(object sender, RoutedEventArgs e)
         {
-            Caixa caixaAberto = await (new Caixa()).GetCaixaAberto();
+            Caixa caixaAberto = await (new Caixa()).GetCaixaAberto(UserPreferences.Preferences.IdnomeCaixa);
             if (caixaAberto != null)
             {
                 var venda = ((Pedido)datagridItems.SelectedItem).IdvendaNavigation;
                 VendaPagamentos pagamentosVendaView = new VendaPagamentos();
                 await pagamentosVendaView.LoadVenda(venda.Idvenda);
                 pagamentosVendaView.PagamentoRealizado += PagamentosVendaView_PagamentoRealizado;
-                pagamentosVendaView.Show();
+                pagamentosVendaView.ShowDialog();
             }
             else
             {
@@ -120,7 +120,7 @@ namespace FortalezaDesktop.Views
             var pedido = (Pedido)datagridItems.SelectedItem;
             PedidosEntrega pedidosEntrega = new PedidosEntrega(pedido);
             pedidosEntrega.Closed += PedidosEntrega_Closed;
-            pedidosEntrega.Show();
+            pedidosEntrega.ShowDialog();
         }
 
         private async void PedidosEntrega_Closed(object sender, EventArgs e)

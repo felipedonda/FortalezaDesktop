@@ -5,7 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FortalezaDesktop.Views"
         mc:Ignorable="d"
-        Title="MenuGerencial" Height="450" Width="610">
+        WindowStartupLocation="CenterScreen"
+        KeyDown="Window_KeyDown"
+        Title="MenuGerencial" Height="450" Width="610"
+        >
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -37,6 +40,11 @@
                         <Label Content="Clientes" />
                     </StackPanel>
                 </Button>
+                <Button Margin="0,5,0,0" Click="ButtonPagamentos_Click">
+                    <StackPanel Orientation="Horizontal" Width="120" Height="30" >
+                        <Label Content="Pagamentos" />
+                    </StackPanel>
+                </Button>
             </StackPanel>
             <StackPanel  Orientation="Vertical" HorizontalAlignment="Center" Margin="10">
                 <Label Content="Gerencial" FontSize="14"/>
@@ -64,6 +72,26 @@
                 <Button Margin="0,5,0,0" Click="buttonDadosLoja_Click">
                     <StackPanel Orientation="Horizontal" Width="120" Height="30" >
                         <Label Content="Dados da Loja" />
+                    </StackPanel>
+                </Button>
+                <Button Margin="0,5,0,0" Click="ButtonPontoVenda_Click">
+                    <StackPanel Orientation="Horizontal" Width="120" Height="30" >
+                        <Label Content="Ponto de Venda" />
+                    </StackPanel>
+                </Button>
+                <Button Margin="0,5,0,0" Click="ButtonImpressoras_Click">
+                    <StackPanel Orientation="Horizontal" Width="120" Height="30" >
+                        <Label Content="Impressoras" />
+                    </StackPanel>
+                </Button>
+                <Button Margin="0,5,0,0" Click="ButtonModulos_Click">
+                    <StackPanel Orientation="Horizontal" Width="120" Height="30" >
+                        <Label Content="Modulos" />
+                    </StackPanel>
+                </Button>
+                <Button Margin="0,5,0,0" Click="ButtonSat_Click">
+                    <StackPanel Orientation="Horizontal" Width="120" Height="30" >
+                        <Label Content="Configuração SAT" />
                     </StackPanel>
                 </Button>
             </StackPanel>

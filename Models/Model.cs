@@ -11,6 +11,7 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Windows;
 using JsonIgnoreAttribute = Newtonsoft.Json.JsonIgnoreAttribute;
+using FortalezaDesktop.Utils;
 
 namespace FortalezaDesktop.Models
 {
@@ -28,23 +29,24 @@ namespace FortalezaDesktop.Models
             {
                 return await ServerEntry<T>.Get(Path, id, options);
             }
-            catch (Exception e)
+            catch (BadResponseStatusCodeException e)
             {
-                MessageBox.Show(e.Message + "\n\nStack:\n" + e.StackTrace, "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
-                return default;
+                ServerEntry.CommonExceptionHandler(e);
+                return null;
             }
         }
-        
+
+
         public async Task<List<T>> FindAll(Dictionary<string, string> options = null)
         {
             try
             {
                 return await ServerEntry<List<T>>.Get(Path, options);
             }
-            catch (Exception e)
+            catch (BadResponseStatusCodeException e)
             {
-                MessageBox.Show(e.Message + "\n\nStack:\n" + e.StackTrace, "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
-                return default;
+                ServerEntry.CommonExceptionHandler(e);
+                return null;
             }
         }
 
@@ -54,10 +56,10 @@ namespace FortalezaDesktop.Models
             {
                 return await ServerEntry<T>.Get(Path, Id ?? default, options);
             }
-            catch (Exception e)
+            catch (BadResponseStatusCodeException e)
             {
-                MessageBox.Show(e.Message + "\n\nStack:\n" + e.StackTrace, "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
-                return default;
+                ServerEntry.CommonExceptionHandler(e);
+                return null;
             }
         }
 
@@ -68,9 +70,9 @@ namespace FortalezaDesktop.Models
                 T result = await ServerEntry<T>.Post(Path, this);
                 Id = result.Id;
             }
-            catch(Exception e)
+            catch(BadResponseStatusCodeException e)
             {
-                MessageBox.Show(e.Message + "\n\nStack:\n" + e.StackTrace, "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                ServerEntry.CommonExceptionHandler(e);
                 return false;
             }
             return true;
@@ -82,9 +84,9 @@ namespace FortalezaDesktop.Models
             {
                 await ServerEntry<T>.Put(Path + "/" + Id, this);
             }
-            catch(Exception e)
+            catch(BadResponseStatusCodeException e)
             {
-                MessageBox.Show(e.Message + "\n\nStack:\n" + e.StackTrace, "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                ServerEntry.CommonExceptionHandler(e);
                 return false;
             }
             return true;
@@ -94,14 +96,142 @@ namespace FortalezaDesktop.Models
         {
             try
             {
-                await ServerEntry<T>.Delete(Path, Id ?? default);
+                await ServerEntry.Delete(Path, Id ?? default);
             }
-            catch(Exception e)
+            catch(BadResponseStatusCodeException e)
             {
-                MessageBox.Show(e.Message + "\n\nStack:\n" + e.StackTrace, "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                ServerEntry.CommonExceptionHandler(e);
                 return false;
             }
             return true;
+        }
+    }
+
+    public class ServerEntry
+    {
+        public static async Task<Stream> GetFile(string path)
+        {
+            HttpClient httpClient = new HttpClient();
+
+            HttpRequestMessage httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, Server.URI + path);
+
+            HttpResponseMessage httpResponse = await httpClient.SendAsync(httpRequestMessage);
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                return await httpResponse.Content.ReadAsStreamAsync();
+            }
+            else
+            {
+                throw new BadResponseStatusCodeException(httpResponse.ReasonPhrase, httpResponse.StatusCode.ToString(), (int)httpResponse.StatusCode, httpResponse.RequestMessage.RequestUri.ToString());
+            }
+        }
+
+        public static async Task<string> PostFile(string path, Stream file, string fileName)
+        {
+            HttpClient httpClient = new HttpClient();
+            file.Seek(0, SeekOrigin.Begin);
+            byte[] fileBinaries = new byte[file.Length];
+            await file.ReadAsync(fileBinaries, 0, (int)file.Length);
+
+            ByteArrayContent fileContent = new ByteArrayContent(fileBinaries);
+            MultipartFormDataContent httpContent = new MultipartFormDataContent();
+            httpContent.Add(fileContent, "file", fileName);
+
+            HttpResponseMessage httpResponse = await httpClient.PostAsync(Server.APIURI + path, httpContent);
+
+            if (!httpResponse.IsSuccessStatusCode)
+            {
+                throw new BadResponseStatusCodeException(httpResponse.ReasonPhrase, httpResponse.StatusCode.ToString(), (int)httpResponse.StatusCode, httpResponse.RequestMessage.RequestUri.ToString());
+            }
+            else
+            {
+                return await httpResponse.Content.ReadAsStringAsync();
+            }
+        }
+
+        public static async Task<bool> ActionPost(string path, object item, Dictionary<string, string> options = null)
+        {
+
+            HttpResponseMessage httpResponse;
+            HttpClient httpClient = new HttpClient();
+
+            string _path = path;
+
+            if (options != null)
+            {
+                _path += "?";
+                _path += await (new FormUrlEncodedContent(options)).ReadAsStringAsync();
+            }
+
+
+            if (item != null)
+            {
+                string itemJson = JsonConvert.SerializeObject(item, new JsonSerializerSettings
+                {
+                    ContractResolver = new DefaultContractResolver
+                    {
+                        NamingStrategy = new CamelCaseNamingStrategy()
+                    },
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
+
+                StringContent httpContent = new StringContent(itemJson, Encoding.UTF8, "application/json");
+                httpResponse = await httpClient.PostAsync(Server.APIURI + _path, httpContent);
+            }
+            else
+            {
+                httpResponse = await httpClient.PostAsync(Server.APIURI + _path, null);
+            }
+
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else
+            {
+                throw new BadResponseStatusCodeException(httpResponse.ReasonPhrase, httpResponse.StatusCode.ToString(), (int)httpResponse.StatusCode, httpResponse.RequestMessage.RequestUri.ToString());
+            }
+        }
+
+
+        public static async Task<bool> Delete(string path)
+        {
+            HttpClient httpClient = new HttpClient();
+            HttpResponseMessage httpResponse = await httpClient.DeleteAsync(Server.APIURI + path);
+
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else
+            {
+                throw new BadResponseStatusCodeException(httpResponse.ReasonPhrase, httpResponse.StatusCode.ToString(), (int)httpResponse.StatusCode, httpResponse.RequestMessage.RequestUri.ToString());
+            }
+        }
+
+        public static async Task<bool> Delete(string path, int id)
+        {
+            return await Delete(path + "/" + id);
+        }
+
+        public static void CommonExceptionHandler(BadResponseStatusCodeException e)
+        {
+            switch (e.StatusCode)
+            {
+                case 401:
+                    MessageBox.Show(e.Message, "Erro", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    break;
+                default:
+                    string errorMessage = e.Status + " (" + e.StatusCode.ToString() + ")";
+                    if (!string.IsNullOrEmpty(e.Message))
+                    {
+                        errorMessage += ": " + e.Message;
+                    }
+                    errorMessage += "\nOn: " + e.RequestUri;
+                    MessageBox.Show(errorMessage, "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                    Logger.Log(errorMessage + " Stack:" + e.StackTrace, Logger.LogType.Error);
+                    break;
+            };
         }
     }
 
@@ -134,28 +264,7 @@ namespace FortalezaDesktop.Models
             }
             else
             {
-                throw new BadResponseStatusCodeException("Bad status code: "
-                    + httpResponse.ReasonPhrase
-                    + "\nOn: " + httpResponse.RequestMessage.RequestUri);
-            }
-        }
-
-        public static async Task<Stream> GetFile(string path)
-        {
-            HttpClient httpClient = new HttpClient();
-
-            HttpRequestMessage httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, Server.URI + path);
-
-            HttpResponseMessage httpResponse = await httpClient.SendAsync(httpRequestMessage);
-            if (httpResponse.IsSuccessStatusCode)
-            {
-                return await httpResponse.Content.ReadAsStreamAsync();
-            }
-            else
-            {
-                throw new BadResponseStatusCodeException("Bad status code: "
-                    + httpResponse.ReasonPhrase
-                    + "\nOn: " + httpResponse.RequestMessage.RequestUri);
+                throw new BadResponseStatusCodeException(httpResponse.ReasonPhrase, httpResponse.StatusCode.ToString(), (int)httpResponse.StatusCode, httpResponse.RequestMessage.RequestUri.ToString());
             }
         }
 
@@ -163,32 +272,7 @@ namespace FortalezaDesktop.Models
         {
             return await Get(path + "/" + id, options);
         }
-
-        public static async Task<string> PostFile(string path, Stream file, string fileName)
-        {
-            HttpClient httpClient = new HttpClient();
-            file.Seek(0, SeekOrigin.Begin);
-            byte[] fileBinaries = new byte[file.Length];
-            await file.ReadAsync(fileBinaries, 0, (int)file.Length);
-
-            ByteArrayContent fileContent = new ByteArrayContent(fileBinaries);
-            MultipartFormDataContent httpContent = new MultipartFormDataContent();
-            httpContent.Add(fileContent, "file", fileName);
-
-            HttpResponseMessage httpResponse = await httpClient.PostAsync(Server.APIURI + path, httpContent);
-
-            if (!httpResponse.IsSuccessStatusCode)
-            {
-                throw new BadResponseStatusCodeException("Bad status code: "
-                    + httpResponse.ReasonPhrase
-                    + "\nOn: " + httpResponse.RequestMessage.RequestUri);
-            }
-            else
-            {
-                return await httpResponse.Content.ReadAsStringAsync();
-            }
-        }
-
+        
         public static async Task<T> Post(string path, object item)
         {
             string itemJson = JsonConvert.SerializeObject(item, new JsonSerializerSettings
@@ -196,7 +280,8 @@ namespace FortalezaDesktop.Models
                 ContractResolver = new DefaultContractResolver
                 {
                     NamingStrategy = new CamelCaseNamingStrategy()
-                }
+                },
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             });
 
             HttpClient httpClient = new HttpClient();
@@ -222,9 +307,8 @@ namespace FortalezaDesktop.Models
             }
             else
             {
-                throw new BadResponseStatusCodeException("Bad status code: "
-                    + httpResponse.ReasonPhrase
-                    + "\nOn: " + httpResponse.RequestMessage.RequestUri);
+                string message = await httpResponse.Content.ReadAsStringAsync();
+                throw new BadResponseStatusCodeException(message, httpResponse.StatusCode.ToString(), (int)httpResponse.StatusCode, httpResponse.RequestMessage.RequestUri.ToString());
             }
         }
 
@@ -245,42 +329,17 @@ namespace FortalezaDesktop.Models
 
             if (httpResponse.IsSuccessStatusCode)
             {
-                string jsonString = await httpResponse.Content.ReadAsStringAsync();
                 return true;
             }
             else
             {
-                throw new BadResponseStatusCodeException("Bad status code: "
-                    + httpResponse.ReasonPhrase
-                    + "\nOn: " + httpResponse.RequestMessage.RequestUri);
+                throw new BadResponseStatusCodeException(httpResponse.ReasonPhrase, httpResponse.StatusCode.ToString(), (int)httpResponse.StatusCode, httpResponse.RequestMessage.RequestUri.ToString());
             }
         }
 
-        public static async Task<bool> Put(string path, int id, T item)
+        public static async Task<bool> Put(string path, int id, object item)
         {
             return await Put(path + "/" + id, item);
-        }
-
-        public static async Task<bool> Delete(string path)
-        {
-            HttpClient httpClient = new HttpClient();
-            HttpResponseMessage httpResponse = await httpClient.DeleteAsync(Server.APIURI + path);
-
-            if (httpResponse.IsSuccessStatusCode)
-            {
-                return true;
-            }
-            else
-            {
-                throw new BadResponseStatusCodeException("Bad status code: "
-                    + httpResponse.ReasonPhrase
-                    + "\nOn: " + httpResponse.RequestMessage.RequestUri);
-            }
-        }
-
-        public static async Task<bool> Delete(string path, int id)
-        {
-            return await Delete(path + "/" + id);
         }
     }
 }

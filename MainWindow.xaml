@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FortalezaDesktop"
         mc:Ignorable="d"
-        Title="MainWindow" Height="768" Width="1024"
-        Loaded="OnLoad">
-        
+        Title="Fortaleza Desktop" Height="768" Width="1024"
+        Loaded="OnLoad"
+        Closing="Window_Closing">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="60"/>
@@ -23,25 +23,31 @@
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Width="auto">
                     <Image HorizontalAlignment="Left" Margin="10" Source="images/logotipo.jpg" />
-                    <Button Margin="10,0,0,0" Background="Transparent" BorderThickness="0,0,0,0" Click="ButtonVenda_Click">
+                    <Button x:Name="ButtonVenda" IsTabStop="False" Margin="10,0,0,0" Background="Transparent" BorderThickness="0,0,0,0" Click="ButtonVenda_Click">
                         <StackPanel Orientation="Horizontal">
                             <Image Source="images/cart.png" Margin="10,0,0,0" Width="50" Height="50" />
                             <Label Content="Venda" Margin="5,0,10,0" VerticalAlignment="Center" FontSize="20" />
                         </StackPanel>
                     </Button>
-                    <Button Margin="0" Background="Transparent" BorderThickness="0,0,0,0" Click="ButtonPedido_Click">
+                    <Button x:Name="ButtonPedido" IsTabStop="False" Margin="0" Background="Transparent" BorderThickness="0,0,0,0" Click="ButtonPedido_Click">
                         <StackPanel Orientation="Horizontal">
                             <Image Source="/document-edit.png" Margin="10,0,0,0" Width="50" Height="50" />
                             <Label Content="Pedido" Margin="5,0,10,0" VerticalAlignment="Center" FontSize="20" />
                         </StackPanel>
                     </Button>
-                    <Button Margin="0" Background="Transparent" BorderThickness="0,0,0,0"  Click="ButtonDelivery_Click">
+                    <Button x:Name="ButtonDelivery" IsTabStop="False" Margin="0" Background="Transparent" BorderThickness="0,0,0,0"  Click="ButtonDelivery_Click">
                         <StackPanel Orientation="Horizontal">
                             <Image Source="/rocket.png" Margin="10,0,0,0" Width="50" Height="50" />
                             <Label Content="Delivery" Margin="5,0,10,0" VerticalAlignment="Center" FontSize="20" />
                         </StackPanel>
                     </Button>
-                    <Button Margin="0" Background="Transparent" BorderThickness="0,0,0,0" Click="ButtonCaixa_Click">
+                    <Button x:Name="ButtonTroca" IsTabStop="False" Margin="0" Background="Transparent" BorderThickness="0,0,0,0" Click="ButtonTroca_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/swap.png" Margin="10,0,0,0" Width="50" Height="50" />
+                            <Label Content="Troca" Margin="5,0,10,0" VerticalAlignment="Center" FontSize="20" />
+                        </StackPanel>
+                    </Button>
+                    <Button IsTabStop="False" Margin="0" Background="Transparent" BorderThickness="0,0,0,0" Click="ButtonCaixa_Click">
                         <StackPanel Orientation="Horizontal">
                             <Image Source="/store.png" Margin="10,0,0,0" Width="50" Height="50" />
                             <Label Content="Caixa" Margin="5,0,10,0" VerticalAlignment="Center" FontSize="20" />
@@ -49,7 +55,7 @@
                     </Button>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Margin="0" Background="Transparent" BorderThickness="0,0,0,0" Click="buttonMenuGerencial_Click">
+                    <Button IsTabStop="False" Margin="0" Background="Transparent" BorderThickness="0,0,0,0" Click="buttonMenuGerencial_Click">
                         <StackPanel Orientation="Horizontal">
                             <Image Source="/gear.png" Margin="5,0,5,0" Width="50" Height="50" />
                         </StackPanel>
@@ -59,7 +65,7 @@
         </Border>
 
         <Grid x:Name="gridChildContainer" Grid.Row="1">
-            <Frame x:Name="frameChildContainer" NavigationUIVisibility="Hidden">
+            <Frame IsTabStop="False" x:Name="frameChildContainer" NavigationUIVisibility="Hidden">
                 
             </Frame>
         </Grid>

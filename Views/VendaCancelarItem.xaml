@@ -5,32 +5,36 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FortalezaDesktop.Views"
         mc:Ignorable="d"
-        Title="VendaCancelarItem" Height="auto" Width="280"
-        SizeToContent="Height">
+        Title="Cancelar" Height="180" Width="430"
+        WindowStartupLocation="CenterScreen"
+        Loaded="Window_Loaded"
+        KeyDown="Window_KeyDown">
     <Grid>
-        <StackPanel Orientation="Vertical" Margin="10,10,10,15">
-            <TextBlock>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Margin="10">
                 Você deseja cancelar a venda ou algum item?
-            </TextBlock>
-            <UniformGrid Columns="3" Margin="0,20,0,0">
-                <Button Height="38" Margin="0,0,5,0" Width="80" Click="ButtonVenda_Click">
-                    <TextBlock TextAlignment="Center">
+        </TextBlock>
+        <UniformGrid Columns="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="10" Grid.Row="1" >
+            <Button x:Name="ButtonCancelarVenda" Height="50" Width="100" Click="ButtonVenda_Click" TabIndex="0" >
+                <TextBlock TextAlignment="Center">
                         Cancelar<LineBreak />
                         Venda
-                    </TextBlock> 
-                </Button>
-                <Button Height="38" Width="80" Click="ButtonItem_Click" >
-                    <TextBlock TextAlignment="Center">
+                </TextBlock>
+            </Button>
+            <Button Height="50" Width="100" Click="ButtonItem_Click" TabIndex="1" >
+                <TextBlock TextAlignment="Center">
                         Cancelar<LineBreak />
                         Item
-                    </TextBlock>
-                </Button>
-                <Button Height="38" Margin="5,0,0,0" Width="80" Click="ButtonCancelar_Click" >
-                    <TextBlock TextAlignment="Center">
+                </TextBlock>
+            </Button>
+            <Button Height="50" Width="100" Click="ButtonCancelar_Click" TabIndex="2" >
+                <TextBlock TextAlignment="Center">
                         Voltar
-                    </TextBlock>
-                </Button>
-            </UniformGrid>
-        </StackPanel>
+                </TextBlock>
+            </Button>
+        </UniformGrid>
     </Grid>
 </Window>

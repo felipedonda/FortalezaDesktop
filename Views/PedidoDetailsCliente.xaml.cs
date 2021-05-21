@@ -22,6 +22,7 @@ namespace FortalezaDesktop.Views
     {
         public Cliente ClienteSelecionado { get; set; }
         public event EventHandler<ClienteSelecionadoEventArgs> Selecionado;
+        public bool ExigirEndereco { get; set; }
 
         public class ClienteSelecionadoEventArgs : EventArgs
         {
@@ -35,6 +36,7 @@ namespace FortalezaDesktop.Views
         public PedidoDetailsCliente()
         {
             InitializeComponent();
+            ExigirEndereco = false;
         }
 
         private async void ButtonAdicionar(object sender, RoutedEventArgs e)
@@ -46,7 +48,23 @@ namespace FortalezaDesktop.Views
         {
             List<Cliente> clientes = await (new Cliente()).FindAll();
             datagridClientes.ItemsSource = null;
-            datagridClientes.ItemsSource = clientes.Where(e => e.IdenderecoNavigation != null);
+            if(ExigirEndereco)
+            {
+                datagridClientes.ItemsSource = clientes.Where(e => e.IdenderecoNavigation != null);
+            }
+            else
+            {
+                datagridClientes.ItemsSource = clientes;
+            }
+        }
+
+        private async Task LoadClientes(string query)
+        {
+            List<Cliente> clientes = await new Cliente().FindAll(new Dictionary<string, string> {
+                {"query",query}
+            });
+            datagridClientes.ItemsSource = null;
+            datagridClientes.ItemsSource = clientes;
         }
 
         private async Task SelecionarCliente()
@@ -78,13 +96,35 @@ namespace FortalezaDesktop.Views
         {
             ClienteDetails clienteDetails = new ClienteDetails();
             clienteDetails.AlteracaoRealizada += ClienteDetails_AlteracaoRealizada;
-            clienteDetails.ExigirEndereco = true;
-            clienteDetails.Show();
+            clienteDetails.ExigirEndereco = ExigirEndereco;
+            clienteDetails.ShowDialog();
         }
 
         private async void ClienteDetails_AlteracaoRealizada(object sender, EventArgs e)
         {
             await LoadClientes();
+        }
+
+        private async void textboxBuscaDescricao_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            await LoadClientes(textboxBuscaDescricao.Text);
+        }
+
+        private async void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Escape || e.Key == Key.F11)
+            {
+                Close();
+            }
+
+            if (e.Key == Key.Return || e.Key == Key.F12)
+            {
+                if (datagridClientes.SelectedItem == null)
+                {
+                    datagridClientes.SelectedIndex = 0;
+                }
+                await SelecionarCliente();
+            }
         }
     }
 }

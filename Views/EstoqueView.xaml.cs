@@ -39,7 +39,7 @@ namespace FortalezaDesktop.Views
 
             gridItemSelecionado.DataContext = null;
             gridItemSelecionado.DataContext = ItemSelecionado;
-            textboxDataFinal.Text = DateTime.UtcNow.ToString("dd/MM/yyyy");
+            textboxDataFinal.Text = DateTime.Now.ToString("dd/MM/yyyy");
             
             await LoadEntradas(ItemSelecionado);
             await LoadSaidas(ItemSelecionado);
@@ -87,7 +87,7 @@ namespace FortalezaDesktop.Views
         {
             EstoqueEntrada entradaEstoqueView = new EstoqueEntrada(false);
             entradaEstoqueView.Closed += EntradaEstoqueView_Closed;
-            entradaEstoqueView.Show();
+            entradaEstoqueView.ShowDialog();
         }
 
         private async void EntradaEstoqueView_Closed(object sender, EventArgs e)
@@ -99,12 +99,20 @@ namespace FortalezaDesktop.Views
         {
             EstoqueEntrada entradaEstoqueView = new EstoqueEntrada(true);
             entradaEstoqueView.Closed += EntradaEstoqueView_Closed;
-            entradaEstoqueView.Show();
+            entradaEstoqueView.ShowDialog();
         }
 
         private void ButtonInventario(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                Close();
+            }
         }
     }
 }

@@ -16,16 +16,55 @@ namespace FortalezaDesktop.Models
             set { Idcaixa = value ?? default; }
         }
 
-        public async Task<Caixa> GetCaixaAberto(Dictionary<string, string> options = null)
+        public async Task<Caixa> GetCaixaAberto(int IdnomeCaixa, Dictionary<string, string> options = null)
         {
             try
             {
+                if(options == null)
+                {
+                    options = new Dictionary<string, string>();
+                }
+                options.Add("idnomeCaixa", IdnomeCaixa.ToString());
                 return await ServerEntry<Caixa>.Get(Path + "/actions/aberto", options);
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message + "\n\nStack:\n" + e.StackTrace, "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
                 return default;
+            }
+        }
+
+        public async Task<bool> AbrirCaixa(int idusuario, int idpdv)
+        {
+            try
+            {
+                Dictionary<string, string> options = new Dictionary<string, string> {
+                    {"idusuario", idusuario.ToString()},
+                    {"idpdv", idpdv.ToString()}
+                };
+                return await ServerEntry.ActionPost(Path + "/" + Idcaixa.ToString() + "/abrir", null , options);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message + "\n\nStack:\n" + e.StackTrace, "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+        }
+
+        public async Task<bool> FecharCaixa(int idusuario, int idpdv)
+        {
+            try
+            {
+                Dictionary<string, string> options = new Dictionary<string, string> {
+                    {"idusuario", idusuario.ToString()},
+                    {"idpdv", idpdv.ToString()}
+                };
+                return await ServerEntry.ActionPost(Path + "/" + Idcaixa.ToString() + "/fechar", null, options);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message + "\n\nStack:\n" + e.StackTrace, "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
             }
         }
     }

@@ -39,25 +39,6 @@ namespace FortalezaDesktop.Models
             }
         }
 
-        public async Task GerarCupom()
-        {
-            TemplateCupomFiscal cupomFiscal = new TemplateCupomFiscal();
-            cupomFiscal.GridInformacoesDelivery.DataContext = this;
-            cupomFiscal.GridResumoVenda.DataContext = IdvendaNavigation;
-            cupomFiscal.TextNumeroPedido.Text += NumeroPedido;
-            cupomFiscal.GridReciboCliente.DataContext = IdvendaNavigation.IdclienteNavigation;
-            cupomFiscal.TextHoraRecibo.Text = IdvendaNavigation.HoraEntrada.ToString("dd/MM/yy");
-            cupomFiscal.TextHoraRecibo.Text += " " + IdvendaNavigation.HoraEntrada.ToString("hh:mm");
-            cupomFiscal.mainGrid.ItemsSource = IdvendaNavigation.ItemVenda;
-
-            InformacoesEmpresa informacoesEmpresa = await new InformacoesEmpresa().FindById(1);
-            cupomFiscal.gridHeader.DataContext = informacoesEmpresa;
-
-            RelatoriosVizualizador vizualizador = new RelatoriosVizualizador();
-            vizualizador.LoadChildPage(cupomFiscal);
-            vizualizador.Show();
-        }
-
         [JsonIgnore]
         public ItemVenda TaxaEntrega
         {
@@ -71,7 +52,7 @@ namespace FortalezaDesktop.Models
                         {
                             return IdvendaNavigation.ItemVenda
                                 .Where(e => e.IditemNavigation != null)
-                                .Where(e => e.IditemNavigation.Tipo == "9")
+                                .Where(e => e.IditemNavigation.Tipo == 9)
                                 .FirstOrDefault();
                         }
                     }
@@ -85,7 +66,7 @@ namespace FortalezaDesktop.Models
                     if (IdvendaNavigation.ItemVenda.Count > 0)
                     {
                         var itemVenda = IdvendaNavigation.ItemVenda
-                            .Where(e => e.IditemNavigation.Tipo == "9");
+                            .Where(e => e.IditemNavigation.Tipo == 9);
 
                         if(itemVenda.Count() > 0)
                         {

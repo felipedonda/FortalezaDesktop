@@ -6,7 +6,9 @@
         xmlns:local="clr-namespace:FortalezaDesktop.Views"
         mc:Ignorable="d"
         Title="ProdutoDetails" Height="auto" Width="700"
-        SizeToContent="WidthAndHeight">
+        SizeToContent="WidthAndHeight"
+        KeyDown="Window_KeyDown"
+        Loaded="Window_Loaded">
     
     <Window.Resources>
         <local:TinyIntBoolConverter x:Key="tinyIntBoolConverter" />
@@ -30,19 +32,18 @@
             </Grid.RowDefinitions>
             <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="0" Margin="10,10,0,0">
                 <TextBlock Text="Código" FontSize="12" Margin="0,0,5,5" />
-                <TextBox x:Name="textboxCodigo" Text="{Binding Iditem}"  FontSize="12"  Margin="0,0,5,5" />
+                <TextBox x:Name="textboxCodigo" Text="{Binding Iditem}" Height="21" FontSize="12"  Margin="0,0,5,5" />
             </StackPanel>
             <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="0" Margin="10,10,0,0">
                 <TextBlock Text="Código barras" FontSize="12" Margin="0,0,5,5" />
-                <TextBox Text="{Binding CodigoBarras}" FontSize="12"  Margin="0,0,5,5"/>
+                <TextBox Text="{Binding CodigoBarras}" Height="21" FontSize="12"  Margin="0,0,5,5"/>
             </StackPanel>
             <StackPanel Orientation="Vertical" Grid.Column="2" Grid.RowSpan="2" Grid.Row="0" Margin="10,10,0,0" VerticalAlignment="Top">
                 <CheckBox Content="Disponível" FontSize="12" Margin="0,0,5,5" IsChecked="{Binding Disponivel, Converter={StaticResource tinyIntBoolConverter}}" />
                 <CheckBox Content="Visível" FontSize="12" Margin="0,0,5,5" IsChecked="{Binding Visivel, Converter={StaticResource tinyIntBoolConverter}}" />
-                <CheckBox Content="Contabilizar estoque" FontSize="12" Margin="0,0,5,5" IsChecked="{Binding Estoque, Converter={StaticResource tinyIntBoolConverter}}" />
+                <CheckBox x:Name="CheckboxControlarEstoque" Content="Contabilizar estoque" FontSize="12" Margin="0,0,5,5" IsChecked="{Binding Estoque, Converter={StaticResource tinyIntBoolConverter}}" />
                 <CheckBox Content="Solicitar quantidade" FontSize="12" Margin="0,0,5,5" IsChecked="{Binding UnidadeInteira, Converter={StaticResource tinyIntBoolConverter}}" />
                 <CheckBox Content="Permitir combinações" FontSize="12" Margin="0,0,5,5" IsChecked="{Binding PermiteCombo, Converter={StaticResource tinyIntBoolConverter}}" />
-                <CheckBox x:Name="CheckboxControlarEstoque" Content="Controle fiscal" FontSize="12" Margin="0,0,5,5" />
             </StackPanel>
             <StackPanel Orientation="Vertical" Grid.Column="3" Grid.Row="0" Grid.RowSpan="2" Margin="10,10,0,0">
                 <TextBlock Text="Imagem" FontSize="12" Margin="0,0,5,5" />
@@ -55,13 +56,13 @@
             </StackPanel>
             <StackPanel Orientation="Vertical" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Margin="10,10,0,0">
                 <TextBlock Text="Descrição" FontSize="12" Margin="0,0,5,5" />
-                <TextBox Text="{Binding Descricao}"  FontSize="12"  Margin="0,0,5,5" />
+                <TextBox Text="{Binding Descricao}" Height="21" FontSize="12"  Margin="0,0,5,5" />
             </StackPanel>
 
 
             <StackPanel Orientation="Vertical" Grid.Column="2" Grid.Row="2" Margin="10,10,0,0">
                 <TextBlock Text="Unidade de medida" FontSize="12" Margin="0,0,5,5" />
-                <TextBox Text="{Binding Unidade}"  FontSize="12"  Margin="0,0,5,5" />
+                <TextBox Text="{Binding Unidade}" Height="21" FontSize="12"  Margin="0,0,5,5" />
             </StackPanel>
 
             <StackPanel Orientation="Vertical" VerticalAlignment="Center" Grid.Column="3" Grid.Row="2" Margin="10,10,0,0">
@@ -70,41 +71,89 @@
 
             <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="2" Margin="10,10,0,0">
                 <TextBlock Text="Estoque mínimo" FontSize="12" Margin="0,0,5,5" />
-                <TextBox Text="{local:CultureAwareBinding EstoqueMinimo}"  FontSize="12"  Margin="0,0,5,5" />
+                <TextBox Text="{local:CultureAwareBinding EstoqueMinimo}" Height="21" FontSize="12"  Margin="0,0,5,5" />
             </StackPanel>
             <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="2" Margin="10,10,0,0">
                 <TextBlock Text="Estoque atual" FontSize="12" Margin="0,0,5,5" />
-                <TextBox x:Name="textboxEstoque" Text="{local:CultureAwareBinding EstoqueAtual.QuantidadeDisponivel}"  FontSize="12"  Margin="0,0,5,5" />
+                <TextBox x:Name="textboxEstoque" Text="{local:CultureAwareBinding EstoqueAtual.QuantidadeDisponivel}" Height="21" FontSize="12"  Margin="0,0,5,5" />
             </StackPanel>
 
             <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="3" Margin="10,10,0,0">
                 <TextBlock  Text="Custo" FontSize="12" Margin="0,0,5,5" />
-                <TextBox x:Name="textboxCusto" Text="{local:CultureAwareBinding EstoqueAtual.Custo, StringFormat=C2}"  FontSize="12"  Margin="0,0,5,5" KeyUp="textboxMargem_KeyUp" />
+                <TextBox x:Name="textboxCusto" Text="{local:CultureAwareBinding EstoqueAtual.Custo, StringFormat=C2}" Height="21" FontSize="12"  Margin="0,0,5,5" KeyUp="textboxMargem_KeyUp" />
             </StackPanel>
 
             <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="3" Margin="10,10,0,0">
                 <TextBlock Text="Margem" FontSize="12" Margin="0,0,5,5" />
                 <DockPanel>
                     <TextBlock Text="%" FontSize="12" Margin="0,0,5,5" DockPanel.Dock="Right" />
-                    <TextBox x:Name="textboxMargem" Text=""  FontSize="12"  Margin="0,0,5,5" KeyUp="textboxMargem_KeyUp" DockPanel.Dock="Right" />
-                 
+                    <TextBox x:Name="textboxMargem" Text=""  FontSize="12" Height="21" Margin="0,0,5,5" KeyUp="textboxMargem_KeyUp" DockPanel.Dock="Right" />
                 </DockPanel>
             </StackPanel>
 
             <StackPanel Orientation="Vertical" Grid.Column="2" Grid.Row="3" Margin="10,10,0,0">
                 <TextBlock Text="Valor" FontSize="12" Margin="0,0,5,5" />
-                <TextBox x:Name="textboxValor" Text="{local:CultureAwareBinding Valor, StringFormat=C2}"  FontSize="12"  Margin="0,0,5,5" />
+                <TextBox x:Name="textboxValor" Height="21" Text="{local:CultureAwareBinding Valor, StringFormat=C2}"  FontSize="12"  Margin="0,0,5,5" />
             </StackPanel>
 
 
             <StackPanel Orientation="Vertical" VerticalAlignment="Center" Grid.Column="3" Grid.Row="3" Margin="10,10,0,0">
                 <TextBlock Text="Tipo de item" FontSize="12" Margin="0,0,5,5" />
-                <ComboBox x:Name="comboboxTipo" FontSize="12" Margin="0,0,10,5" SelectionChanged="comboboxTipo_SelectionChanged"/>
+                <ComboBox x:Name="comboboxTipo" SelectedValue="{Binding Tipo}" FontSize="12" Margin="0,0,10,5" SelectionChanged="comboboxTipo_SelectionChanged"/>
             </StackPanel>
 
-            <TabControl Grid.Row="4" Grid.ColumnSpan="4" VerticalAlignment="Stretch">
-                <TabItem x:Name="tabPacote" Header="Pacote">
-                    <Grid x:Name="gridPacote">
+            <TabControl Grid.Row="4" Grid.ColumnSpan="4" VerticalAlignment="Stretch" Margin="0,10,0,0">
+                <TabItem x:Name="TabFiscal" Header="Fiscal">
+                    <Grid Margin="0,0,5,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+
+                        <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="0" Margin="10,10,0,0">
+                            <TextBlock Text="CFOP" FontSize="12" Margin="0,0,5,5" />
+                            <TextBox Text="{Binding Fiscal.Cfop}"  FontSize="12" Height="21"  Margin="0,0,5,5" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="0" Margin="10,10,0,0">
+                            <TextBlock Text="CST ICMS" FontSize="12" Margin="0,0,5,5" />
+                            <TextBox Text="{Binding Fiscal.CstIcms}"  FontSize="12" Height="21"  Margin="0,0,5,5" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Vertical" Grid.Column="2" Grid.Row="0" Margin="10,10,0,0">
+                            <TextBlock Text="NCM" FontSize="12" Margin="0,0,5,5" />
+                            <TextBox Text="{Binding Fiscal.Ncm}"  FontSize="12" Height="21"  Margin="0,0,5,5" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="1" Margin="10,10,0,0">
+                            <TextBlock Text="Origem" FontSize="12" Margin="0,0,5,5" />
+                            <TextBox Text="{Binding Fiscal.Origem}"  FontSize="12" Height="21"  Margin="0,0,5,5" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="1" Margin="10,10,0,0">
+                            <TextBlock Text="Alíquota ICMS" FontSize="12" Margin="0,0,5,5" />
+                            <DockPanel>
+                                <TextBlock Text="%" FontSize="12" Margin="0,0,5,5" DockPanel.Dock="Right" />
+                                <TextBox Text="{local:CultureAwareBinding Fiscal.AliquotaIcms, StringFormat='0.00'}" FontSize="12" Height="21"  Margin="0,0,5,5" />
+                            </DockPanel>
+                        </StackPanel>
+
+
+                        <StackPanel Orientation="Vertical" Grid.Column="2" Grid.Row="1" Margin="10,10,0,0">
+                            <TextBlock Text="CEST" FontSize="12" Margin="0,0,5,5" />
+                            <TextBox Text="{Binding Fiscal.Cest}"  FontSize="12" Height="21"  Margin="0,0,5,5" />
+                        </StackPanel>
+
+                    </Grid>
+                </TabItem>
+                <TabItem x:Name="TabPacote" Header="Pacote">
+                    <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
@@ -117,7 +166,7 @@
                         </Grid.RowDefinitions>
                         <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" Margin="10,10,0,0">
                             <TextBlock Text="Quantidade" FontSize="12" Margin="0,0,5,5" />
-                            <TextBox x:Name="textboxQuantidade" Text="{Binding PacoteIditemNavigation.Quantidade}"  FontSize="12"  Margin="0,0,5,5" />
+                            <TextBox x:Name="textboxQuantidade" Height="21" Text="{Binding PacoteIditemNavigation.Quantidade}"  FontSize="12"  Margin="0,0,5,5" />
                         </StackPanel>
 
                         <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="10,10,0,0">
@@ -127,7 +176,7 @@
 
                         <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" Margin="10,10,0,0">
                             <TextBlock Text="Produto" FontSize="12" Margin="0,0,5,5" />
-                            <TextBox x:Name="textboxPacoteProduto" Text="{Binding PacoteIditemNavigation.IditemProdutoNavigation.Descricao}" IsReadOnly="True" FontSize="12"  Margin="0,0,5,5" />
+                            <TextBox x:Name="textboxPacoteProduto" Height="21" Text="{Binding PacoteIditemNavigation.IditemProdutoNavigation.Descricao}" IsReadOnly="True" FontSize="12"  Margin="0,0,5,5" />
                         </StackPanel>
 
                         <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Margin="10,10,0,0">

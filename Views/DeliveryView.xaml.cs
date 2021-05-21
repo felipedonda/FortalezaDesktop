@@ -1,4 +1,5 @@
-﻿using FortalezaDesktop.Models;
+﻿using FortalezaDesktop.Controllers;
+using FortalezaDesktop.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -49,13 +50,13 @@ namespace FortalezaDesktop.Views
                 if(PedidoIsNew)
                 {
                     await Pedido.DeleteInstance();
-                    await ItemsSelecionados.LimparVenda();
+                    ItemsSelecionados.LimparVenda();
                 }
                 else
                 {
                     Pedido.Status = 5;
                     await Pedido.UpdateInstance();
-                    await ItemsSelecionados.LimparVenda();
+                    ItemsSelecionados.LimparVenda();
                     await DeliveryDetails.LoadPedido(Pedido.Idvenda);
                 }
                 await LoadListaPedidos();
@@ -78,7 +79,8 @@ namespace FortalezaDesktop.Views
             {
                 PedidoDetailsCliente pedidoDetailsCliente = new PedidoDetailsCliente();
                 pedidoDetailsCliente.Selecionado += PedidoDetailsCliente_SelecionadoReceber;
-                pedidoDetailsCliente.Show();
+                pedidoDetailsCliente.ExigirEndereco = true;
+                pedidoDetailsCliente.ShowDialog();
                 return;
             }
 
@@ -88,7 +90,7 @@ namespace FortalezaDesktop.Views
                 await deliveryEntregador.LoadData();
                 await deliveryEntregador.LoadPedido(Pedido.Idvenda);
                 deliveryEntregador.Salvar += DeliveryEntregador_SalvarReceber;
-                deliveryEntregador.Show();
+                deliveryEntregador.ShowDialog();
                 return;
             }
 
@@ -104,7 +106,7 @@ namespace FortalezaDesktop.Views
                 vendaPagamentos.AllowPagamentoIncompleto = true;
                 vendaPagamentos.PagamentoRealizado += VendaPagamentos_PagamentoRealizado;
             }
-            vendaPagamentos.Show();
+            vendaPagamentos.ShowDialog();
         }
 
         private async void PedidoDetailsCliente_SelecionadoReceber(object sender, PedidoDetailsCliente.ClienteSelecionadoEventArgs e)
@@ -132,7 +134,7 @@ namespace FortalezaDesktop.Views
             await LoadListaPedidos();
             await LoadDeliveryDetails();
             await DeliveryDetails.LoadPedido(Pedido.Idvenda);
-            await ItemsSelecionados.LimparVenda();
+            ItemsSelecionados.LimparVenda();
         }
 
         private async void VendaPagamentos_PagamentoRealizadoCupom(object sender, EventArgs e)
@@ -142,7 +144,7 @@ namespace FortalezaDesktop.Views
 
         private async void ItemsSelecionados_ItemVendaSelected(object sender, VendaItemsSelecionados.ItemVendaSelectedEventArgs e)
         {
-            await ItemsSelecionados.AddProdutoVenda(e.Iditem, e.Quantidade);
+            await ItemsSelecionados.AddProdutoVenda(e.Iditem);
             Pedido.IdvendaNavigation = ItemsSelecionados.Venda;
         }
 
@@ -250,7 +252,7 @@ namespace FortalezaDesktop.Views
 
         private async void SelecaoProdutos_ProdutoSelected(object sender, VendaSelecaoProdutos.ProdutoSelectedEventArgs e)
         {
-            await ItemsSelecionados.AddProdutoVenda(e.Iditem, 1);
+            await ItemsSelecionados.AddProdutoVenda(e.Iditem);
             Pedido.IdvendaNavigation = ItemsSelecionados.Venda;
         }
 
@@ -258,7 +260,8 @@ namespace FortalezaDesktop.Views
         {
             PedidoDetailsCliente pedidoDetailsCliente = new PedidoDetailsCliente();
             pedidoDetailsCliente.Selecionado += PedidoDetailsCliente_Selecionado;
-            pedidoDetailsCliente.Show();
+            pedidoDetailsCliente.ExigirEndereco = true;
+            pedidoDetailsCliente.ShowDialog();
         }
 
         private async void PedidoDetailsCliente_Selecionado(object sender, PedidoDetailsCliente.ClienteSelecionadoEventArgs e)
@@ -305,7 +308,7 @@ namespace FortalezaDesktop.Views
                     return;
                 }
             }
-            await ItemsSelecionados.LimparVenda();
+            ItemsSelecionados.LimparVenda();
             await LoadListaPedidos();
             await LoadDeliveryDetails();
         }
@@ -350,7 +353,7 @@ namespace FortalezaDesktop.Views
             await deliveryEntregador.LoadData();
             await deliveryEntregador.LoadPedido(Pedido.Idvenda);
             deliveryEntregador.Salvar += DeliveryEntregador_Salvar;
-            deliveryEntregador.Show();
+            deliveryEntregador.ShowDialog();
         }
 
         private async void DeliveryEntregador_Salvar(object sender, DeliveryEntregador.SalvarEventArgs e)
@@ -410,7 +413,7 @@ namespace FortalezaDesktop.Views
             await Pedido.IdvendaNavigation.FecharVenda();
             Pedido.Status = 2;
             await Pedido.UpdateInstance();
-            await Pedido.GerarCupom();
+            RelatoriosController.GerarCupomPedido(Pedido);
             await DeliveryPedidos.LoadPedidos();
             await DeliveryDetails.LoadPedido(Pedido.Idvenda);
         }
@@ -427,13 +430,13 @@ namespace FortalezaDesktop.Views
 
                 DeliveryImprimir deliveryImprimir = new DeliveryImprimir();
                 deliveryImprimir.CupomSelected += DeliveryImprimir_CupomSelected;
-                deliveryImprimir.Show();
+                deliveryImprimir.ShowDialog();
             }
         }
 
-        private async void DeliveryImprimir_CupomSelected(object sender, EventArgs e)
+        private void DeliveryImprimir_CupomSelected(object sender, EventArgs e)
         {
-            await Pedido.GerarCupom();
+            RelatoriosController.GerarCupomPedido(Pedido);
         }
 
         private async void buttonEnviarEntrega_Click(object sender, RoutedEventArgs e)
@@ -455,7 +458,7 @@ namespace FortalezaDesktop.Views
                 {
                     PedidoDetailsEntregador detailsEntregador = new PedidoDetailsEntregador();
                     detailsEntregador.Selecionado += DetailsEntregador_Selecionado;
-                    detailsEntregador.Show();
+                    detailsEntregador.ShowDialog();
                 }
                 else
                 {
@@ -488,7 +491,7 @@ namespace FortalezaDesktop.Views
                 DeliveryVoltaEntregar deliveryVolta = new DeliveryVoltaEntregar();
                 await deliveryVolta.LoadPedido(pedido.Idvenda);
                 deliveryVolta.VoltaConfirmada += DeliveryVolta_VoltaConfirmada;
-                deliveryVolta.Show();
+                deliveryVolta.ShowDialog();
             }
         }
 
@@ -498,7 +501,7 @@ namespace FortalezaDesktop.Views
             await e.Pedido.UpdateInstance();
             await DeliveryPedidos.LoadPedidos();
             await DeliveryDetails.LoadPedido(e.Pedido.Idvenda);
-            await ItemsSelecionados.LimparVenda();
+            ItemsSelecionados.LimparVenda();
         }
     }
 }

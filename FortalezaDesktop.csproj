@@ -10,6 +10,10 @@
     <ApplicationIcon>Fortaleza Icon.ico</ApplicationIcon>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Remove="Resources\**" />
     <EmbeddedResource Remove="Resources\**" />
@@ -23,6 +27,7 @@
     <None Remove="gear.png" />
     <None Remove="graph-line.png" />
     <None Remove="images\logotipo.jpg" />
+    <None Remove="images\swap.png" />
     <None Remove="rocket.png" />
     <None Remove="store.png" />
     <None Remove="Views\coffee.jpg" />
@@ -31,17 +36,25 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.7" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.7">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.7">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.21" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.10" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+
+  
+  <ItemGroup>
+    <Reference Include="CIDSAT, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>CIDSAT.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="CIDSAT.dll" />
+    <Content Include="libsatid.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -50,15 +63,12 @@
     <Resource Include="graph-line.png" />
     <Resource Include="images\cart.png" />
     <Resource Include="images\logotipo.jpg" />
+    <Resource Include="swap.png" />
     <Resource Include="rocket.png" />
     <Resource Include="store.png" />
     <Resource Include="images\pencil.png" />
     <Resource Include="images\trash.png" />
     <Resource Include="images\coffee.jpg" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
   </ItemGroup>
 
   <ItemGroup>

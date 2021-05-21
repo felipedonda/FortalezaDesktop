@@ -5,22 +5,29 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FortalezaDesktop.Views"
         mc:Ignorable="d"
-        Title="VendaCancelarItemInput" Height="auto" Width="220"
-        SizeToContent="Height">
+        Title="VendaCancelarItemInput" Height="auto" Width="240"
+        WindowStartupLocation="CenterScreen"
+        KeyDown="Window_KeyDown"
+        SizeToContent="Height"
+        Loaded="Window_Loaded">
     <Grid>
         <StackPanel Orientation="Vertical" Margin="10,10,10,15">
-            <TextBlock>
-                Insira o número do item abaixo:
+            <TextBlock x:Name="TextblockNumero">
+                Número do item:
             </TextBlock>
-            <TextBox x:Name="TextboxNumero" Width="200" Margin="0,10,0,0"/>
+            <TextBox x:Name="TextboxNumero" Width="200" Margin="0,10,0,10" TabIndex="0"/>
+            <TextBlock x:Name="TextblockQuantidade">
+                Quantidade:
+            </TextBlock>
+            <TextBox x:Name="TextboxQuantidade" Text="1" Width="200" Margin="0,10,0,0" TabIndex="1"/>
             <Grid>
                 <UniformGrid Columns="2" Margin="0,20,0,0" HorizontalAlignment="Right">
-                    <Button Height="30" Width="80" Click="ButtonConfirmar_Click" >
+                    <Button Height="30" Width="80" Click="ButtonConfirmar_Click" TabIndex="2" >
                         <TextBlock TextAlignment="Center">
                         Confirmar
                         </TextBlock>
                     </Button>
-                    <Button Height="30" Margin="5,0,0,0" Width="80" Click="ButtonCancelar_Click" >
+                    <Button Height="30" Margin="5,0,0,0" Width="80" Click="ButtonCancelar_Click" TabIndex="3" >
                         <TextBlock TextAlignment="Center">
                         Cancelar
                         </TextBlock>

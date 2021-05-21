@@ -14,5 +14,34 @@ namespace FortalezaDesktop.Models
             get { return Idmovimento; }
             set { Idmovimento = value ?? default; }
         }
+
+        public string TipoString
+        {
+            get
+            {
+                return Tipo switch
+                {
+                    1 => "Venda",
+                    2 => "Suprimento",
+                    3 => "Sangria",
+                    4 => "Abertura",
+                    5 => "Fechamento",
+                    _ => "Indefinido"
+                };
+            }
+
+            set
+            {
+                Tipo = value switch
+                {
+                    "Venda" => 1,
+                    "Suprimento" => 2,
+                    "Sangria" => 3,
+                    "Abertura" => 4,
+                    "Fechamento" => 5,
+                    _ => 0
+                };
+            }
+        }
     }
 }

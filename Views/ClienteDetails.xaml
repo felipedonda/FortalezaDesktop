@@ -5,98 +5,147 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FortalezaDesktop.Views"
         mc:Ignorable="d"
-        Title="ClienteDetails" Height="auto" Width="720"
+        Title="ClienteDetails" Height="380" Width="720"
+        WindowStartupLocation="CenterScreen"
         SizeToContent="Height">
     <Grid x:Name="gridCliente">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="0" Margin="10,10,0,0" Grid.ColumnSpan="2">
-            <TextBlock Text="Nome" FontSize="12" Margin="0,0,5,5" />
-            <TextBox Text="{Binding Nome}"  FontSize="12"  Margin="0,0,5,5" />
-        </StackPanel>
-        <StackPanel Orientation="Vertical" Grid.Column="2" Grid.Row="0" Margin="10,10,0,5">
-            <TextBlock Text="CPF/CNPJ" FontSize="12" Margin="0,0,5,5" />
-            <TextBox Text="{Binding Cpf}"  FontSize="12"  Margin="0,0,5,0" />
-            <TextBlock x:Name="textblockErroCpf" Text="Erro CPF" Foreground="Red" FontSize="10" Margin="0,0,5,0" />
-        </StackPanel>
-        <StackPanel Orientation="Vertical" Grid.Column="3" Grid.Row="0" Margin="10,10,0,0">
-            <TextBlock Text="RG" FontSize="12" Margin="0,0,5,5" />
-            <TextBox Text="{Binding Rg}"  FontSize="12"  Margin="0,0,5,5" />
-        </StackPanel>
+        <TabControl>
+            <TabItem Header="Informações">
+                <Grid >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="0" Margin="10,10,0,0" Grid.ColumnSpan="2">
+                        <TextBlock Text="Nome" FontSize="12" Margin="0,0,5,5" />
+                        <TextBox x:Name="TextboxNome" Text="{Binding Nome}"  FontSize="12"  Margin="0,0,5,0" />
+                        <TextBlock x:Name="TextblockNomeErro" Text="Erro Nome" Foreground="Red" FontSize="10" Margin="0,0,5,0" />
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Grid.Column="2" Grid.Row="0" Margin="10,10,0,5">
+                        <TextBlock Text="CPF/CNPJ" FontSize="12" Margin="0,0,5,5" />
+                        <TextBox Text="{Binding Cpf}"  FontSize="12"  Margin="0,0,5,0" />
+                        <TextBlock x:Name="textblockErroCpf" Text="Erro CPF" Foreground="Red" FontSize="10" Margin="0,0,5,0" />
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Grid.Column="3" Grid.Row="0" Margin="10,10,0,0">
+                        <TextBlock Text="RG" FontSize="12" Margin="0,0,5,5" />
+                        <TextBox Text="{Binding Rg}"  FontSize="12"  Margin="0,0,0,5" />
+                        <TextBlock x:Name="TextblockRgErro" Text="Erro CPF" Foreground="Red" FontSize="10" Margin="0,0,5,0" />
+                    </StackPanel>
 
-        <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="1" Margin="10,10,0,0" >
-            <TextBlock Text="Telefone" FontSize="12" Margin="0,0,5,5" />
-            <TextBox Text="{Binding Telefone}"  FontSize="12"  Margin="0,0,5,5" />
-        </StackPanel>
-        <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="1" Margin="10,10,0,0">
-            <TextBlock Text="Celular" FontSize="12" Margin="0,0,5,5" />
-            <TextBox Text="{Binding Celular}"  FontSize="12"  Margin="0,0,5,5" />
-        </StackPanel>
-        <StackPanel Orientation="Vertical" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="1" Margin="10,10,0,0">
-            <TextBlock Text="E-mail" FontSize="12" Margin="0,0,5,5" />
-            <TextBox Text="{Binding Email}"  FontSize="12"  Margin="0,0,5,5" />
-        </StackPanel>
+                    <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="1" Margin="10,10,0,0" >
+                        <TextBlock Text="Telefone" FontSize="12" Margin="0,0,5,5" />
+                        <TextBox Text="{Binding Telefone}"  FontSize="12"  Margin="0,0,5,5" />
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="1" Margin="10,10,0,0">
+                        <TextBlock Text="Celular" FontSize="12" Margin="0,0,5,5" />
+                        <TextBox Text="{Binding Celular}"  FontSize="12"  Margin="0,0,5,5" />
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="1" Margin="10,10,0,0">
+                        <TextBlock Text="E-mail" FontSize="12" Margin="0,0,5,5" />
+                        <TextBox Text="{Binding Email}"  FontSize="12"  Margin="0,0,5,5" />
+                    </StackPanel>
 
-        <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="2" Margin="10,10,0,0">
-            <TextBlock Text="CEP" FontSize="12" Margin="0,0,5,5" />
-            <DockPanel>
-                <Button Content="Consultar" DockPanel.Dock="Right" Click="buttonConsultarCEP" Margin="0,0,5,5" />
-                <TextBox x:Name="textboxCep" Text="{Binding IdenderecoNavigation.Cep}"  FontSize="12"  Margin="0,0,5,5" DockPanel.Dock="Right" />
-            </DockPanel>
-        </StackPanel>
-        
-        <StackPanel Orientation="Vertical" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="2" Margin="10,10,0,0">
-            <TextBlock Text="Logradouro" FontSize="12" Margin="0,0,5,5" />
-            <TextBox x:Name="TextboxLogradouro" Text="{Binding IdenderecoNavigation.Logradouro}"  FontSize="12"  Margin="0,0,5,0" />
-            <TextBlock x:Name="TextblockLogradouroErro" Text="Erro Logradouro" Foreground="Red" FontSize="10" Margin="0,0,5,0" />
+                    <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="2" Margin="10,10,0,0">
+                        <TextBlock Text="CEP" FontSize="12" Margin="0,0,5,5" />
+                        <DockPanel>
+                            <Button Content="Consultar" DockPanel.Dock="Right" Click="buttonConsultarCEP" Margin="0,0,5,5" />
+                            <TextBox x:Name="textboxCep" Text="{Binding IdenderecoNavigation.Cep}"  FontSize="12"  Margin="0,0,5,5" DockPanel.Dock="Right" />
+                        </DockPanel>
+                    </StackPanel>
 
-        </StackPanel>
+                    <StackPanel Orientation="Vertical" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="2" Margin="10,10,0,0">
+                        <TextBlock Text="Logradouro" FontSize="12" Margin="0,0,5,5" />
+                        <TextBox x:Name="TextboxLogradouro" Text="{Binding IdenderecoNavigation.Logradouro}"  FontSize="12"  Margin="0,0,5,0" />
+                        <TextBlock x:Name="TextblockLogradouroErro" Text="Erro Logradouro" Foreground="Red" FontSize="10" Margin="0,0,5,0" />
 
-        <DockPanel Grid.Column="3" Grid.Row="2" Margin="10,10,0,0">
-            <StackPanel Orientation="Vertical"  DockPanel.Dock="Left">
-                <TextBlock Text="Número" FontSize="12" Margin="0,0,5,5" />
-                <TextBox x:Name="TextboxNumero" Text="{Binding IdenderecoNavigation.Numero}"  FontSize="12"  Margin="0,0,5,0" />
-                <TextBlock x:Name="TextblockNumeroErro" Text="Erro Logradouro" Foreground="Red" FontSize="10" Margin="0,0,5,0" />
-            </StackPanel>
-            <StackPanel Orientation="Vertical"  Margin="10,0,0,0" DockPanel.Dock="Left">
-                <TextBlock Text="Complemento" FontSize="12" Margin="0,0,5,5" />
-                <TextBox Text="{Binding IdenderecoNavigation.Complemento}"  FontSize="12"  Margin="0,0,5,5" />
-            </StackPanel>
-        </DockPanel>
+                    </StackPanel>
+
+                    <DockPanel Grid.Column="3" Grid.Row="2" Margin="10,10,0,0">
+                        <StackPanel Orientation="Vertical"  DockPanel.Dock="Left">
+                            <TextBlock Text="Número" FontSize="12" Margin="0,0,5,5" />
+                            <TextBox x:Name="TextboxNumero" Text="{Binding IdenderecoNavigation.Numero}"  FontSize="12"  Margin="0,0,5,0" />
+                            <TextBlock x:Name="TextblockNumeroErro" Text="Erro Logradouro" Foreground="Red" FontSize="10" Margin="0,0,5,0" />
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical"  Margin="10,0,0,0" DockPanel.Dock="Left">
+                            <TextBlock Text="Complemento" FontSize="12" Margin="0,0,5,5" />
+                            <TextBox Text="{Binding IdenderecoNavigation.Complemento}"  FontSize="12"  Margin="0,0,5,5" />
+                        </StackPanel>
+                    </DockPanel>
 
 
 
-        <StackPanel Orientation="Vertical" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3" Margin="10,10,0,0">
-            <TextBlock Text="Bairro" FontSize="12" Margin="0,0,5,5" />
-            <TextBox Text="{Binding IdenderecoNavigation.Bairro}"  FontSize="12"  Margin="0,0,5,5" />
-        </StackPanel>
-        <StackPanel Orientation="Vertical" Grid.Column="2" Grid.Row="3" Margin="10,10,0,0" >
-            <TextBlock Text="Município" FontSize="12" Margin="0,0,5,5" />
-            <TextBox Text="{Binding IdenderecoNavigation.Municipio}"  FontSize="12"  Margin="0,0,5,5" />
-        </StackPanel>
-        <StackPanel Orientation="Vertical" Grid.Column="3" Grid.Row="3" Margin="10,10,0,0">
-            <TextBlock Text="UF" FontSize="12" Margin="0,0,5,5" />
-            <TextBox Text="{Binding IdenderecoNavigation.Uf}"  FontSize="12"  Margin="0,0,5,5" />
-        </StackPanel>
+                    <StackPanel Orientation="Vertical" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3" Margin="10,10,0,0">
+                        <TextBlock Text="Bairro" FontSize="12" Margin="0,0,5,5" />
+                        <TextBox Text="{Binding IdenderecoNavigation.Bairro}"  FontSize="12"  Margin="0,0,5,5" />
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Grid.Column="2" Grid.Row="3" Margin="10,10,0,0" >
+                        <TextBlock Text="Município" FontSize="12" Margin="0,0,5,5" />
+                        <TextBox Text="{Binding IdenderecoNavigation.Municipio}"  FontSize="12"  Margin="0,0,5,5" />
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Grid.Column="3" Grid.Row="3" Margin="10,10,0,0">
+                        <TextBlock Text="UF" FontSize="12" Margin="0,0,5,5" />
+                        <TextBox Text="{Binding IdenderecoNavigation.Uf}"  FontSize="12"  Margin="0,0,5,5" />
+                    </StackPanel>
 
-        <Border BorderBrush="DarkGray" BorderThickness="0,0,0,0" Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="5"  VerticalAlignment="Bottom" Margin="0,5,0,5" >
-            <StackPanel Orientation="Horizontal"  FlowDirection="RightToLeft" Margin="10,10,10,0" VerticalAlignment="Bottom">
-                <Button x:Name="buttonCriar" Click="buttonCriar_Click" Content="Criar" HorizontalAlignment="Left" FontSize="14" Width="80" Margin="0,0,5,5" Padding="5" />
-                <Button x:Name="buttonAlterar" Click="buttonAlterar_Click" Content="Alterar" HorizontalAlignment="Left" FontSize="14" Width="80" Margin="0,0,5,5" Padding="5" />
-                <Button x:Name="buttonRemover" Click="buttonRemover_Click" Content="Remover" HorizontalAlignment="Left" FontSize="14" Width="80" Margin="0,0,5,5" Padding="5" />
-                <Button x:Name="buttonCancelar" Click="buttonCancelar_Click" Content="Cancelar" HorizontalAlignment="Left" FontSize="14" Width="80" Margin="0,0,5,5" Padding="5" />
-            </StackPanel>
-        </Border>
+                    <Border BorderBrush="DarkGray" BorderThickness="0,0,0,0" Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="5"  VerticalAlignment="Bottom" Margin="0,5,0,5" >
+                        <StackPanel Orientation="Horizontal"  FlowDirection="RightToLeft" Margin="10,10,10,0" VerticalAlignment="Bottom">
+                            <Button x:Name="buttonCriar" Click="buttonCriar_Click" Content="Criar" HorizontalAlignment="Left" FontSize="14" Width="80" Margin="0,0,5,5" Padding="5" />
+                            <Button x:Name="buttonAlterar" Click="buttonAlterar_Click" Content="Alterar" HorizontalAlignment="Left" FontSize="14" Width="80" Margin="0,0,5,5" Padding="5" />
+                            <Button x:Name="buttonRemover" Click="buttonRemover_Click" Content="Remover" HorizontalAlignment="Left" FontSize="14" Width="80" Margin="0,0,5,5" Padding="5" />
+                            <Button x:Name="buttonCancelar" Click="buttonCancelar_Click" Content="Cancelar" HorizontalAlignment="Left" FontSize="14" Width="80" Margin="0,0,5,5" Padding="5" />
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Conta">
+                <Grid x:Name="GridContaCliente" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0" Margin="10,10,10,0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Saldo: " FontSize="14"/>
+                            <TextBlock Text="{local:CultureAwareBinding SaldoEmConta, StringFormat=C2}" FontSize="14"/>
+                        </StackPanel>
+                    </Grid>
+                    <Grid Grid.Row="1" Margin="10,10,10,0">
+                        <DataGrid x:Name="DatagridMovimentacoes"
+                                  AutoGenerateColumns="False"
+                                  GridLinesVisibility="None"
+                                  HeadersVisibility="Column"
+                                  CanUserAddRows="False"
+                                  CanUserDeleteRows="False"
+                                  MinHeight="200"
+                                  ItemsSource="{Binding ClienteHasMovimento}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Data" Width="65"  Binding="{Binding IdmovimentoNavigation.HoraEntrada, StringFormat=dd/MM/yy}" />
+                                <DataGridTextColumn Header="Hora" Width="60" Binding="{Binding IdmovimentoNavigation.HoraEntrada, StringFormat=hh:mm:ss}" />
+                                <DataGridTextColumn Header="Descricao" Width="*" Binding="{Binding IdmovimentoNavigation.Descricao}" />
+                                <DataGridTextColumn Header="Valor" Width="60" Binding="{local:CultureAwareBinding IdmovimentoNavigation.Valor, StringFormat=C2}" />
+                                <DataGridTextColumn Header="Tipo" Width="60" Binding="{Binding IdmovimentoNavigation.TipoString}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                    <Grid Grid.Row="2">
+                        <StackPanel Orientation="Horizontal"  FlowDirection="RightToLeft" Margin="10,10,10,0">
+                            <Button x:Name="ButtonCreditar" Click="ButtonCreditar_Click" Content="Creditar" FontSize="14" Width="80" Margin="0,0,5,5" Padding="5" />
+                            <Button x:Name="ButtonDebitar" Click="ButtonDebitar_Click"  Content="Debitar" FontSize="14" Width="80" Margin="0,0,5,5" Padding="5" />
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </TabItem>
+        </TabControl>
     </Grid>
+    
 </Window>

@@ -1,0 +1,49 @@
+﻿<Window x:Class="FortalezaDesktop.Views.PontoVendaView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FortalezaDesktop.Views"
+        mc:Ignorable="d"
+        Title="PontoVendaView" Height="280" Width="300"
+        KeyDown="Window_KeyDown"
+        Loaded="Window_Loaded">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Vertical" Margin="5" Grid.Row="0">
+            <TextBlock Text="Ponto de Venda:" Margin="0,0,0,5" FontSize="12"/>
+            <ComboBox x:Name="ComboboxPDV" Margin="0,0,0,8" FontSize="12"/>
+            <StackPanel Orientation="Horizontal" >
+                <Button Content="Adicionar" Width="80" HorizontalAlignment="Left" Padding="5,3,5,3"  Margin="0,0,5,5" Click="ButtonNovoPDV_Click" />
+                <Button Content="Alterar" Width="80" HorizontalAlignment="Left" Padding="5,3,5,3"  Margin="0,0,5,5" Click="ButtonAlterarPDV_Click" />
+                <Button x:Name="ButtonRemoverPDV" Content="Remover" Width="80" HorizontalAlignment="Left" Padding="5,3,5,3"  Margin="0,0,5,5" Click="ButtonRemoverPDV_Click" />
+            </StackPanel>
+        </StackPanel>
+
+        <Border BorderBrush="DarkGray" BorderThickness="0,1,0,0" Grid.Row="1" >
+            <StackPanel Orientation="Vertical"   Margin="5">
+                <TextBlock Text="Caixa:" Margin="0,0,0,5" FontSize="12"/>
+                <ComboBox x:Name="ComboboxCaixa" Margin="0,0,0,8" FontSize="12"/>
+                <StackPanel Orientation="Horizontal" >
+                    <Button Content="Adicionar" Width="80" HorizontalAlignment="Left" Padding="5,3,5,3"  Margin="0,0,5,5" Click="ButtonNovoCaixa_Click" />
+                    <Button Content="Alterar" Width="80" HorizontalAlignment="Left" Padding="5,3,5,3"  Margin="0,0,5,5" Click="ButtonAlterarCaixa_Click" />
+                    <Button x:Name="ButtonRemoverCaixa" Content="Remover" Width="80" HorizontalAlignment="Left" Padding="5,3,5,3"  Margin="0,0,5,5" Click="ButtonRemoverCaixa_Click" />
+                </StackPanel>
+            </StackPanel>
+
+        </Border>
+
+        <Border BorderBrush="DarkGray" BorderThickness="0,1,0,0" Grid.Row="2"  Margin="0,5,0,5" >
+            <StackPanel Orientation="Horizontal"  FlowDirection="RightToLeft" Margin="10,10,10,0" VerticalAlignment="Bottom">
+                <Button x:Name="ButtonSalvar" Click="ButtonSalvar_Click" Content="Salvar" Width="80" Height="28" Margin="0,0,5,5" Padding="5" />
+                <Button x:Name="ButtonCancelar" Click="ButtonCancelar_Click" Content="Cancelar" Width="80" Height="28" Margin="0,0,5,5" Padding="5" />
+            </StackPanel>
+        </Border>
+
+    </Grid>
+</Window>

@@ -33,7 +33,6 @@ namespace FortalezaDesktop.Views
         public InformacoesEmpresaDetails()
         {
             InitializeComponent();
-            textblockErroCnae.Visibility = Visibility.Hidden;
             textblockErroCpf.Visibility = Visibility.Hidden;
             textblockErroRG.Visibility = Visibility.Hidden;
             TextblockLogradouroErro.Visibility = Visibility.Hidden;
@@ -54,7 +53,6 @@ namespace FortalezaDesktop.Views
 
         public async Task<bool> ValidateInformacoes()
         {
-            textblockErroCnae.Visibility = Visibility.Hidden;
             textblockErroCpf.Visibility = Visibility.Hidden;
             textblockErroRG.Visibility = Visibility.Hidden;
             TextblockLogradouroErro.Visibility = Visibility.Hidden;
@@ -77,9 +75,9 @@ namespace FortalezaDesktop.Views
                 validated = false;
             }
 
-            if (InformacoesEmpresa.Rg != null)
+            if (InformacoesEmpresa.InscricaoEstadual != null)
             {
-                if (InformacoesEmpresa.Rg.Length != 9)
+                if (InformacoesEmpresa.InscricaoEstadual.Length != 9 & InformacoesEmpresa.InscricaoEstadual.Length != 12)
                 {
                     textblockErroRG.Text = "RG ou IE inválido.";
                     textblockErroRG.Visibility = Visibility.Visible;
@@ -121,7 +119,6 @@ namespace FortalezaDesktop.Views
 
             if(await ValidateInformacoes())
             {
-
                 if (UploadLogo)
                 {
                     if(await InformacoesEmpresa.UploadLogo(Logo, LogoFileName))
@@ -132,15 +129,17 @@ namespace FortalezaDesktop.Views
 
                 if (IsNew)
                 {
-                    if (await InformacoesEmpresa.SaveInstance())
+                    if(await InformacoesEmpresa.SaveInstance())
                     {
-                        IsNew = false;
+                        Close();
                     }
                 }
                 else
                 {
-                    await InformacoesEmpresa.UpdateInstance();
-
+                    if(await InformacoesEmpresa.UpdateInstance())
+                    {
+                        Close();
+                    }
                 }
             }
             SalvarInProgress = false;
@@ -153,6 +152,12 @@ namespace FortalezaDesktop.Views
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            ComboboxRegimeTributario.ItemsSource = new List<string>
+            {
+                "Simples Nacional",
+                "Lucro Presumido",
+                "Lucro Real"
+            };
             await LoadInformacoesEmpresa();
         }
 
@@ -181,6 +186,11 @@ namespace FortalezaDesktop.Views
                     ImageLogo.Source = imageSource;
                     await image.DisposeAsync();
                 }
+            }
+            if(InformacoesEmpresa.RegimeTributario != 0)
+            {
+                TextboxCsosn.Text = "";
+                TextboxCsosn.IsEnabled = false;
             }
         }
 
@@ -246,6 +256,26 @@ namespace FortalezaDesktop.Views
             InformacoesEmpresa.Logo = null;
             ImageLogo.Source = null;
             UploadLogo = false;
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                Close();
+            }
+        }
+
+        private void ComboboxRegimeTributario_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (InformacoesEmpresa.RegimeTributario != 0)
+            {
+                TextboxCsosn.IsEnabled = false;
+            }
+            else
+            {
+                TextboxCsosn.IsEnabled = true;
+            }
         }
     }
 }

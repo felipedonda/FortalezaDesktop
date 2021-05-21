@@ -54,7 +54,7 @@ namespace FortalezaDesktop.Utils
             }
             else
             {
-                throw new BadResponseStatusCodeException("Bad status code: " + httpResponse.StatusCode + " " + httpResponse.ReasonPhrase);
+                throw new BadResponseStatusCodeException(httpResponse.ReasonPhrase, httpResponse.StatusCode.ToString(), (int)httpResponse.StatusCode, httpResponse.RequestMessage.RequestUri.ToString());
             }
 
         }

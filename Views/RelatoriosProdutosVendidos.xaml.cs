@@ -58,9 +58,9 @@ namespace FortalezaDesktop.Views
 
             relatorio.mainGrid.ItemsSource = itemsVendidos;
 
-            RelatoriosVizualizador vizualizador = new RelatoriosVizualizador();
+            RelatoriosVizualizador vizualizador = new RelatoriosVizualizador(RelatoriosVizualizador.TipoEmpressaoEnum.Relatorio);
             vizualizador.LoadChildPage(relatorio);
-            vizualizador.Show();
+            vizualizador.ShowDialog();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -68,15 +68,15 @@ namespace FortalezaDesktop.Views
 
 
             DateTime dataInicial = new DateTime(
-                DateTime.UtcNow.Year,
-                DateTime.UtcNow.Month,
-                DateTime.UtcNow.Day,
+                DateTime.Now.Year,
+                DateTime.Now.Month,
+                DateTime.Now.Day,
                 0, 0, 0).AddDays(-1);
 
             DateTime dataFinal = new DateTime(
-                DateTime.UtcNow.Year,
-                DateTime.UtcNow.Month,
-                DateTime.UtcNow.Day,
+                DateTime.Now.Year,
+                DateTime.Now.Month,
+                DateTime.Now.Day,
                 23, 59, 59);
 
             datePickerFrom.SelectedDate = dataInicial;

@@ -19,65 +19,56 @@ namespace FortalezaDesktop.Views
     /// </summary>
     public partial class VendaPagamentosValor : Window
     {
-        public FormaPagamento MeioPagamento { get; set; }        
-        public decimal Valor { get; set; }
-        public event EventHandler InserirValor;
-
-        public VendaPagamentosValor()
+        public FormaPagamento FormaPagamento { get; set; }   
+        public Bandeira Bandeira { get; set; }
+        public event EventHandler<ValorInseridoArgs> InserirValor;
+        public class ValorInseridoArgs : EventArgs
         {
-            InitializeComponent();
+            public FormaPagamento FormaPagamento { get; set; }
+            public Bandeira Bandeira { get; set; }
+            public decimal Valor { get; set; }
+            public ValorInseridoArgs(decimal valor, FormaPagamento formaPagamento, Bandeira bandeira)
+            {
+                Valor = valor;
+                FormaPagamento = formaPagamento;
+                Bandeira = bandeira;
+            }
         }
 
-        public void LoadFormaPagamento(FormaPagamento meioPagamento)
+        public VendaPagamentosValor(FormaPagamento formaPagamento, Bandeira bandeira)
         {
-            MeioPagamento = meioPagamento;
-            textblockTipoPagamento.Text = MeioPagamento.Nome;
+            InitializeComponent();
+            Bandeira = bandeira;
+            FormaPagamento = formaPagamento;
+            textblockTipoPagamento.Text = FormaPagamento.Nome;
+            Title += FormaPagamento.Nome;
+            PadNumerico.OkClick += PadNumerico_OkClick;
+            PadNumerico.CancelarClick += PadNumerico_CancelarClick;
+        }
+
+        private void PadNumerico_CancelarClick(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void PadNumerico_OkClick(object sender, EventArgs e)
+        {
+            decimal valor = PadNumerico.Value;
+            InserirValor?.Invoke(this, new ValorInseridoArgs(valor, FormaPagamento, Bandeira));
+            Close();
         }
 
         public void SetValorRemanescente(decimal valor)
         {
-            textblockValorPagamento.Text = valor.ToString("C2");
+            PadNumerico.Value = valor;
         }
 
-        private void ButtonOk_Click(object sender, RoutedEventArgs e)
+        private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            Valor = decimal.Parse(textblockValorPagamento.Text, NumberStyles.Currency);
-            InserirValor?.Invoke(this, new EventArgs());
-            Close();
-        }
-
-        private void ButtonNumero_Click(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrEmpty(textblockValorPagamento.Text))
-                Limpar();
-            Button senderAsButton = (Button)sender;
-            TextBlock buttonText = (TextBlock)senderAsButton.Content;
-            textblockValorPagamento.Text += buttonText.Text;
-        }
-
-        private void ButtonSeparator_Click(object sender, RoutedEventArgs e)
-        {
-            textblockValorPagamento.Text += CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
-        }
-
-        private void ButtonDel_Click(object sender, RoutedEventArgs e)
-        {
-            textblockValorPagamento.Text = textblockValorPagamento.Text.Substring(0, textblockValorPagamento.Text.Length -1);
-        }
-
-        public void Limpar()
-        {
-            textblockValorPagamento.Text = CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol + " ";
-        }
-
-        private void ButtonLimpar_Click(object sender, RoutedEventArgs e)
-        {
-            Limpar();
-        }
-
-        private void ButtonCancelar_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
+            if(e.Key == Key.Escape)
+            {
+                Close();
+            }
         }
     }
 }

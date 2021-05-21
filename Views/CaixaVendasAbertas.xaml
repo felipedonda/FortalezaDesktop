@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:FortalezaDesktop.Views"
         mc:Ignorable="d"
         Title="CaixaVendasAbertas" Height="450" Width="800"
+        WindowStartupLocation="CenterScreen"
         Loaded="Window_Loaded">
     <Grid>
         <Grid.RowDefinitions>
@@ -25,8 +26,7 @@
                           HeadersVisibility="Column"
                           CanUserAddRows="False"
                           CanUserDeleteRows="False"
-                          IsReadOnly="True"
-                          SelectedCellsChanged="DatagridFechamentos_MouseDoubleClick">
+                          IsReadOnly="True">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Data" Width="80" Binding="{Binding Idcaixa}" />
                     <DataGridTextColumn Header="Hora" Width="60" Binding="{Binding HoraAbertura, StringFormat=dd/MM/yy}" />

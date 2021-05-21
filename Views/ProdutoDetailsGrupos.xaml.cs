@@ -65,5 +65,13 @@ namespace FortalezaDesktop.Views
             SelectedGrupos = ((List<GrupoGridItem>)datagridGrupos.ItemsSource).Where(g => g.Selected == true).Select(g => g.Grupo).ToList();
             Close();
         }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                Close();
+            }
+        }
     }
 }

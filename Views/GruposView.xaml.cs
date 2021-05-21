@@ -40,7 +40,7 @@ namespace FortalezaDesktop.Views
         {
             GrupoDetails grupoDetails = new GrupoDetails();
             grupoDetails.AlteracaoRealizada += GrupoDetails_AlteracaoRealizada;
-            grupoDetails.Show();
+            grupoDetails.ShowDialog();
         }
 
         private async void GrupoDetails_AlteracaoRealizada(object sender, EventArgs e)
@@ -71,7 +71,15 @@ namespace FortalezaDesktop.Views
             GrupoDetails grupoDetails = new GrupoDetails();
             grupoDetails.AlteracaoRealizada += GrupoDetails_AlteracaoRealizada;
             await grupoDetails.LoadGrupo((int)senderAsButton.Tag);
-            grupoDetails.Show();
+            grupoDetails.ShowDialog();
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                Close();
+            }
         }
     }
 }

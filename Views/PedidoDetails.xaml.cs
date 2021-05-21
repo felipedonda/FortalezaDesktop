@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using FortalezaDesktop.Utils;
 
 namespace FortalezaDesktop.Views
 {
@@ -38,35 +39,47 @@ namespace FortalezaDesktop.Views
             Pedido = await (new Pedido()).FindById(Idpedido, new Dictionary<string, string> {
                 {"itemVenda","true"}
             });
-            await ReloadPedido();
+            if(Pedido != null)
+            {
+                Title = "Pedido Nº " + Pedido.NumeroPedido;
+                ReloadPedido();
+            }
+            else
+            {
+                MessageBox.Show("Erro ao carregar pedido.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                Logger.Log("Erro ao tentar carregar pedido de ID " + Idpedido + ".", Logger.LogType.Error);
+            }
         }
 
         public async void NewPedido()
         {
+            Caixa caixaAberto = await new Caixa().GetCaixaAberto(UserPreferences.Preferences.IdnomeCaixa);
             Pedido = new Pedido
             {
                 Delivery = 0,
                 Entregue = 0,
                 Status = 0,
-                DataEntregue = DateTime.UtcNow,
-                DataPrazo = DateTime.UtcNow,
+                DataEntregue = DateTime.Now,
+                DataPrazo = DateTime.Now,
                 IdvendaNavigation = new Venda
                 {
                     Tipo = 1,
                     Aberta = 1,
-                    Idresponsavel = UserControl.UsuarioLogado.Idusuario,
+                    Idresponsavel = UserController.UsuarioLogado.Idusuario,
                     Paga = 0,
-                    HoraEntrada = DateTime.UtcNow
+                    HoraEntrada = DateTime.Now,
+                    Idcaixa = caixaAberto.Idcaixa,
+                    Idpdv = UserPreferences.Preferences.Idpdv
                 }
             };
             await Pedido.SaveInstance();
             Pedido = await Pedido.ReloadInstance(new Dictionary<string, string> {
                 {"itemVenda","true"}
             });
-            await ReloadPedido();
+            ReloadPedido();
         }
 
-        public async Task ReloadPedido()
+        public void ReloadPedido()
         {
             gridPedidoDetails.DataContext = null;
             gridPedidoDetails.DataContext = Pedido;
@@ -77,14 +90,14 @@ namespace FortalezaDesktop.Views
         private void ButtonAdicionarClick(object sender, RoutedEventArgs e)
         {
             PedidoDetailsProdutos pedidoDetailsProdutos = new PedidoDetailsProdutos();
-            pedidoDetailsProdutos.Selecionado += PedidoDetailsProdutos_Selecionado; ;
-            pedidoDetailsProdutos.Show();
+            pedidoDetailsProdutos.ItemSelecionado += PedidoDetailsProdutos_Selecionado; ;
+            pedidoDetailsProdutos.ShowDialog();
         }
 
-        private async void PedidoDetailsProdutos_Selecionado(object sender, EventArgs e)
+        private async void PedidoDetailsProdutos_Selecionado(object sender, PedidoDetailsProdutos.ItemSelecionadoArgs e)
         {
-            Item item = ((PedidoDetailsProdutos)sender).ItemSelecionado;
-            decimal quantidade = 0;
+            Item item = e.Item;
+            decimal quantidade = e.Quantidade;
             try
             {
                 quantidade = decimal.Parse(textboxQuantidade.Text);
@@ -103,14 +116,15 @@ namespace FortalezaDesktop.Views
             };
 
             await Pedido.IdvendaNavigation.SaveItemVenda(itemVenda);
-            await ReloadPedido();
+            ReloadPedido();
         }
 
         private void ButtonSelecionarCliente_Click(object sender, RoutedEventArgs e)
         {
             PedidoDetailsCliente pedidoDetailsCliente = new PedidoDetailsCliente();
             pedidoDetailsCliente.Selecionado += PedidoDetailsCliente_Selecionado;
-            pedidoDetailsCliente.Show();
+            pedidoDetailsCliente.ExigirEndereco = true;
+            pedidoDetailsCliente.ShowDialog();
         }
 
         private async void PedidoDetailsCliente_Selecionado(object sender, PedidoDetailsCliente.ClienteSelecionadoEventArgs e)
@@ -125,7 +139,7 @@ namespace FortalezaDesktop.Views
         {
             PedidoDetailsEntregador produtoDetailsEntregador = new PedidoDetailsEntregador();
             produtoDetailsEntregador.Selecionado += ProdutoDetailsEntregador_Selecionado;
-            produtoDetailsEntregador.Show();
+            produtoDetailsEntregador.ShowDialog();
         }
 
         private async void ProdutoDetailsEntregador_Selecionado(object sender, EventArgs e)
@@ -147,13 +161,21 @@ namespace FortalezaDesktop.Views
             {
                 PedidoDetailsPagamentos detailsPagamentos = new PedidoDetailsPagamentos(Pedido.IdvendaNavigation);
                 detailsPagamentos.Closed += DetailsPagamentos_Closed;
-                detailsPagamentos.Show();
+                detailsPagamentos.ShowDialog();
             }
         }
 
         private void DetailsPagamentos_Closed(object sender, EventArgs e)
         {
             LoadPedido(Pedido.Idvenda);
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                Close();
+            }
         }
     }
 }

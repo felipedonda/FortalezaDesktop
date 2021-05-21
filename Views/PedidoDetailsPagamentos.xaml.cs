@@ -44,12 +44,12 @@ namespace FortalezaDesktop.Views
 
         private async void buttonAdicionar_Click(object sender, RoutedEventArgs e)
         {
-            Caixa caixaAberto = await new Caixa().GetCaixaAberto();
+            Caixa caixaAberto = await new Caixa().GetCaixaAberto(UserPreferences.Preferences.IdnomeCaixa);
             if (caixaAberto != null)
             {
                 PedidoDetailsPagamentosAdd pagamentosAdd = new PedidoDetailsPagamentosAdd(Venda, caixaAberto);
                 pagamentosAdd.Closed += PagamentosAdd_Closed;
-                pagamentosAdd.Show();
+                pagamentosAdd.ShowDialog();
             }
             else
             {
@@ -91,12 +91,12 @@ namespace FortalezaDesktop.Views
         {
             Button senderAsButton = (Button)sender;
 
-            Caixa caixaAberto = await new Caixa().GetCaixaAberto();
+            Caixa caixaAberto = await new Caixa().GetCaixaAberto(UserPreferences.Preferences.IdnomeCaixa);
             if (caixaAberto != null)
             {
                 PedidoDetailsPagamentosAdd pagamentosAdd = new PedidoDetailsPagamentosAdd((int)senderAsButton.Tag, Venda, caixaAberto);
                 pagamentosAdd.Closed += PagamentosAdd_Closed;
-                pagamentosAdd.Show();
+                pagamentosAdd.ShowDialog();
             }
             else
             {
