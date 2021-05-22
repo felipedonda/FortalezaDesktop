@@ -36,6 +36,18 @@ namespace FortalezaDesktop.Views
             buttonAlterar.Visibility = Visibility.Collapsed;
             buttonRemover.Visibility = Visibility.Collapsed;
 
+            ComboboxCfop.ItemsSource = Fiscal.ListaCfop;
+            ComboboxCfop.SelectedValuePath = "Value";
+            ComboboxCfop.DisplayMemberPath = "Display";
+
+            ComboboxOrigem.ItemsSource = Fiscal.ListaOrigem;
+            ComboboxOrigem.SelectedValuePath = "Value";
+            ComboboxOrigem.DisplayMemberPath = "Display";
+
+            ComboboxCstIcms.ItemsSource = Fiscal.ListaCstIcms;
+            ComboboxCstIcms.SelectedValuePath = "Value";
+            ComboboxCstIcms.DisplayMemberPath = "Display";
+
             List<ItemTipo> source = new List<ItemTipo> {
                 new ItemTipo {Value = 1, Text = "Produto"},
                 new ItemTipo {Value = 2, Text = "Pacote"}
@@ -51,23 +63,16 @@ namespace FortalezaDesktop.Views
                 Estoque = 1,
                 Disponivel = 1,
                 Unidade = "UN",
-                Fiscal = new Fiscal
-                {
-                    Ncm = null,
-                    Cest = null,
-                    Cfop = 5001,
-                    CstIcms = 00,
-                    AliquotaIcms = 10,
-                    Origem = 0
-                }
+                Fiscal = UserPreferences.Preferences.FiscalPadrao
             };
             gridProdutoDetails.DataContext = Item;
 
         }
 
-        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        public void ReloadItem()
         {
-
+            gridProdutoDetails.DataContext = null;
+            gridProdutoDetails.DataContext = Item;
         }
 
         public async Task TrocaTipo()
@@ -115,7 +120,7 @@ namespace FortalezaDesktop.Views
         public async Task LoadItem(Item item)
         {
             Item = item;
-            gridProdutoDetails.DataContext = Item;
+            ReloadItem();
 
             try
             {
@@ -123,7 +128,11 @@ namespace FortalezaDesktop.Views
                 {
                     if(Item.EstoqueAtual != null)
                     {
-                        textboxMargem.Text = ((1 - (Item.Valor / (Item.EstoqueAtual.Custo ?? default))) * 100).ToString();
+                        if(Item.EstoqueAtual.Custo > 0)
+                        {
+                            textboxMargem.Text = ((1 - (Item.Valor / (Item.EstoqueAtual.Custo ?? default))) * 100).ToString();
+                        }
+                        
                     }
                 }
             }
@@ -271,7 +280,7 @@ namespace FortalezaDesktop.Views
 
             Item.Fiscal = e.Item.Fiscal;
 
-            textboxPacoteProduto.Text = Item.Pacote.IditemProdutoNavigation.Descricao;
+            ReloadItem();
         }
 
         private async void comboboxTipo_SelectionChanged(object sender, SelectionChangedEventArgs e)

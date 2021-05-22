@@ -33,6 +33,9 @@
     <Compile Update="Views\Clientes.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\ConfigFiscal.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\ConfiguracaoSat.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -210,6 +213,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\Clientes.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\ConfigFiscal.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\ConfiguracaoSat.xaml">

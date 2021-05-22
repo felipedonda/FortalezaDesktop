@@ -32,11 +32,11 @@
             </Grid.RowDefinitions>
             <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="0" Margin="10,10,0,0">
                 <TextBlock Text="Código" FontSize="12" Margin="0,0,5,5" />
-                <TextBox x:Name="textboxCodigo" Text="{Binding Iditem}" Height="21" FontSize="12"  Margin="0,0,5,5" />
+                <TextBox x:Name="textboxCodigo" Text="{Binding Iditem}" Height="22" FontSize="12"  Margin="0,0,5,5" />
             </StackPanel>
             <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="0" Margin="10,10,0,0">
                 <TextBlock Text="Código barras" FontSize="12" Margin="0,0,5,5" />
-                <TextBox Text="{Binding CodigoBarras}" Height="21" FontSize="12"  Margin="0,0,5,5"/>
+                <TextBox Text="{Binding CodigoBarras}" Height="22" FontSize="12"  Margin="0,0,5,5"/>
             </StackPanel>
             <StackPanel Orientation="Vertical" Grid.Column="2" Grid.RowSpan="2" Grid.Row="0" Margin="10,10,0,0" VerticalAlignment="Top">
                 <CheckBox Content="Disponível" FontSize="12" Margin="0,0,5,5" IsChecked="{Binding Disponivel, Converter={StaticResource tinyIntBoolConverter}}" />
@@ -56,13 +56,13 @@
             </StackPanel>
             <StackPanel Orientation="Vertical" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Margin="10,10,0,0">
                 <TextBlock Text="Descrição" FontSize="12" Margin="0,0,5,5" />
-                <TextBox Text="{Binding Descricao}" Height="21" FontSize="12"  Margin="0,0,5,5" />
+                <TextBox Text="{Binding Descricao}" Height="22" FontSize="12"  Margin="0,0,5,5" />
             </StackPanel>
 
 
             <StackPanel Orientation="Vertical" Grid.Column="2" Grid.Row="2" Margin="10,10,0,0">
                 <TextBlock Text="Unidade de medida" FontSize="12" Margin="0,0,5,5" />
-                <TextBox Text="{Binding Unidade}" Height="21" FontSize="12"  Margin="0,0,5,5" />
+                <TextBox Text="{Binding Unidade}" Height="22" FontSize="12"  Margin="0,0,5,5" />
             </StackPanel>
 
             <StackPanel Orientation="Vertical" VerticalAlignment="Center" Grid.Column="3" Grid.Row="2" Margin="10,10,0,0">
@@ -71,29 +71,29 @@
 
             <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="2" Margin="10,10,0,0">
                 <TextBlock Text="Estoque mínimo" FontSize="12" Margin="0,0,5,5" />
-                <TextBox Text="{local:CultureAwareBinding EstoqueMinimo}" Height="21" FontSize="12"  Margin="0,0,5,5" />
+                <TextBox Text="{local:CultureAwareBinding EstoqueMinimo}" Height="22" FontSize="12"  Margin="0,0,5,5" />
             </StackPanel>
             <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="2" Margin="10,10,0,0">
                 <TextBlock Text="Estoque atual" FontSize="12" Margin="0,0,5,5" />
-                <TextBox x:Name="textboxEstoque" Text="{local:CultureAwareBinding EstoqueAtual.QuantidadeDisponivel}" Height="21" FontSize="12"  Margin="0,0,5,5" />
+                <TextBox x:Name="textboxEstoque" Text="{local:CultureAwareBinding EstoqueAtual.QuantidadeDisponivel}" Height="22" FontSize="12"  Margin="0,0,5,5" />
             </StackPanel>
 
             <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="3" Margin="10,10,0,0">
                 <TextBlock  Text="Custo" FontSize="12" Margin="0,0,5,5" />
-                <TextBox x:Name="textboxCusto" Text="{local:CultureAwareBinding EstoqueAtual.Custo, StringFormat=C2}" Height="21" FontSize="12"  Margin="0,0,5,5" KeyUp="textboxMargem_KeyUp" />
+                <TextBox x:Name="textboxCusto" Text="{local:CultureAwareBinding EstoqueAtual.Custo, StringFormat=C2}" Height="22" FontSize="12"  Margin="0,0,5,5" KeyUp="textboxMargem_KeyUp" />
             </StackPanel>
 
             <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="3" Margin="10,10,0,0">
                 <TextBlock Text="Margem" FontSize="12" Margin="0,0,5,5" />
                 <DockPanel>
                     <TextBlock Text="%" FontSize="12" Margin="0,0,5,5" DockPanel.Dock="Right" />
-                    <TextBox x:Name="textboxMargem" Text=""  FontSize="12" Height="21" Margin="0,0,5,5" KeyUp="textboxMargem_KeyUp" DockPanel.Dock="Right" />
+                    <TextBox x:Name="textboxMargem" Text=""  FontSize="12" Height="22" Margin="0,0,5,5" KeyUp="textboxMargem_KeyUp" DockPanel.Dock="Right" />
                 </DockPanel>
             </StackPanel>
 
             <StackPanel Orientation="Vertical" Grid.Column="2" Grid.Row="3" Margin="10,10,0,0">
                 <TextBlock Text="Valor" FontSize="12" Margin="0,0,5,5" />
-                <TextBox x:Name="textboxValor" Height="21" Text="{local:CultureAwareBinding Valor, StringFormat=C2}"  FontSize="12"  Margin="0,0,5,5" />
+                <TextBox x:Name="textboxValor" Height="22" Text="{local:CultureAwareBinding Valor, StringFormat=C2}"  FontSize="12"  Margin="0,0,5,5" />
             </StackPanel>
 
 
@@ -118,36 +118,36 @@
 
                         <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="0" Margin="10,10,0,0">
                             <TextBlock Text="CFOP" FontSize="12" Margin="0,0,5,5" />
-                            <TextBox Text="{Binding Fiscal.Cfop}"  FontSize="12" Height="21"  Margin="0,0,5,5" />
+                            <ComboBox x:Name="ComboboxCfop" SelectedValue="{Binding Fiscal.Cfop}" Margin="0,0,5,5" />
                         </StackPanel>
 
                         <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="0" Margin="10,10,0,0">
                             <TextBlock Text="CST ICMS" FontSize="12" Margin="0,0,5,5" />
-                            <TextBox Text="{Binding Fiscal.CstIcms}"  FontSize="12" Height="21"  Margin="0,0,5,5" />
+                            <ComboBox x:Name="ComboboxCstIcms" SelectedValue="{Binding Fiscal.CstIcms}"  FontSize="12" Height="22"  Margin="0,0,5,5" />
                         </StackPanel>
 
                         <StackPanel Orientation="Vertical" Grid.Column="2" Grid.Row="0" Margin="10,10,0,0">
                             <TextBlock Text="NCM" FontSize="12" Margin="0,0,5,5" />
-                            <TextBox Text="{Binding Fiscal.Ncm}"  FontSize="12" Height="21"  Margin="0,0,5,5" />
+                            <TextBox Text="{Binding Fiscal.Ncm}"  FontSize="12" Height="22"  Margin="0,0,5,5" />
                         </StackPanel>
 
                         <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="1" Margin="10,10,0,0">
-                            <TextBlock Text="Origem" FontSize="12" Margin="0,0,5,5" />
-                            <TextBox Text="{Binding Fiscal.Origem}"  FontSize="12" Height="21"  Margin="0,0,5,5" />
+                            <TextBlock Text="Origem" FontSize="12" TextWrapping="Wrap" Margin="0,0,5,5" />
+                            <ComboBox x:Name="ComboboxOrigem" SelectedValue="{Binding Fiscal.Origem}"  FontSize="12" Height="22"  Margin="0,0,5,5" />
                         </StackPanel>
 
                         <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="1" Margin="10,10,0,0">
                             <TextBlock Text="Alíquota ICMS" FontSize="12" Margin="0,0,5,5" />
                             <DockPanel>
-                                <TextBlock Text="%" FontSize="12" Margin="0,0,5,5" DockPanel.Dock="Right" />
-                                <TextBox Text="{local:CultureAwareBinding Fiscal.AliquotaIcms, StringFormat='0.00'}" FontSize="12" Height="21"  Margin="0,0,5,5" />
+                                <TextBlock Text="%" FontSize="12" Height="22" Margin="0,0,5,5" DockPanel.Dock="Right" />
+                                <TextBox Text="{local:CultureAwareBinding Fiscal.AliquotaIcms, StringFormat='0.00'}" TextAlignment="Right" FontSize="12" Height="22"  Margin="0,0,5,5" />
                             </DockPanel>
                         </StackPanel>
 
 
                         <StackPanel Orientation="Vertical" Grid.Column="2" Grid.Row="1" Margin="10,10,0,0">
                             <TextBlock Text="CEST" FontSize="12" Margin="0,0,5,5" />
-                            <TextBox Text="{Binding Fiscal.Cest}"  FontSize="12" Height="21"  Margin="0,0,5,5" />
+                            <TextBox Text="{Binding Fiscal.Cest}"  FontSize="12" Height="22"  Margin="0,0,5,5" />
                         </StackPanel>
 
                     </Grid>
@@ -166,17 +166,17 @@
                         </Grid.RowDefinitions>
                         <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" Margin="10,10,0,0">
                             <TextBlock Text="Quantidade" FontSize="12" Margin="0,0,5,5" />
-                            <TextBox x:Name="textboxQuantidade" Height="21" Text="{Binding PacoteIditemNavigation.Quantidade}"  FontSize="12"  Margin="0,0,5,5" />
+                            <TextBox x:Name="textboxQuantidade" Height="22" Text="{Binding Pacote.Quantidade}"  FontSize="12"  Margin="0,0,5,5" />
                         </StackPanel>
 
                         <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="10,10,0,0">
-                            <CheckBox Content="Pacote padrão" FontSize="12" Margin="0,0,5,5" IsChecked="{Binding PacoteIditemNavigation.Padrao, Converter={StaticResource tinyIntBoolConverter}}" />
+                            <CheckBox Content="Pacote padrão" FontSize="12" Margin="0,0,5,5" IsChecked="{Binding Pacote.Padrao, Converter={StaticResource tinyIntBoolConverter}}" />
                             <TextBlock Text="para contabilidade de estoque" FontSize="10" Margin="0,0,5,5" />
                         </StackPanel>
 
                         <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" Margin="10,10,0,0">
                             <TextBlock Text="Produto" FontSize="12" Margin="0,0,5,5" />
-                            <TextBox x:Name="textboxPacoteProduto" Height="21" Text="{Binding PacoteIditemNavigation.IditemProdutoNavigation.Descricao}" IsReadOnly="True" FontSize="12"  Margin="0,0,5,5" />
+                            <TextBox x:Name="textboxPacoteProduto" Height="22" Text="{Binding Pacote.IditemProdutoNavigation.Descricao}" IsReadOnly="True" FontSize="12"  Margin="0,0,5,5" />
                         </StackPanel>
 
                         <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Margin="10,10,0,0">

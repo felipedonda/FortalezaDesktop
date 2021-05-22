@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using FortalezaDesktop.Models;
 
 namespace FortalezaDesktop
 {
@@ -36,6 +37,7 @@ namespace FortalezaDesktop
         public bool ModuloTroca { get; set; }
         public string SenhaSat { get; set; }
         public bool SatHomologacao { get; set; }
+        public Fiscal FiscalPadrao { get; set; }
     }
 
     public class UserPreferences
@@ -105,6 +107,20 @@ namespace FortalezaDesktop
                     };
                     Save();
                 }
+
+                if(Preferences.FiscalPadrao == null)
+                {
+                    Preferences.FiscalPadrao = new Fiscal
+                    {
+                        Cest = null,
+                        Ncm = null,
+                        Cfop = 5102,
+                        CstIcms = 0,
+                        AliquotaIcms = 10,
+                        Origem = 0
+                    };
+                    Save();
+                }
             }
             else
             {
@@ -142,6 +158,15 @@ namespace FortalezaDesktop
                         ImpressoraPadrao = "",
                         SempreImprimir = true,
                         Visualizar = true
+                    },
+                    FiscalPadrao = new Fiscal
+                    {
+                        Cest = null,
+                        Ncm = null,
+                        Cfop = 5102,
+                        CstIcms = 0,
+                        AliquotaIcms = 10,
+                        Origem = 0
                     }
 
                 };

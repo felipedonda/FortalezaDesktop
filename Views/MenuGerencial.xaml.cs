@@ -27,6 +27,7 @@ namespace FortalezaDesktop.Views
         public void buttonProdutos_Click(object sender, RoutedEventArgs e)
         {
             Produtos produtoView = new Produtos();
+            Hide();
             produtoView.ShowDialog();
             Close();
         }
@@ -34,6 +35,7 @@ namespace FortalezaDesktop.Views
         private void buttonConfiguracoes_Click(object sender, RoutedEventArgs e)
         {
             Configuracoes configuracoesView = new Configuracoes();
+            Hide();
             configuracoesView.ShowDialog();
             Close();
         }
@@ -41,6 +43,7 @@ namespace FortalezaDesktop.Views
         private void buttonEstoque_Click(object sender, RoutedEventArgs e)
         {
             EstoqueView estoqueView = new EstoqueView();
+            Hide();
             estoqueView.ShowDialog();
             Close();
         }
@@ -48,6 +51,7 @@ namespace FortalezaDesktop.Views
         private void buttonProdutosVendidos_Click(object sender, RoutedEventArgs e)
         {
             RelatoriosProdutosVendidos relatoriosProdutosVendidos = new RelatoriosProdutosVendidos();
+            Hide();
             relatoriosProdutosVendidos.ShowDialog();
             Close();
         }
@@ -55,6 +59,7 @@ namespace FortalezaDesktop.Views
         private void buttonClientes_Click(object sender, RoutedEventArgs e)
         {
             Clientes clientes = new Clientes();
+            Hide();
             clientes.ShowDialog();
             Close();
         }
@@ -62,6 +67,7 @@ namespace FortalezaDesktop.Views
         private void buttonGrupos_Click(object sender, RoutedEventArgs e)
         {
             GruposView gruposView = new GruposView();
+            Hide();
             gruposView.ShowDialog();
             Close();
         }
@@ -69,6 +75,7 @@ namespace FortalezaDesktop.Views
         private void buttonDadosLoja_Click(object sender, RoutedEventArgs e)
         {
             InformacoesEmpresaDetails informacoesEmpresaDetails = new InformacoesEmpresaDetails();
+            Hide();
             informacoesEmpresaDetails.ShowDialog();
             Close();
         }
@@ -76,6 +83,7 @@ namespace FortalezaDesktop.Views
         private void ButtonPontoVenda_Click(object sender, RoutedEventArgs e)
         {
             PontoVendaView pontoVendaView = new PontoVendaView();
+            Hide();
             pontoVendaView.ShowDialog();
             Close();
         }
@@ -83,6 +91,7 @@ namespace FortalezaDesktop.Views
         private void ButtonPagamentos_Click(object sender, RoutedEventArgs e)
         {
             FormaPagamentosView formaPagamentosView = new FormaPagamentosView();
+            Hide();
             formaPagamentosView.ShowDialog();
             Close();
         }
@@ -90,6 +99,7 @@ namespace FortalezaDesktop.Views
         private void ButtonImpressoras_Click(object sender, RoutedEventArgs e)
         {
             Impressoras impressoras = new Impressoras();
+            Hide();
             impressoras.ShowDialog();
             Close();
         }
@@ -97,6 +107,7 @@ namespace FortalezaDesktop.Views
         private void ButtonModulos_Click(object sender, RoutedEventArgs e)
         {
             ConfiguracoesModulos configuracoesModulos = new ConfiguracoesModulos();
+            Hide();
             configuracoesModulos.ShowDialog();
             Close();
         }
@@ -112,7 +123,16 @@ namespace FortalezaDesktop.Views
         private void ButtonSat_Click(object sender, RoutedEventArgs e)
         {
             ConfiguracaoSat configuracaoSat = new ConfiguracaoSat();
+            Hide();
             configuracaoSat.ShowDialog();
+            Close();
+        }
+
+        private void ButtonFiscal_Click(object sender, RoutedEventArgs e)
+        {
+            ConfigFiscal fiscal = new ConfigFiscal();
+            Hide();
+            fiscal.ShowDialog();
             Close();
         }
     }
