@@ -40,7 +40,7 @@ namespace FortalezaDesktop
             }
             else
             {
-                Logger.Log("Falha de conexão com o servidor '" + Server.URI + "'.", Logger.LogType.Warning);
+                Logger.Log("Falha de conexão com o servidor '" + Server.Uri + "'.", Logger.LogType.Warning);
                 var msgBoxResult = MessageBox.Show("Falha de conexão com servidor. Tentar novamente?", "Falha de conexão" ,MessageBoxButton.OKCancel);
                 if (msgBoxResult == MessageBoxResult.OK)
                 {
@@ -74,7 +74,7 @@ namespace FortalezaDesktop
             }
             else
             {
-                Logger.Log("Falha de conexão com o servidor '" + Server.URI + "'.", Logger.LogType.Warning);
+                Logger.Log("Falha de conexão com o servidor '" + Server.Uri + "'.", Logger.LogType.Warning);
                 var msgBoxResult = MessageBox.Show("Falha de conexão com servidor. Tentar novamente?", "Falha de conexão", MessageBoxButton.OKCancel);
                 if (msgBoxResult == MessageBoxResult.OK)
                 {
@@ -115,7 +115,7 @@ namespace FortalezaDesktop
 
             if (await InitialConnection())
             {
-                Logger.Log("Conexão feita com servidor '" + Server.URI + "'.", Logger.LogType.Info);
+                Logger.Log("Conexão feita com servidor '" + Server.Uri + "'.", Logger.LogType.Info);
                 if (Loggar())
                 {
                     LoadChildPage(new VendaView());

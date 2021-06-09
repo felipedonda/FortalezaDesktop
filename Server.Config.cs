@@ -30,8 +30,8 @@ namespace FortalezaDesktop
 
     public class Server
     {
-        public static string APIURI { get; set; }
-        public static string URI { get; set; }
+        public static string ApiUri { get; set; }
+        public static string Uri { get; set; }
 
 
         static public void LoadServerConfig()
@@ -50,18 +50,18 @@ namespace FortalezaDesktop
                 ServerConfigurationFile configuration = JsonConvert.DeserializeObject<ServerConfigurationFile>(jsonString);
                 if (configuration.Https)
                 {
-                    URI = "https://" + configuration.Hostname;
+                    Uri = "https://" + configuration.Hostname;
                 }
                 else
                 {
-                    URI = "http://" + configuration.Hostname;
+                    Uri = "http://" + configuration.Hostname;
                 }
                 if (!string.IsNullOrEmpty(configuration.Port))
                 {
-                    URI += ":" + configuration.Port;
+                    Uri += ":" + configuration.Port;
                 }
 
-                APIURI = URI + "/api";
+                ApiUri = Uri + "/api";
             }
             else
             {
@@ -78,8 +78,8 @@ namespace FortalezaDesktop
                 }
 
                 File.WriteAllText(configurationFilePath, JsonConvert.SerializeObject(newConfiguration));
-                URI = "http://" + newConfiguration.Hostname + ":" + newConfiguration.Port;
-                APIURI = URI + "/api";
+                Uri = "http://" + newConfiguration.Hostname + ":" + newConfiguration.Port;
+                ApiUri = Uri + "/api";
 
             }
         }
@@ -89,7 +89,7 @@ namespace FortalezaDesktop
             HttpClient httpClient = new HttpClient();
             try
             {
-                HttpResponseMessage httpResponse = await httpClient.GetAsync(APIURI);
+                HttpResponseMessage httpResponse = await httpClient.GetAsync(ApiUri);
                 return httpResponse.IsSuccessStatusCode;
             }
             catch (Exception)
