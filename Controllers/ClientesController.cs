@@ -11,12 +11,12 @@ namespace FortalezaDesktop.Controllers
 {
     class ClientesController
     {
-        public async Task<List<Cliente>> GetAllClientesAsync()
+        public static async Task<List<Cliente>> FindAllAsync()
         {
-            return await GetAllClientesAsync("");
+            return await FindAllAsync("");
         }
 
-        public async Task<List<Cliente>> GetAllClientesAsync(string query)
+        public static async Task<List<Cliente>> FindAllAsync(string query)
         {
             using var httpClient = new HttpClient();
             var apiClient = new FortalezaApiClient(Server.ApiUri, httpClient);
@@ -24,14 +24,14 @@ namespace FortalezaDesktop.Controllers
             return clientes.ToList();
         }
 
-        public async Task<Cliente> GetClienteByIdAsync(int id, bool includeMovimentos = false)
+        public static async Task<Cliente> FindByIdAsync(int id, bool includeMovimentos = false)
         {
             using var httpClient = new HttpClient();
             var apiClient = new FortalezaApiClient(Server.ApiUri, httpClient);
             return await apiClient.Clientes2Async(id, includeMovimentos);
         }
 
-        public async Task<Cliente> GetClienteByCpfAsync(string cpf, bool includeMovimentos = false)
+        public static async Task<Cliente> FindByCpfAsync(string cpf, bool includeMovimentos = false)
         {
             using var httpClient = new HttpClient();
             var apiClient = new FortalezaApiClient(Server.ApiUri, httpClient);
@@ -39,21 +39,21 @@ namespace FortalezaDesktop.Controllers
             //return await apiClient.clie (cpf, includeMovimentos);
         }
 
-        public async Task<Cliente> CreateClient(Cliente cliente)
+        public static async Task<Cliente> Create(Cliente cliente)
         {
             using var httpClient = new HttpClient();
             var apiClient = new FortalezaApiClient(Server.ApiUri, httpClient);
             return await apiClient.ClientesAsync(cliente);
         }
 
-        public async Task UpdateClient(Cliente cliente)
+        public static async Task Update(Cliente cliente)
         {
             using var httpClient = new HttpClient();
             var apiClient = new FortalezaApiClient(Server.ApiUri, httpClient);
             await apiClient.Clientes3Async(cliente.Idcliente, cliente);
         }
 
-        public async Task<bool> DeleteClient(int id)
+        public static async Task<bool> Delete(int id)
         {
             using var httpClient = new HttpClient();
             var apiClient = new FortalezaApiClient(Server.ApiUri, httpClient);

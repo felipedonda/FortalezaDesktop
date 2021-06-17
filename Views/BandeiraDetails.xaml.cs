@@ -11,6 +11,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using FortalezaDesktop.Models;
+using FortalezaDesktop.Controllers;
+using FortalezaDesktop.Utils;
 
 namespace FortalezaDesktop.Views
 {
@@ -36,7 +38,7 @@ namespace FortalezaDesktop.Views
         {
             
 
-            Bandeira model = await new Bandeira().FindById(id);
+            Bandeira model = await BandeirasController.GetBandeiraByIdAsync(id);
             if (model != null)
             {
                 ButtonAlterar.Visibility = Visibility.Visible;
@@ -53,21 +55,29 @@ namespace FortalezaDesktop.Views
 
         private async void ButtonCriar_Click(object sender, RoutedEventArgs e)
         {
-            //Model = (Bandeira)GridPrincipal.DataContext;
-            if (await Model.SaveInstance())
+            try
             {
-                Close();
+                await BandeirasController.CreateBandeiraAsync(Model);
                 AlteracaoRealizada?.Invoke(this, new EventArgs());
+                Close();
+            }
+            catch(ApiException ex)
+            {
+                ErrorHandler.ApiGenericErrorHandler(ex);
             }
         }
 
         private async void ButtonAlterar_Click(object sender, RoutedEventArgs e)
         {
-            Bandeira model = (Bandeira)GridPrincipal.DataContext;
-            if (await model.UpdateInstance())
+            try
             {
-                Close();
+                await BandeirasController.UpdateBandeiraAsync(Model);
                 AlteracaoRealizada?.Invoke(this, new EventArgs());
+                Close();
+            }
+            catch (ApiException ex)
+            {
+                ErrorHandler.ApiGenericErrorHandler(ex);
             }
         }
 
