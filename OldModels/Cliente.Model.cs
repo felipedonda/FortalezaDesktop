@@ -9,28 +9,6 @@ namespace FortalezaDesktop.OldModels
 {
     public partial class Cliente
     {
-
-        public decimal SaldoEmConta { get; set; }
-
-        public async Task<Cliente> FindByCPF(string CPF)
-        {
-            return await ServerEntry<Cliente>.Get(Path + "/" + CPF, new Dictionary<string, string> { {"cpf","true"} });
-        }
-
-        public async Task<bool> SaveMovimento(Movimento movimento)
-        {
-            try
-            {
-                await ServerEntry<Movimento>.Post(Path + "/" + Id + "/movimento", movimento);
-            }
-            catch (BadResponseStatusCodeException e)
-            {
-                ServerEntry.CommonExceptionHandler(e);
-                return false;
-            }
-            return true;
-        }
-
         [JsonIgnore]
         public bool IsCpf
         {

@@ -94,4 +94,10 @@
     </EmbeddedResource>
   </ItemGroup>
 
+  <ItemGroup>
+    <OpenApiReference Include="OpenAPIs\swagger.json" CodeGenerator="NSwagCSharp" Namespace="FortalezaDesktop.Models" ClassName="FortalezaApiClient">
+      <SourceUri>http://localhost:8000/swagger/v1/swagger.json</SourceUri>
+    </OpenApiReference>
+  </ItemGroup>
+
 </Project>

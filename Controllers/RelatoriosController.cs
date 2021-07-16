@@ -1,4 +1,5 @@
 ﻿using FortalezaDesktop.Models;
+using FortalezaDesktop.Controllers;
 using FortalezaDesktop.Views;
 using FortalezaDesktop.Views.Relatorios;
 using System;
@@ -41,7 +42,7 @@ namespace FortalezaDesktop.Controllers
             cupomFiscal.TextHoraRecibo.Text += " " + pedido.IdvendaNavigation.HoraEntrada.ToString("hh:mm");
             cupomFiscal.mainGrid.ItemsSource = pedido.IdvendaNavigation.ItemVenda;
 
-            InformacoesEmpresa informacoesEmpresa = await new InformacoesEmpresa().FindById(1);
+            InformacoesEmpresa informacoesEmpresa = await InformacoesEmpresaController.GetInformacoesEmpresa();
             cupomFiscal.gridHeader.DataContext = informacoesEmpresa;
 
             if (UserPreferences.Preferences.ImpressoraCupom.Visualizar)
@@ -73,7 +74,7 @@ namespace FortalezaDesktop.Controllers
                 cupomFiscal.GridInfoCliente.Visibility = Visibility.Collapsed;
             }
 
-            InformacoesEmpresa informacoesEmpresa = await new InformacoesEmpresa().FindById(1);
+            InformacoesEmpresa informacoesEmpresa = await InformacoesEmpresaController.GetInformacoesEmpresa();
             cupomFiscal.gridHeader.DataContext = informacoesEmpresa;
 
             cupomFiscal.TextTituloRecibo.Text += " " + venda.Idvenda;
