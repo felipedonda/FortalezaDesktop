@@ -8,50 +8,47 @@ using System.Linq;
 
 namespace FortalezaDesktop.Controllers
 {
-    class VendasController
+    class ItemsController
     {
-        public static async Task<List<Venda>> FindAllAsync()
+        public static async Task<List<Item>> FindAllAsync(bool estoqueAtual = false, bool apenasVisiveis = true, bool apenasComEstoque = false)
         {
-            using var httpClient = new HttpClient();
-            var apiClient = new FortalezaApiClient(Server.ApiUri, httpClient);
-            var vendas = await apiClient.VendasAllAsync(false, null, null);
-            return vendas.ToList();
+            return await FindAllAsync(null, estoqueAtual, apenasVisiveis, apenasComEstoque);
         }
 
-        public static async Task<List<Venda>> FindAllAsync(DateTime dataInicial, DateTime dataFinal)
+        private static async Task<List<Item>> FindAllAsync(string query, bool estoqueAtual = false, bool apenasVisiveis = true, bool apenasComEstoque = false)
         {
             using var httpClient = new HttpClient();
             var apiClient = new FortalezaApiClient(Server.ApiUri, httpClient);
-            var vendas = await apiClient.VendasAllAsync(true, dataInicial.ToString("yyyy-MM-dd"), dataFinal.ToString("yyyy-MM-dd"));
-            return vendas.ToList();
+            var items = await apiClient.ItemsAllAsync(estoqueAtual, apenasComEstoque, apenasVisiveis, query);
+            return items.ToList();
         }
 
-        public static async Task<Venda> FindByIdAsync(int id, bool includeMovimentos = false)
+        public static async Task<Item> FindByIdAsync(int id, bool includeMovimentos = false)
         {
             using var httpClient = new HttpClient();
             var apiClient = new FortalezaApiClient(Server.ApiUri, httpClient);
-            return await apiClient.Vendas2Async(id, includeMovimentos);
+            return await apiClient.Items2Async(id, includeMovimentos);
         }
 
-        public static async Task<Venda> CreateAsync(Venda venda)
+        public static async Task<Item> CreateAsync(Item item)
         {
             using var httpClient = new HttpClient();
             var apiClient = new FortalezaApiClient(Server.ApiUri, httpClient);
-            return await apiClient.VendasAsync(venda);
+            return await apiClient.ItemsAsync(item);
         }
 
-        public static async Task UpdateAsync(Venda venda)
+        public static async Task UpdateAsync(Item item)
         {
             using var httpClient = new HttpClient();
             var apiClient = new FortalezaApiClient(Server.ApiUri, httpClient);
-            await apiClient.Vendas3Async(venda.Idvenda, venda);
+            await apiClient.Items3Async(item.Iditem, item);
         }
 
         public static async Task<bool> DeleteAsync(int id)
         {
             using var httpClient = new HttpClient();
             var apiClient = new FortalezaApiClient(Server.ApiUri, httpClient);
-            return (await apiClient.Vendas4Async(id) != null);
+            return (await apiClient.Items4Async(id) != null);
         }
     }
 }

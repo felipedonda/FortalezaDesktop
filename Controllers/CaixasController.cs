@@ -8,50 +8,50 @@ using System.Linq;
 
 namespace FortalezaDesktop.Controllers
 {
-    class VendasController
+    class CaixasController
     {
-        public static async Task<List<Venda>> FindAllAsync()
+        public static async Task<List<Caixa>> FindAllAsync()
         {
             using var httpClient = new HttpClient();
             var apiClient = new FortalezaApiClient(Server.ApiUri, httpClient);
-            var vendas = await apiClient.VendasAllAsync(false, null, null);
-            return vendas.ToList();
+            var caixas = await apiClient.CaixasAllAsync(false,null,null);
+            return caixas.ToList();
         }
 
-        public static async Task<List<Venda>> FindAllAsync(DateTime dataInicial, DateTime dataFinal)
+        public static async Task<List<Caixa>> FindAllAsync(DateTime dataInicial, DateTime dataFinal)
         {
             using var httpClient = new HttpClient();
             var apiClient = new FortalezaApiClient(Server.ApiUri, httpClient);
-            var vendas = await apiClient.VendasAllAsync(true, dataInicial.ToString("yyyy-MM-dd"), dataFinal.ToString("yyyy-MM-dd"));
-            return vendas.ToList();
+            var caixas = await apiClient.CaixasAllAsync(true, dataInicial.ToString("yyyy-MM-dd"), dataFinal.ToString("yyyy-MM-dd"));
+            return caixas.ToList();
         }
 
-        public static async Task<Venda> FindByIdAsync(int id, bool includeMovimentos = false)
+        public static async Task<Caixa> FindByIdAsync(int id, bool includeMovimentos = false)
         {
             using var httpClient = new HttpClient();
             var apiClient = new FortalezaApiClient(Server.ApiUri, httpClient);
-            return await apiClient.Vendas2Async(id, includeMovimentos);
+            return await apiClient.Caixas2Async(id,includeMovimentos);
         }
 
-        public static async Task<Venda> CreateAsync(Venda venda)
+        public static async Task<Caixa> CreateAsync(Caixa caixa)
         {
             using var httpClient = new HttpClient();
             var apiClient = new FortalezaApiClient(Server.ApiUri, httpClient);
-            return await apiClient.VendasAsync(venda);
+            return await apiClient.CaixasAsync(caixa);
         }
 
-        public static async Task UpdateAsync(Venda venda)
+        public static async Task UpdateAsync(Caixa caixa)
         {
             using var httpClient = new HttpClient();
             var apiClient = new FortalezaApiClient(Server.ApiUri, httpClient);
-            await apiClient.Vendas3Async(venda.Idvenda, venda);
+            await apiClient.Caixas3Async(caixa.Idcaixa, caixa);
         }
 
         public static async Task<bool> DeleteAsync(int id)
         {
             using var httpClient = new HttpClient();
             var apiClient = new FortalezaApiClient(Server.ApiUri, httpClient);
-            return (await apiClient.Vendas4Async(id) != null);
+            return (await apiClient.Caixas4Async(id) != null);
         }
     }
 }

@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using FortalezaDesktop.Models;
 using FortalezaDesktop.Utils;
 using Microsoft.Win32;
+using FortalezaDesktop.Controllers;
 
 namespace FortalezaDesktop.Views
 {
@@ -121,7 +122,7 @@ namespace FortalezaDesktop.Views
             {
                 if (UploadLogo)
                 {
-                    if(await InformacoesEmpresa.UploadLogo(Logo, LogoFileName))
+                    if(await InformacoesEmpresaController.UploadLogoAsync(Logo, LogoFileName))
                     {
                         await Logo.DisposeAsync();
                     }
@@ -129,16 +130,21 @@ namespace FortalezaDesktop.Views
 
                 if (IsNew)
                 {
-                    if(await InformacoesEmpresa.SaveInstance())
+                    if(await InformacoesEmpresaController.CreateAsync(InformacoesEmpresa) != null)
                     {
                         Close();
                     }
                 }
                 else
                 {
-                    if(await InformacoesEmpresa.UpdateInstance())
+                    try
                     {
+                        await InformacoesEmpresaController.UpdateAsync(InformacoesEmpresa);
                         Close();
+                    }
+                    catch
+                    {
+                        //todo
                     }
                 }
             }
@@ -163,7 +169,7 @@ namespace FortalezaDesktop.Views
 
         public async Task LoadInformacoesEmpresa()
         {
-            InformacoesEmpresa = await new InformacoesEmpresa().FindById(1);
+            InformacoesEmpresa = await InformacoesEmpresaController.FindByIdAsync(1);
             if (InformacoesEmpresa == null)
             {
                 IsNew = true;
@@ -176,7 +182,7 @@ namespace FortalezaDesktop.Views
           
             if(InformacoesEmpresa.Logo != null)
             {
-                Stream image = await InformacoesEmpresa.GetImage();
+                Stream image = await InformacoesEmpresaController.GetImage();
                 if(image != null)
                 {
                     BitmapImage imageSource = new BitmapImage();

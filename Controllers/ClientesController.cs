@@ -39,21 +39,21 @@ namespace FortalezaDesktop.Controllers
             //return await apiClient.clie (cpf, includeMovimentos);
         }
 
-        public async Task<Cliente> CreateClient(Cliente cliente)
+        public async Task<Cliente> CreateCliente(Cliente cliente)
         {
             using var httpClient = new HttpClient();
             var apiClient = new FortalezaApiClient(Server.ApiUri, httpClient);
             return await apiClient.ClientesAsync(cliente);
         }
 
-        public async Task UpdateClient(Cliente cliente)
+        public async Task UpdateCliente(Cliente cliente)
         {
             using var httpClient = new HttpClient();
             var apiClient = new FortalezaApiClient(Server.ApiUri, httpClient);
             await apiClient.Clientes3Async(cliente.Idcliente, cliente);
         }
 
-        public async Task<bool> DeleteClient(int id)
+        public async Task<bool> DeleteCliente(int id)
         {
             using var httpClient = new HttpClient();
             var apiClient = new FortalezaApiClient(Server.ApiUri, httpClient);
